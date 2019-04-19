@@ -581,8 +581,8 @@ $Cost(\theta) = \left\{\begin{array}{l} -ln(h_{\theta}(x)) && \text{if }y = 1 \\
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/11/05/palindrome-process/" rel="prev" title="迴文處理 Palindrome Process">
-                迴文處理 Palindrome Process <i class="fa fa-chevron-right"></i>
+              <a href="/2017/11/05/javascript-file-process/" rel="prev" title="JavaScript 檔案處理">
+                JavaScript 檔案處理 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -606,10 +606,7 @@ $Cost(\theta) = \left\{\begin{array}{l} -ln(h_{\theta}(x)) && \text{if }y = 1 \\
           
 
   
-    <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
+    <div class="comments" id="gitalk-container">
     </div>
 
   
@@ -952,37 +949,32 @@ $Cost(\theta) = \left\{\begin{array}{l} -ln(h_{\theta}(x)) && \text{if }y = 1 \\
 
 
   
-    <!-- LOCAL: You can save these files to your site and update links -->
+    
 
-  
-  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
-<!-- END LOCAL -->
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
 
 <script>
-  function renderGitment() {
-    var gitment = new Gitmint({
-      id: window.location.pathname,
-      owner: 'tinytsunami',
-      repo: 'tinytsunami.github.io',
-      
-        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-      
-      oauth: {
-      
-      
-        client_secret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
-      
-        client_id: '8b224f954e247f37ca81'
-      }
-    });
-    gitment.render('gitment-container');
-  }
-
-  
-    renderGitment();
-  
+  var gitalk = new Gitalk({
+    clientID: '8b224f954e247f37ca81',
+    clientSecret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+    repo: 'tinytsunami.github.io',
+    owner: 'tinytsunami',
+    admin: ['tinytsunami'],
+    id: md5(location.pathname),
+    
+      language: 'zh-TW',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
 </script>
 
   

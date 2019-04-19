@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#536F87">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#536F87">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"right","width":240,"display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="上一篇介紹的是線性回歸與梯度下降，這一篇將會討論「邏輯回歸與感知器」。">
+<meta name="keywords" content="技術, 獨立遊戲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="邏輯回歸與感知器 Logistic Regression and Perceptron">
+<meta property="og:url" content="https://www.tinytsunami.info/2017/11/02/logistic-regression-and-perceptron/index.html">
+<meta property="og:site_name" content="羊羽手札">
+<meta property="og:description" content="上一篇介紹的是線性回歸與梯度下降，這一篇將會討論「邏輯回歸與感知器」。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="http://i.imgur.com/Mi5EawQ.png">
+<meta property="og:updated_time" content="2018-07-29T17:54:30.472Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="邏輯回歸與感知器 Logistic Regression and Perceptron">
+<meta name="twitter:description" content="上一篇介紹的是線性回歸與梯度下降，這一篇將會討論「邏輯回歸與感知器」。">
+<meta name="twitter:image" content="http://i.imgur.com/Mi5EawQ.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.tinytsunami.info/2017/11/02/logistic-regression-and-perceptron/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>邏輯回歸與感知器 Logistic Regression and Perceptron | 羊羽手札</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">羊羽手札</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Tinytsunami's Blog</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切換導航欄">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首頁</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分類</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>紀錄</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/2017/11/02/logistic-regression-and-perceptron/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tinytusnami">
+      <meta itemprop="description" content="羊羽的個人部落格">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="羊羽手札">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">邏輯回歸與感知器 Logistic Regression and Perceptron
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+
+              
+                
+              
+
+              <time title="創建時間 2017-11-02 00:00:00" itemprop="dateCreated datePublished" datetime="2017-11-02T00:00:00Z">2017-11-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新於</span>
+                
+                <time title="修改時間 2018-07-29 17:54:30" itemprop="dateModified" datetime="2018-07-29T17:54:30Z">2018-07-29</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/機器學習/" itemprop="url" rel="index"><span itemprop="name">機器學習</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">評論 </span>
+                <a href="/2017/11/02/logistic-regression-and-perceptron/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="https://www.tinytsunami.info/2017/11/02/logistic-regression-and-perceptron/" itemprop="commentCount">0</span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上一篇介紹的是線性回歸與梯度下降，這一篇將會討論「邏輯回歸與感知器」。<br><a id="more"></a></p>
+<div class="note success">
+            <p>初學推薦由 <a href="/2017/06/25/linear-regression-and-gradient-descent/" title="線性回歸與梯度下降 Linear Regression and Gradient Descent">線性回歸與梯度下降 Linear Regression and Gradient Descent</a> 開始閱讀。</p>
+          </div>
+<p>在這邊先約定一件事情，就是對數函數的表示法：</p>
+<ul>
+<li>$log(x)$ 表示以 10 為底</li>
+<li>$lg(x)$ 表示以 2 為底</li>
+<li>$ln(x)$ 表示以 $e$ 為底</li>
+</ul>
+<p>因為第一種表示法很容易造成混淆，<br>所以這邊就事前說明，不要造成大家的困擾。</p>
+<div class="note info">
+            <p>這是 Chrome 瀏覽器搜尋的表示法；你可以在網址列輸入 log(10)、lg(2) 及 ln(e) 來觀察。</p>
+          </div>
+<hr>
+<h1 id="邏輯回歸"><a href="#邏輯回歸" class="headerlink" title="邏輯回歸"></a>邏輯回歸</h1><p>邏輯回歸公式看起來還蠻複雜的，不過依舊有跡可循。<br>首先，我們回憶線性回歸的一些式子：</p>
+<p>$h_{\theta}(x) = \theta_{0} + \theta_{1}x$</p>
+<p>還記得這個做什麼的話就好辦了，首先我們有一堆 $x$ 跟 $y$ 的資料（訓練資料），<br>然後我們透過找 $\theta$ 來確定之後新資料的 $y$ 值，換言之 $h_{\theta}(x)$ 其實就是新資料要代入的函數。</p>
+<p>現在問題在於，如果我希望這個 $h_{\theta}(x)$ 介於 $[0, 1]$ 這個區間的話，<br>為什麼要做落在這個區間呢？因為這樣才能對應這樣的關係：</p>
+<ul>
+<li>$h_{\theta}(x) = 1 = True$</li>
+<li>$h_{\theta}(x) = 0 = False$</li>
+</ul>
+<p>這也是叫做邏輯回歸的原因了，也就是說我們要修該這個 $h_{\theta}(x)$ 函數。</p>
+<hr>
+<h1 id="預測函數"><a href="#預測函數" class="headerlink" title="預測函數"></a>預測函數</h1><p>修改函數其實有很多種方法，比方說：</p>
+<ul>
+<li>$ f(x) = \frac{1}{1 + e ^{-x}}$</li>
+<li>$ f(x) = \frac{1 + tanh(x)}{2}$</li>
+</ul>
+<p>其中第一個 $ f(x) = \frac{1}{1 + e ^{-x}}$<br>叫做 Sigmoid Function、或叫 Logistic Function（邏輯函數）</p>
+<p>這邊就以這個函數為準。<br>然後我們令 $h_{\theta}(x) ＝\frac{1}{1 + e ^{-(\theta_{0} + \theta_{1}x)}}$<br>也就是把函數套在原函數上面。</p>
+<p>可能會造成困惑的一點是，我們其實不知道 $\theta_{0} + \theta_{1}x$ 確切的值域，<br>用淺白一點的例子來說：如果我在線性回歸中預測的是房價，那麼這個函數的值應該會很大。</p>
+<p>但是這樣的猜測是不正確的，因為我們並沒有確定 $\theta$ 的值，<br>所以在A.I.學習的過程中，這個 $\theta$ 的值就會讓 $h_{\theta}(x)$ 貼近真實的情況。</p>
+<hr>
+<h1 id="成本函數"><a href="#成本函數" class="headerlink" title="成本函數"></a>成本函數</h1><p>接下來就是定義成本代價了。</p>
+<p>因為 $h_{\theta}(x)$ 這次只會在 $[0, 1]$ 中，<br>所以說，我們的成本函數也是差不多要這樣定義：  </p>
+
+$Cost(\theta) = \left\{\begin{array}{l} -ln(h_{\theta}(x)) && \text{if }y = 1 \\ -ln(1-h_{\theta}(x)) && \text{if }y = 0 \end{array}\right .$
+
+<ul>
+<li>如果 $h_{\theta}(x) = 0$ 且 $y = 0$ 則 $Cost(\theta) = 0$（預測正確，成本為零）</li>
+<li>如果 $h_{\theta}(x) = 0$ 且 $y = 1$ 則 $Cost(\theta) = \infty$（預測錯誤，成本無限大）</li>
+<li>如果 $h_{\theta}(x) = 1$ 且 $y = 0$ 則 $Cost(\theta) = \infty$（預測錯誤，成本無限大）</li>
+<li>如果 $h_{\theta}(x) = 1$ 且 $y = 1$ 則 $Cost(\theta) = 0$（預測正確，成本為零）</li>
+</ul>
+<p>而 $log(x)$ 有這這樣的性質：</p>
+<ul>
+<li>任何數的零次方等於一，也就是 $ln(1) = 0$</li>
+<li>有條貼近 $y$ 軸的漸近線，也就是 $\displaystyle{\lim_{x \to 0} ln(x) = -\infty}$</li>
+</ul>
+<p>也就是說，只要取 $-ln(x)$ 就能找到 $0$ 跟 $\infty$ 兩個重要的值，剩下的就只是調整。<br>從這裡也可以發現一件事，就是其他的對數函數也差不多（其實是可以用的意思）</p>
+<p>接下來整理成一條公式：</p>
+<p>$Cost(\theta) = \left[-yln(h_{\theta}(x))\right] + \left[-(1-y)ln(1-h_{\theta}(x))\right]$</p>
+<p>因為假設有 $m$ 筆資料的話：</p>
+<p>$Cost(\theta) = \frac{1}{m} \sum\limits_{i=1}^m \left[ -y_{i}ln(h_{\theta}(x_{i})) \right] + \left[ -(1-y_{i})ln(1-h_{\theta}(x_{i})) \right]$ </p>
+<h2 id="成本的梯度"><a href="#成本的梯度" class="headerlink" title="成本的梯度"></a>成本的梯度</h2><p>因為梯度下降要用到，接下來是微分成本函數：</p>
+<p>$Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}ln(h_{\theta}(x_{i})) \right] + \left[ (1-y_{i})ln(1-h_{\theta}(x_{i})) \right]$ </p>
+<p>在微分之前，對兩個 $ln(x)$ 函數做變化：</p>
+<p>$ln(h_{\theta}(x_{i})) = ln(\frac{1}{1 + e^{-\theta^{T}X}}) = ln(1) - ln(1 + e^{-\theta^{T}X}) = - ln(1 + e^{-\theta^{T}X})$</p>
+<p>$ln(1-h_{\theta}(x_{i})) = ln(1-\frac{1}{1 + e^{-\theta^{T}X}}) = ln(\frac{1 + e^{-\theta^{T}X}}{1 + e^{-\theta^{T}X}}-\frac{1}{1 + e^{-\theta^{T}X}})$</p>
+<p>$= ln(\frac{e^{-\theta^{T}X}}{1 + e^{-\theta^{T}X}}) = ln(e^{-\theta^{T}X}) - ln(1 + e^{-\theta^{T}X}) = -\theta^{T}X - ln(1 + e^{-\theta^{T}X})$</p>
+<p>然後代換，化簡。</p>
+<p>$Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}(- ln(1 + e^{-\theta^{T}X})) \right] + \left[ (1-y_{i})(-\theta^{T}X - ln(1 + e^{-\theta^{T}X})) \right] $</p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -y_{i}ln(1 + e^{-\theta^{T}X}) + (1-y_{i})(-\theta^{T}X - ln(1 + e^{-\theta^{T}X})) \right]$</p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -y_{i}ln(1 + e^{-\theta^{T}X}) + (-\theta^{T}X - ln(1 + e^{-\theta^{T}X})+y_{i}\theta^{T}X + y_{i}ln(1 + e^{-\theta^{T}X}) \right]$ </p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -\theta^{T}X - ln(1 + e^{-\theta^{T}X})+y_{i}\theta^{T}X \right]$ </p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -(ln(e^{\theta^{T}X}) + ln(1 + e^{-\theta^{T}X}))+y_{i}\theta^{T}X \right]$ </p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -ln(e^{\theta^{T}X}(1 + e^{-\theta^{T}X}))+y_{i}\theta^{T}X \right]$ </p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -ln(e^{\theta^{T}X} + 1)+y_{i}\theta^{T}X \right]$ </p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}\theta^{T}X - ln(e^{\theta^{T}X} + 1) \right]$ </p>
+<p>接著在處理微分。</p>
+<p>$\frac{\partial}{\partial\theta_{j}}Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ \frac{\partial}{\partial\theta_{j}}y_{i}\theta^{T}X - \frac{\partial}{\partial\theta_{j}}ln(e^{\theta^{T}X} + 1) \right]$ </p>
+<p>第一項的部份：</p>
+<p>$\frac{\partial}{\partial\theta_{j}}y_{i}\theta^{T}X = y_{i}x_{j}$</p>
+<p>第二項的部份：</p>
+<p>$\frac{\partial}{\partial\theta_{j}}ln(e^{\theta^{T}X} + 1) = \frac{\partial}{\partial(e^{\theta^{T}X} + 1)}ln(e^{\theta^{T}X} + 1)\frac{\partial}{\partial\theta_{j}}(e^{\theta^{T}X} + 1)$</p>
+<p>$= \frac{1}{e^{\theta^{T}X} + 1}(x_{j}e^{\theta^{T}X}) = \frac{x_{j}e^{\theta^{T}X}}{e^{\theta^{T}X} + 1} = \frac{x_{j}}{(e^{-\theta^{T}X})(e^{\theta^{T}X} + 1)}$</p>
+<p>$= \frac{x_{j}}{1 + e^{-\theta^{T}X}} = x_{j}h_{\theta}(x_{i})$</p>
+<p>所以：</p>
+<p>$\frac{\partial}{\partial\theta_{j}}Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ \frac{\partial}{\partial\theta_{j}}y_{i}\theta^{T}X - \frac{\partial}{\partial\theta_{j}}ln(e^{\theta^{T}X} + 1) \right]$</p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}x_{j} - x_{j}h_{\theta}(x_{i}) \right] = -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i} - h_{\theta}(x_{i}) \right] x_{j}$ </p>
+<p>$= \frac{1}{m} \sum\limits_{i=1}^m \left[ h_{\theta}(x_{i}) - y_{i} \right] x_{j}$ </p>
+<p>實際的使用上我們會：</p>
+<p>$\theta_{j} := \theta_{j} - \alpha\frac{1}{m}\sum\limits_{i=1}^m \left[ h_{\theta}(x_{i}) - y_{i} \right] x_{j}$ </p>
+<p>其中 $\alpha$ 學習率，太高的學習率跟線性回歸一樣會震盪，<br>換言之，容易導致結果發散，無法收斂至最佳解。</p>
+<div class="note warning">
+            <p>學習率 $\alpha$ 太高會造成發散，導致無法收斂到最佳解。</p>
+          </div>
+<hr>
+<h1 id="感知器"><a href="#感知器" class="headerlink" title="感知器"></a>感知器</h1><p><img src="http://i.imgur.com/Mi5EawQ.png" alt="Perceptron.png"></p>
+<div class="note info">
+            <p>用於人工神經網路時，單個感知器（Perceptron）又稱為神經元（Neuron）。</p>
+          </div>
+<p>上面這張圖應該算是蠻常見的吧？如果常在接觸這個領域的話。<br>這篇文章把這個放在這裡，是為了跟邏輯回歸做比較。</p>
+<p>圖中顯示的 $\sum$ 是指 $X$ 乘上 $W\text{(權重)}$ 取和；而 $f(x)$ 是指某種函數，可能是 sigmoid 或是其他函數。</p>
+<p>有沒有跟邏輯回歸很類似或者說接近呢？<br>一個邏輯回歸是訓練一組 $\theta$ 而神經元是 $W$  外，除了一些細節。大致上可以說是類似的。<br>更精確地說，邏輯回歸可以看作是單一層的神經網路。</p>
+<h2 id="線性不可分問題"><a href="#線性不可分問題" class="headerlink" title="線性不可分問題"></a>線性不可分問題</h2><p>下面這個段落引用自 Wikipedia 的文章，讓我們回顧一下歷史。</p>
+<blockquote><p>雖然最初被認為有著良好的發展潛能，但感知機最終被證明不能處理諸多的模式識別問題。1969年，Marvin Minsky和Seymour Papert在《Perceptrons》書中，仔細分析了以感知機為代表的單層神經網絡系統的功能及局限，證明感知機不能解決簡單的異或（XOR）等線性不可分問題，但Rosenblatt和Minsky及Papert等人在當時已經了解到多層神經網絡能夠解決線性不可分的問題。</p>
+<p>由於Rosenblatt等人沒能夠及時推廣感知機學習算法到多層神經網絡上，又由於《Perceptrons》在研究領域中的巨大影響，及人們對書中論點的誤解，造成了人工神經領域發展的長年停滯及低潮…  </p>
+<footer><strong>Wikipedia</strong><cite><a href="https://zh.wikipedia.org/wiki/%E6%84%9F%E7%9F%A5%E5%99%A8" target="_blank" rel="noopener">zh.wikipedia.org/wiki/%E6%84%9F%E7%9F%A5%E5%99%A8</a></cite></footer></blockquote>
+<hr>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>這個演示是邏輯回歸（單個神經元）學習邏輯運算的規則，<br>可以發現除了 XOR 外，其他邏輯都可以使紅、藍兩色分明。</p>
+<iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/ht98xhej/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/25/linear-regression-and-gradient-descent/" rel="next" title="線性回歸與梯度下降 Linear Regression and Gradient Descent">
+                <i class="fa fa-chevron-left"></i> 線性回歸與梯度下降 Linear Regression and Gradient Descent
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/05/palindrome-process/" rel="prev" title="迴文處理 Palindrome Process">
+                迴文處理 Palindrome Process <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概要
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Tinytusnami">
+            
+              <p class="site-author-name" itemprop="name">Tinytusnami</p>
+              <div class="site-description motion-element" itemprop="description">羊羽的個人部落格</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">文章</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分類</span>
+                  </a>
+                </div>
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/tinytsunami" title="GitHub &rarr; https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:z27619273@gmail.com" title="E-Mail &rarr; mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page &rarr; https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube &rarr; https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#邏輯回歸"><span class="nav-number">1.</span> <span class="nav-text">邏輯回歸</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#預測函數"><span class="nav-number">2.</span> <span class="nav-text">預測函數</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#成本函數"><span class="nav-number">3.</span> <span class="nav-text">成本函數</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#成本的梯度"><span class="nav-number">3.1.</span> <span class="nav-text">成本的梯度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#感知器"><span class="nav-number">4.</span> <span class="nav-text">感知器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#線性不可分問題"><span class="nav-number">4.1.</span> <span class="nav-text">線性不可分問題</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#演示"><span class="nav-number">5.</span> <span class="nav-text">演示</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-bomb"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 強力驅動 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: window.location.pathname,
+      owner: 'tinytsunami',
+      repo: 'https://github.com/tinytsunami/tinytsunami.github.io.git',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        client_secret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+      
+        client_id: '8b224f954e247f37ca81'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

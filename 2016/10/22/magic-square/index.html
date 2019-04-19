@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#536F87">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#536F87">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"right","width":240,"display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="這個是我們資料結構（Data Structure）的第二次作業，本文紀錄了奇數、雙偶數以及單偶數魔方陣（Magic Square）的做法。">
+<meta name="keywords" content="技術, 獨立遊戲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="魔方陣 Magic Square">
+<meta property="og:url" content="https://www.tinytsunami.info/2016/10/22/magic-square/index.html">
+<meta property="og:site_name" content="羊羽手札">
+<meta property="og:description" content="這個是我們資料結構（Data Structure）的第二次作業，本文紀錄了奇數、雙偶數以及單偶數魔方陣（Magic Square）的做法。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:updated_time" content="2018-07-29T17:50:21.255Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="魔方陣 Magic Square">
+<meta name="twitter:description" content="這個是我們資料結構（Data Structure）的第二次作業，本文紀錄了奇數、雙偶數以及單偶數魔方陣（Magic Square）的做法。">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.tinytsunami.info/2016/10/22/magic-square/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>魔方陣 Magic Square | 羊羽手札</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">羊羽手札</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Tinytsunami's Blog</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切換導航欄">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首頁</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分類</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>紀錄</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/2016/10/22/magic-square/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tinytusnami">
+      <meta itemprop="description" content="羊羽的個人部落格">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="羊羽手札">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">魔方陣 Magic Square
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+
+              
+                
+              
+
+              <time title="創建時間 2016-10-22 00:00:00" itemprop="dateCreated datePublished" datetime="2016-10-22T00:00:00Z">2016-10-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新於</span>
+                
+                <time title="修改時間 2018-07-29 17:50:21" itemprop="dateModified" datetime="2018-07-29T17:50:21Z">2018-07-29</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/資料結構與演算法/" itemprop="url" rel="index"><span itemprop="name">資料結構與演算法</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">評論 </span>
+                <a href="/2016/10/22/magic-square/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="https://www.tinytsunami.info/2016/10/22/magic-square/" itemprop="commentCount">0</span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>這個是我們資料結構（Data Structure）的第二次作業，<br>本文紀錄了<strong>奇數</strong>、<strong>雙偶數</strong>以及<strong>單偶數</strong>魔方陣（Magic Square）的做法。<br><a id="more"></a></p>
+<p>老實說，上課不斷的聯想到太鼓達人的★9曲「魔方陣-サモン・デルタ-」</p>
+<div class="video-container"><iframe src="//www.youtube.com/embed/MTQw4fF9o58" frameborder="0" allowfullscreen></iframe></div>
+<hr>
+<h1 id="魔方陣定義"><a href="#魔方陣定義" class="headerlink" title="魔方陣定義"></a>魔方陣定義</h1><p>魔方陣定義是這樣的：</p>
+<ul>
+<li>每一行（Column）的總和</li>
+<li>每一列（Row）的總和</li>
+<li>對角線的總和</li>
+<li>上面每一個值都相等</li>
+</ul>
+<div class="note info">
+            <p>這邊採用了<strong>直行橫列</strong>的說法。</p>
+          </div>
+<p>比方說：</p>
+<table style="width: 135px; height: 135px;"><tr><td style="text-align: center;">6</td><td style="text-align: center;">1</td><td style="text-align: center;">8</td></tr><tr><td style="text-align: center;">7</td><td style="text-align: center;">5</td><td style="text-align: center;">3</td></tr><tr><td style="text-align: center;">2</td><td style="text-align: center;">9</td><td style="text-align: center;">4</td></tr></table><table style="width: 180px; height: 180px;"><tr><td style="text-align: center;">1</td><td style="text-align: center;">15</td><td style="text-align: center;">14</td><td style="text-align: center;">4</td></tr><tr><td style="text-align: center;">12</td><td style="text-align: center;">6</td><td style="text-align: center;">7</td><td style="text-align: center;">9</td></tr><tr><td style="text-align: center;">8</td><td style="text-align: center;">10</td><td style="text-align: center;">11</td><td style="text-align: center;">5</td></tr><tr><td style="text-align: center;">13</td><td style="text-align: center;">3</td><td style="text-align: center;">2</td><td style="text-align: center;">16</td></tr></table>
+
+<p>接下來我會記錄如何製作魔方陣。</p>
+<hr>
+<h1 id="奇數魔方陣"><a href="#奇數魔方陣" class="headerlink" title="奇數魔方陣"></a>奇數魔方陣</h1><p>奇數的魔方陣是魔方陣中比較簡單的一種，構造方式相當容易。<br>正常情況下，給定一個 n 在 O(n<sup>2</sup>) 時間複雜度內就可以完成。</p>
+<ul>
+<li>第一列（Row）中間放「1」</li>
+<li>不斷<strong>往左上角移動（走出方格從對面出現）</strong>、放入下一個數字</li>
+<li>如果左上角空間<strong>已有數字，則往下放一格</strong></li>
+</ul>
+<p>以 3x3 魔方陣為例（n = 3）：</p>
+<p>第一步：在中間上面放「1」</p>
+<table style="width: 135px; height: 135px;"><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #67b6eb; text-align: center;">1</td><td style="width: 28px; height: 28px; text-align: center;"></td></tr><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td></tr><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td></tr></table>
+
+<p>第二步：不斷往左上走。同時累進數字。<br>（這個 1 從上方跑出方陣、於是 2 應該在下面。）</p>
+<table style="width: 135px; height: 135px;"><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;">1</td><td style="width: 28px; height: 28px; text-align: center;"></td></tr><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td></tr><tr><td style="width: 28px; height: 28px; background-color: #67b6eb; text-align: center;">2</td><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td></tr></table>
+
+<p>我們接下來不斷重複。</p>
+<table style="width: 135px; height: 135px;"><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;">1</td><td style="width: 28px; height: 28px; text-align: center;"></td></tr><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td></tr><tr><td style="width: 28px; height: 28px; background-color: #67b6eb; text-align: center;">2</td><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td></tr></table><table style="width: 135px; height: 135px;"><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;">1</td><td style="width: 28px; height: 28px; text-align: center;"></td></tr><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #67b6eb; text-align: center;">3</td></tr><tr><td style="width: 28px; height: 28px; text-align: center;">2</td><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td></tr></table>
+
+<p>第三步：這個 3 的左上方已經有數字，於是往下放一格。</p>
+<table style="width: 135px; height: 135px;"><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #d95757; text-align: center;">1</td><td style="width: 28px; height: 28px; text-align: center;"></td></tr><tr><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; text-align: center;">3</td></tr><tr><td style="width: 28px; height: 28px; text-align: center;">2</td><td style="width: 28px; height: 28px; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #67b6eb; text-align: center;">4</td></tr></table>
+
+<p>依照這個步驟繼續完成。</p>
+<table style="width: 135px; height: 135px;"><tr><td style="width: 28px; height: 28px; text-align: center;">6</td><td style="width: 28px; height: 28px; text-align: center;">1</td><td style="width: 28px; height: 28px; text-align: center;">8</td></tr><tr><td style="width: 28px; height: 28px; text-align: center;">7</td><td style="width: 28px; height: 28px; text-align: center;">5</td><td style="width: 28px; height: 28px; text-align: center;">3</td></tr><tr><td style="width: 28px; height: 28px; text-align: center;">2</td><td style="width: 28px; height: 28px; background-color: #67b6eb; text-align: center;">9</td><td style="width: 28px; height: 28px; text-align: center;">4</td></tr></table>
+
+<p>我們最終就得到一個不錯的方陣。</p>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>只要考慮跑出方陣、以及碰撞到有值的格子就可以了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//計算下一步的座標</span></span><br><span class="line">x = (x - <span class="number">1</span> &amp;lt; <span class="number">0</span>)? width : x - <span class="number">1</span>;</span><br><span class="line">y = (y - <span class="number">1</span> &amp;lt; <span class="number">0</span>)? height : y - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果下一步有值</span></span><br><span class="line"><span class="keyword">if</span>(!empty(<span class="built_in">map</span>[x][y]))</span><br><span class="line">&#123;</span><br><span class="line">        <span class="comment">//先回到上一步</span></span><br><span class="line">    x = tx;</span><br><span class="line">    y = ty;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//往下移動一格</span></span><br><span class="line">    y = (y + <span class="number">1</span> &amp;gt; height)? <span class="number">0</span> : y + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//確定位置後，填入數值</span></span><br><span class="line"><span class="built_in">map</span>[x][y] = value;</span><br><span class="line"></span><br><span class="line"><span class="comment">//記錄這一步的座標</span></span><br><span class="line">tx = x;</span><br><span class="line">ty = y;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/yq50092e/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<hr>
+<h1 id="雙偶數魔方陣"><a href="#雙偶數魔方陣" class="headerlink" title="雙偶數魔方陣"></a>雙偶數魔方陣</h1><p>雙偶數指的是 4 的倍數。這類型的魔方陣比奇數更複雜一些。<br>雙偶數的魔方陣的做法：</p>
+<ul>
+<li>先<strong>按照順序填入</strong></li>
+<li>找到<strong>主對角線</strong></li>
+<li>找到<strong>副對角線</strong></li>
+<li>把不在對角線上的值依序取下</li>
+<li>把取下的值從後面<strong>反過來填上</strong></li>
+</ul>
+<p>重點在於，何謂主、副對角線呢？<br>這邊的解釋是，任何可以切割成方格的樣子。</p>
+<table style="width: 180px; height: 180px;"><tr><th colspan="4" style="text-align: center;">n = 4</th></tr><tr><td style="background-color: #67b6eb; text-align: center;">1</td><td style="text-align: center;">2</td><td style="text-align: center;">3</td><td style="background-color: #67b6eb; text-align: center;">4</td></tr><tr><td style="text-align: center;">5</td><td style="background-color: #67b6eb; text-align: center;">6</td><td style="background-color: #67b6eb; text-align: center;">7</td><td style="text-align: center;">8</td></tr><tr><td style="text-align: center;">9</td><td style="background-color: #67b6eb; text-align: center;">10</td><td style="background-color: #67b6eb; text-align: center;">11</td><td style="text-align: center;">12</td></tr><tr><td style="background-color: #67b6eb; text-align: center;">13</td><td style="text-align: center;">14</td><td style="text-align: center;">15</td><td style="background-color: #67b6eb; text-align: center;">16</td></tr></table><table style="width: 360px; height: 360px;"><tr><th colspan="8" style="text-align: center;">n = 8</th></tr><tr><td style="background-color: #67b6eb; text-align: center;">1</td><td style="text-align: center;">2</td><td style="text-align: center;">3</td><td style="background-color: #e890b9; text-align: center;">4</td><td style="background-color: #e890b9; text-align: center;">5</td><td style="text-align: center;">6</td><td style="text-align: center;">7</td><td style="background-color: #67b6eb; text-align: center;">8</td></tr><tr><td style="text-align: center;">9</td><td style="background-color: #67b6eb; text-align: center;">10</td><td style="background-color: #e890b9; text-align: center;">11</td><td style="text-align: center;">12</td><td style="text-align: center;">13</td><td style="background-color: #e890b9; text-align: center;">14</td><td style="background-color: #67b6eb; text-align: center;">15</td><td style="text-align: center;">16</td></tr><tr><td style="text-align: center;">17</td><td style="background-color: #e890b9; text-align: center;">18</td><td style="background-color: #67b6eb; text-align: center;">19</td><td style="text-align: center;">20</td><td style="text-align: center;">21</td><td style="background-color: #67b6eb; text-align: center;">22</td><td style="background-color: #e890b9; text-align: center;">23</td><td style="text-align: center;">24</td></tr><tr><td style="background-color: #e890b9; text-align: center;">25</td><td style="text-align: center;">26</td><td style="text-align: center;">27</td><td style="background-color: #67b6eb; text-align: center;">28</td><td style="background-color: #67b6eb; text-align: center;">29</td><td style="text-align: center;">30</td><td style="text-align: center;">31</td><td style="background-color: #e890b9; text-align: center;">32</td></tr><tr><td style="background-color: #e890b9; text-align: center;">33</td><td style="text-align: center;">34</td><td style="text-align: center;">35</td><td style="background-color: #67b6eb; text-align: center;">36</td><td style="background-color: #67b6eb; text-align: center;">37</td><td style="text-align: center;">38</td><td style="text-align: center;">39</td><td style="background-color: #e890b9; text-align: center;">40</td></tr><tr><td style="text-align: center;">41</td><td style="background-color: #e890b9; text-align: center;">42</td><td style="background-color: #67b6eb; text-align: center;">43</td><td style="text-align: center;">44</td><td style="text-align: center;">45</td><td style="background-color: #67b6eb; text-align: center;">46</td><td style="background-color: #e890b9; text-align: center;">47</td><td style="text-align: center;">48</td></tr><tr><td style="text-align: center;">49</td><td style="background-color: #67b6eb; text-align: center;">50</td><td style="background-color: #e890b9; text-align: center;">51</td><td style="text-align: center;">52</td><td style="text-align: center;">53</td><td style="background-color: #e890b9; text-align: center;">54</td><td style="background-color: #67b6eb; text-align: center;">55</td><td style="text-align: center;">56</td></tr><tr><td style="background-color: #67b6eb; text-align: center;">57</td><td style="text-align: center;">58</td><td style="text-align: center;">59</td><td style="background-color: #e890b9; text-align: center;">60</td><td style="background-color: #e890b9; text-align: center;">61</td><td style="text-align: center;">62</td><td style="text-align: center;">63</td><td style="background-color: #67b6eb; text-align: center;">64</td></tr></table>
+
+<p>從上圖就可以看出來，藍色背景的是我所認知的「主對角線」、而紅色背景是「副對角線」。</p>
+<ul>
+<li>當 n = 4 時，沒有副對角線。</li>
+<li>當 n ≧ 8 時，有副對角線。</li>
+</ul>
+<h2 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h2><p>最麻煩的是、你如何抓對角線呢？<br>讓我們來仔細觀察看看：</p>
+<table style="width: 320px; height: 320px;"><tr><td style="width: 38px; background-color: #e890b9; height: 38px; text-align: center;">(0, 0)</td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; background-color: #e890b9; height: 38px; text-align: center;">(3, 0)</td><td style="width: 38px; background-color: #e890b9; height: 38px; text-align: center;">(4, 0)</td><td style="width: 38px; height: 38px; text-align: center;"></td></tr><tr><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; background-color: #67b6eb; height: 38px; text-align: center;">(1, 1)</td><td style="width: 38px; background-color: #67b6eb; height: 38px; text-align: center;">(2, 1)</td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; background-color: #67b6eb; height: 38px; text-align: center;"></td></tr><tr><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; background-color: #67b6eb; height: 38px; text-align: center;">(1, 2)</td><td style="width: 38px; background-color: #67b6eb; height: 38px; text-align: center;">(2, 2)</td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; background-color: #67b6eb; height: 38px; text-align: center;"></td></tr><tr><td style="width: 38px; background-color: #e890b9; height: 38px; text-align: center;">(0, 3)</td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; background-color: #e890b9; height: 38px; text-align: center;">(3, 3)</td><td style="width: 38px; background-color: #e890b9; height: 38px; text-align: center;">(4, 3)</td><td style="width: 38px; height: 38px; text-align: center;"></td></tr><tr><td style="width: 38px; background-color: #e890b9; height: 38px; text-align: center;">(0, 4)</td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; background-color: #e890b9; height: 38px; text-align: center;">(3, 4)</td><td style="width: 38px; background-color: #e890b9; height: 38px; text-align: center;">(4, 4)</td><td style="width: 38px; height: 38px; text-align: center;"></td></tr><tr><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; background-color: #67b6eb; height: 38px; text-align: center;"></td><td style="width: 38px; background-color: #67b6eb; height: 38px; text-align: center;"></td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; height: 38px; text-align: center;"></td><td style="width: 38px; background-color: #67b6eb; height: 38px; text-align: center;"></td></tr></table>
+
+<p>不曉得有沒有發現呢？ 他縱向、橫向的規律是一致的。<br>然後他對角線上的值有這樣的特性：</p>
+<ul>
+<li>位置 = (x, y)</li>
+<li>如果 x % 4 = 0 或 3 且 y % 4 = 0 或 3（上方紅色）</li>
+<li>如果 x % 4 = 1 或 2 且 y % 4 = 1 或 2（上方藍色）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//弄個陣列</span></span><br><span class="line"><span class="built_in">array</span> = []</span><br><span class="line"></span><br><span class="line"><span class="comment">//遍歷位置</span></span><br><span class="line"><span class="keyword">for</span>(x is <span class="number">0</span> to width)</span><br><span class="line">    <span class="keyword">for</span>(y is <span class="number">0</span> to height)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//屬於非對角線的話，推入陣列</span></span><br><span class="line">        <span class="keyword">if</span>(belong(x, y))</span><br><span class="line">            <span class="built_in">array</span>.push((x, y));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//翻轉陣列</span></span><br><span class="line"><span class="built_in">array</span>.reverse();</span><br><span class="line"></span><br><span class="line"><span class="comment">//最後填回</span></span><br><span class="line"><span class="keyword">for</span>(x is <span class="number">0</span> to width)</span><br><span class="line">    <span class="keyword">for</span>(y is <span class="number">0</span> to height)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//屬於非對角線的話，從陣列中回填</span></span><br><span class="line">        <span class="keyword">if</span>(belong(x, y))</span><br><span class="line">            (x, y) = <span class="built_in">array</span>.pop();</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>這樣就可以把雙偶數魔方陣完成。</p>
+<h2 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h2><iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/744xrkk1/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<hr>
+<h1 id="單偶數魔方陣"><a href="#單偶數魔方陣" class="headerlink" title="單偶數魔方陣"></a>單偶數魔方陣</h1><p>這是所有方陣中最複雜的。但其也有跡可循。<br>然而我們可以觀察到，它的大小：n = 4k+2<br>舉例來說：</p>
+<p>k = 1、n = 4+2 = 6<br>k = 2、n = 8+2 = 10<br>…</p>
+<div class="note warning">
+            <p>注意：當 k = 0 時，則 n = 2 的 2x2 魔方陣並不存在。</p>
+          </div>
+<p>除了奇數、4的倍數外、剩下的剛好都是 4k+2 的形式。<br>這種方陣的樣貌大致上呈現：</p>
+<table style="width: 270px; height: 270px;"><tr><th style="text-align: center;" colspan="6">n = 6 ( k = 1 )</th></tr><tr><td style="text-align: center;">35</td><td style="text-align: center;">1</td><td style="text-align: center;">6</td><td style="text-align: center;">26</td><td style="text-align: center;">19</td><td style="text-align: center;">24</td></tr><tr><td style="text-align: center;">3</td><td style="text-align: center;">32</td><td style="text-align: center;">7</td><td style="text-align: center;">21</td><td style="text-align: center;">23</td><td style="text-align: center;">25</td></tr><tr><td style="text-align: center;">31</td><td style="text-align: center;">9</td><td style="text-align: center;">2</td><td style="text-align: center;">22</td><td style="text-align: center;">27</td><td style="text-align: center;">20</td></tr><tr><td style="text-align: center;">8</td><td style="text-align: center;">28</td><td style="text-align: center;">33</td><td style="text-align: center;">17</td><td style="text-align: center;">10</td><td style="text-align: center;">15</td></tr><tr><td style="text-align: center;">30</td><td style="text-align: center;">5</td><td style="text-align: center;">34</td><td style="text-align: center;">12</td><td style="text-align: center;">14</td><td style="text-align: center;">16</td></tr><tr><td style="text-align: center;">4</td><td style="text-align: center;">36</td><td style="text-align: center;">29</td><td style="text-align: center;">13</td><td style="text-align: center;">18</td><td style="text-align: center;">11</td></tr></table><table style="width: 450px; height: 450px;"><tr><th style="text-align: center;" colspan="10">n = 10 ( k = 2 )</th></tr><tr><td style="text-align: center;">92</td><td style="text-align: center;">99</td><td style="text-align: center;">1</td><td style="text-align: center;">8</td><td style="text-align: center;">15</td><td style="text-align: center;">67</td><td style="text-align: center;">74</td><td style="text-align: center;">26</td><td style="text-align: center;">58</td><td style="text-align: center;">65</td></tr><tr><td style="text-align: center;">98</td><td style="text-align: center;">80</td><td style="text-align: center;">7</td><td style="text-align: center;">14</td><td style="text-align: center;">16</td><td style="text-align: center;">73</td><td style="text-align: center;">55</td><td style="text-align: center;">32</td><td style="text-align: center;">64</td><td style="text-align: center;">66</td></tr><tr><td style="text-align: center;">4</td><td style="text-align: center;">6</td><td style="text-align: center;">88</td><td style="text-align: center;">95</td><td style="text-align: center;">22</td><td style="text-align: center;">54</td><td style="text-align: center;">56</td><td style="text-align: center;">38</td><td style="text-align: center;">70</td><td style="text-align: center;">72</td></tr><tr><td style="text-align: center;">85</td><td style="text-align: center;">87</td><td style="text-align: center;">19</td><td style="text-align: center;">21</td><td style="text-align: center;">3</td><td style="text-align: center;">60</td><td style="text-align: center;">62</td><td style="text-align: center;">44</td><td style="text-align: center;">71</td><td style="text-align: center;">53</td></tr><tr><td style="text-align: center;">86</td><td style="text-align: center;">93</td><td style="text-align: center;">25</td><td style="text-align: center;">2</td><td style="text-align: center;">9</td><td style="text-align: center;">61</td><td style="text-align: center;">68</td><td style="text-align: center;">50</td><td style="text-align: center;">52</td><td style="text-align: center;">59</td></tr><tr><td style="text-align: center;">17</td><td style="text-align: center;">24</td><td style="text-align: center;">76</td><td style="text-align: center;">83</td><td style="text-align: center;">90</td><td style="text-align: center;">42</td><td style="text-align: center;">49</td><td style="text-align: center;">51</td><td style="text-align: center;">33</td><td style="text-align: center;">40</td></tr><tr><td style="text-align: center;">23</td><td style="text-align: center;">5</td><td style="text-align: center;">82</td><td style="text-align: center;">89</td><td style="text-align: center;">91</td><td style="text-align: center;">48</td><td style="text-align: center;">30</td><td style="text-align: center;">57</td><td style="text-align: center;">39</td><td style="text-align: center;">41</td></tr><tr><td style="text-align: center;">79</td><td style="text-align: center;">81</td><td style="text-align: center;">13</td><td style="text-align: center;">20</td><td style="text-align: center;">97</td><td style="text-align: center;">29</td><td style="text-align: center;">31</td><td style="text-align: center;">63</td><td style="text-align: center;">45</td><td style="text-align: center;">47</td></tr><tr><td style="text-align: center;">10</td><td style="text-align: center;">12</td><td style="text-align: center;">94</td><td style="text-align: center;">86</td><td style="text-align: center;">78</td><td style="text-align: center;">35</td><td style="text-align: center;">37</td><td style="text-align: center;">69</td><td style="text-align: center;">46</td><td style="text-align: center;">28</td></tr><tr><td style="text-align: center;">11</td><td style="text-align: center;">18</td><td style="text-align: center;">100</td><td style="text-align: center;">77</td><td style="text-align: center;">84</td><td style="text-align: center;">36</td><td style="text-align: center;">43</td><td style="text-align: center;">75</td><td style="text-align: center;">27</td><td style="text-align: center;">34</td></tr></table>
+
+<p>這邊來敘述這種方陣的構成：</p>
+<ul>
+<li>先構造一個 (n / 2) 的魔方陣，作為子方陣</li>
+<li>拼合 4 個子方陣（規則下面會說明）</li>
+<li>透過 k = (n - 2) / 4 求出 k</li>
+<li>搬動方陣內的元素</li>
+</ul>
+<p>我們以 n = 6 為例子。<br>首先，我們得構造一個 3x3 的魔方陣：</p>
+<table style="width: 135px; height: 135px;"><tr><td style="text-align: center;">6</td><td style="text-align: center;">1</td><td style="text-align: center;">8</td></tr><tr><td style="text-align: center;">7</td><td style="text-align: center;">5</td><td style="text-align: center;">3</td></tr><tr><td style="text-align: center;">2</td><td style="text-align: center;">9</td><td style="text-align: center;">4</td></tr></table>
+
+<p>接著我們要拚合子方陣。先看下圖：</p>
+<table style="width: 270px; height: 270px;"><tr style="text-align: left;"><td style="width: 28px; height: 28px; background-color: #ccc2ff;"></td><td style="width: 28px; height: 28px; background-color: #ccc2ff;"></td><td style="width: 28px; height: 28px; background-color: #ccc2ff;"></td><td style="width: 28px; height: 28px; background-color: #a1f9ff;"></td><td style="width: 28px; height: 28px; background-color: #a1f9ff;"></td><td style="width: 28px; height: 28px; background-color: #a1f9ff;"></td></tr><tr style="text-align: left;"><td style="width: 28px; height: 28px; background-color: #ccc2ff;"></td><td style="width: 28px; height: 28px; background-color: #ccc2ff; text-align: center;">A</td><td style="width: 28px; height: 28px; background-color: #ccc2ff;"></td><td style="width: 28px; height: 28px; background-color: #a1f9ff; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #a1f9ff; text-align: center;">B</td><td style="width: 28px; height: 28px; background-color: #a1f9ff;"></td></tr><tr style="text-align: left;"><td style="width: 28px; height: 28px; background-color: #ccc2ff;"></td><td style="width: 28px; height: 28px; background-color: #ccc2ff;"></td><td style="width: 28px; height: 28px; background-color: #ccc2ff;"></td><td style="width: 28px; height: 28px; background-color: #a1f9ff;"></td><td style="width: 28px; height: 28px; background-color: #a1f9ff;"></td><td style="width: 28px; height: 28px; background-color: #a1f9ff;"></td></tr><tr style="text-align: left;"><td style="width: 28px; height: 28px; background-color: #c8fcbb; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #c8fcbb; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #c8fcbb; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #ffbfbf; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #ffbfbf; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #ffbfbf; text-align: center;"></td></tr><tr style="text-align: left;"><td style="width: 28px; height: 28px; background-color: #c8fcbb; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #c8fcbb; text-align: center;">C</td><td style="width: 28px; height: 28px; background-color: #c8fcbb; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #ffbfbf; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #ffbfbf; text-align: center;">D</td><td style="width: 28px; height: 28px; background-color: #ffbfbf; text-align: center;"></td></tr><tr><td style="width: 28px; height: 28px; background-color: #c8fcbb; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #c8fcbb; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #c8fcbb; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #ffbfbf; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #ffbfbf; text-align: center;"></td><td style="width: 28px; height: 28px; background-color: #ffbfbf; text-align: center;"></td></tr></table>
+
+<p>總共會把子方陣複製 4 份貼在 6x6 的方陣中。<br>不過還得加上一個常數：m x (n / 2)<sup>2</sup></p>
+<ul>
+<li>A 區塊m = 0、所以方陣中元素 + 0</li>
+<li>B 區塊 m = 2、所以方陣中元素 + 2 x 3<sup>2</sup> = 18</li>
+<li>C 區塊 m = 3、所以方陣中元素 + 3x 3<sup>2</sup> = 27</li>
+<li>D 區塊 m = 1、所以方陣中元素 + 1x 3<sup>2</sup> = 9</li>
+</ul>
+<p>將其累進拚合後：</p>
+<table style="width: 270px; height: 270px;"><tr style="text-align: left;"><td style="background-color: #ccc2ff; text-align: center;">6</td><td style="background-color: #ccc2ff; text-align: center;">1</td><td style="background-color: #ccc2ff; text-align: center;">8</td><td style="background-color: #a1f9ff; text-align: center;">24</td><td style="background-color: #a1f9ff; text-align: center;">19</td><td style="background-color: #a1f9ff; text-align: center;">26</td></tr><tr style="text-align: center;"><td style="background-color: #ccc2ff; text-align: center;">7</td><td style="background-color: #ccc2ff; text-align: center;">5</td><td style="background-color: #ccc2ff; text-align: center;">3</td><td style="background-color: #a1f9ff; text-align: center;">25</td><td style="background-color: #a1f9ff; text-align: center;">23</td><td style="background-color: #a1f9ff;">21</td></tr><tr style="text-align: center;"><td style="background-color: #ccc2ff; text-align: center;">2</td><td style="background-color: #ccc2ff; text-align: center;">9</td><td style="background-color: #ccc2ff; text-align: center;">4</td><td style="background-color: #a1f9ff;">20</td><td style="background-color: #a1f9ff;">27</td><td style="background-color: #a1f9ff;">22</td></tr><tr style="text-align: center;"><td style="background-color: #c8fcbb; text-align: center;">33</td><td style="background-color: #c8fcbb; text-align: center;">28</td><td style="background-color: #c8fcbb; text-align: center;">35</td><td style="background-color: #ffbfbf; text-align: center;">15</td><td style="background-color: #ffbfbf; text-align: center;">10</td><td style="background-color: #ffbfbf; text-align: center;">17</td></tr><tr style="text-align: center;"><td style="background-color: #c8fcbb; text-align: center;">34</td><td style="background-color: #c8fcbb; text-align: center;">32</td><td style="background-color: #c8fcbb; text-align: center;">30</td><td style="background-color: #ffbfbf; text-align: center;">16</td><td style="background-color: #ffbfbf; text-align: center;">14</td><td style="background-color: #ffbfbf; text-align: center;">12</td></tr><tr><td style="background-color: #c8fcbb; text-align: center;">29</td><td style="background-color: #c8fcbb; text-align: center;">36</td><td style="background-color: #c8fcbb; text-align: center;">31</td><td style="background-color: #ffbfbf; text-align: center;">11</td><td style="background-color: #ffbfbf; text-align: center;">18</td><td style="background-color: #ffbfbf; text-align: center;">13</td></tr></table>
+
+<p>這樣就拚合了 4 個子方陣成為一個大的 6x6 方陣。<br>不過還沒有完成。我們得搬動一些元素才行。</p>
+<p>接著，透過 k = (n - 2) / 4 求出 k。n = 6、代表 k = 1 。<br>然後把矩陣分成上下兩塊：</p>
+<table style="width: 270px; height: 270px;"><tr style="text-align: left;"><td style="background-color: #f7d0d0; text-align: center;">6</td><td style="background-color: #f7d0d0; text-align: center;">1</td><td style="background-color: #f7d0d0; text-align: center;">8</td><td style="background-color: #f7d0d0; text-align: center;">24</td><td style="background-color: #f7d0d0; text-align: center;">19</td><td style="background-color: #f7d0d0; text-align: center;">26</td></tr><tr style="text-align: center;"><td style="background-color: #f7d0d0; text-align: center;">7</td><td style="background-color: #f7d0d0; text-align: center;">5</td><td style="background-color: #f7d0d0; text-align: center;">3</td><td style="background-color: #f7d0d0; text-align: center;">25</td><td style="background-color: #f7d0d0; text-align: center;">23</td><td style="background-color: #f7d0d0; text-align: center;">21</td></tr><tr style="text-align: center;"><td style="background-color: #f7d0d0; text-align: center;">2</td><td style="background-color: #f7d0d0; text-align: center;">9</td><td style="background-color: #f7d0d0; text-align: center;">4</td><td style="background-color: #f7d0d0; text-align: center;">20</td><td style="background-color: #f7d0d0; text-align: center;">27</td><td style="background-color: #f7d0d0; text-align: center;">22</td></tr><tr style="text-align: center;"><td style="text-align: center;">33</td><td style="text-align: center;">28</td><td style="text-align: center;">35</td><td style="text-align: center;">15</td><td style="text-align: center;">10</td><td style="text-align: center;">17</td></tr><tr style="text-align: center;"><td style="text-align: center;">34</td><td style="text-align: center;">32</td><td style="text-align: center;">30</td><td style="text-align: center;">16</td><td style="text-align: center;">14</td><td style="text-align: center;">12</td></tr><tr><td style="text-align: center;">29</td><td style="text-align: center;">36</td><td style="text-align: center;">31</td><td style="text-align: center;">11</td><td style="text-align: center;">18</td><td style="text-align: center;">13</td></tr></table>
+
+<p>搬動元素的規則為：</p>
+<ul>
+<li>上面區塊的左上角 kxk 方陣跟下方換。</li>
+<li>上面區塊的左下角 kxk 方陣跟下方換。</li>
+<li>上面區塊的中間列（Row）從 k位置向右 k 格跟下方換</li>
+<li>上面矩陣的 (n/2) + floor(n/4) （也就是右半邊的中間）處向右 (k - 1) 格跟下方換</li>
+</ul>
+<p>實際標記看看：</p>
+<p>上面區塊的左上角 kxk 方陣跟下方換（k = 1）</p>
+<table style="width: 270px; height: 270px;"><tr><td style="background-color: #d0e7f7; text-align: center;">6</td><td style="background-color: #f7d0d0; text-align: center;">1</td><td style="background-color: #f7d0d0; text-align: center;">8</td><td style="background-color: #f7d0d0; text-align: center;">24</td><td style="background-color: #f7d0d0; text-align: center;">19</td><td style="background-color: #f7d0d0; text-align: center;">26</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">7</td><td style="background-color: #f7d0d0; text-align: center;">5</td><td style="background-color: #f7d0d0; text-align: center;">3</td><td style="background-color: #f7d0d0; text-align: center;">25</td><td style="background-color: #f7d0d0; text-align: center;">23</td><td style="background-color: #f7d0d0; text-align: center;">21</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">2</td><td style="background-color: #f7d0d0; text-align: center;">9</td><td style="background-color: #f7d0d0; text-align: center;">4</td><td style="background-color: #f7d0d0; text-align: center;">20</td><td style="background-color: #f7d0d0; text-align: center;">27</td><td style="background-color: #f7d0d0; text-align: center;">22</td></tr><tr><td style="background-color: #d0e7f7; text-align: center;">33</td><td style="text-align: center;">28</td><td style="text-align: center;">35</td><td style="text-align: center;">15</td><td style="text-align: center;">10</td><td style="text-align: center;">17</td></tr><tr><td style="text-align: center;">34</td><td style="text-align: center;">32</td><td style="text-align: center;">30</td><td style="text-align: center;">16</td><td style="text-align: center;">14</td><td style="text-align: center;">12</td></tr><tr><td style="text-align: center;">29</td><td style="text-align: center;">36</td><td style="text-align: center;">31</td><td style="text-align: center;">11</td><td style="text-align: center;">18</td><td style="text-align: center;">13</td></tr></table><table style="width: 270px; height: 270px;"><tr><td style="background-color: #d0e7f7; text-align: center;">33</td><td style="background-color: #f7d0d0; text-align: center;">1</td><td style="background-color: #f7d0d0; text-align: center;">8</td><td style="background-color: #f7d0d0; text-align: center;">24</td><td style="background-color: #f7d0d0; text-align: center;">19</td><td style="background-color: #f7d0d0; text-align: center;">26</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">7</td><td style="background-color: #f7d0d0; text-align: center;">5</td><td style="background-color: #f7d0d0; text-align: center;">3</td><td style="background-color: #f7d0d0; text-align: center;">25</td><td style="background-color: #f7d0d0; text-align: center;">23</td><td style="background-color: #f7d0d0; text-align: center;">21</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">2</td><td style="background-color: #f7d0d0; text-align: center;">9</td><td style="background-color: #f7d0d0; text-align: center;">4</td><td style="background-color: #f7d0d0; text-align: center;">20</td><td style="background-color: #f7d0d0; text-align: center;">27</td><td style="background-color: #f7d0d0; text-align: center;">22</td></tr><tr><td style="background-color: #d0e7f7; text-align: center;">6</td><td style="text-align: center;">28</td><td style="text-align: center;">35</td><td style="text-align: center;">15</td><td style="text-align: center;">10</td><td style="text-align: center;">17</td></tr><tr><td style="text-align: center;">34</td><td style="text-align: center;">32</td><td style="text-align: center;">30</td><td style="text-align: center;">16</td><td style="text-align: center;">14</td><td style="text-align: center;">12</td></tr><tr><td style="text-align: center;">29</td><td style="text-align: center;">36</td><td style="text-align: center;">31</td><td style="text-align: center;">11</td><td style="text-align: center;">18</td><td style="text-align: center;">13</td></tr></table>
+
+<p>上面區塊的左下角 kxk 方陣跟下方換（k = 1）</p>
+<table style="width: 270px; height: 270px;"><tr><td style="background-color: #f7d0d0; text-align: center;">33</td><td style="background-color: #f7d0d0; text-align: center;">1</td><td style="background-color: #f7d0d0; text-align: center;">8</td><td style="background-color: #f7d0d0; text-align: center;">24</td><td style="background-color: #f7d0d0; text-align: center;">19</td><td style="background-color: #f7d0d0; text-align: center;">26</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">7</td><td style="background-color: #f7d0d0; text-align: center;">5</td><td style="background-color: #f7d0d0; text-align: center;">3</td><td style="background-color: #f7d0d0; text-align: center;">25</td><td style="background-color: #f7d0d0; text-align: center;">23</td><td style="background-color: #f7d0d0; text-align: center;">21</td></tr><tr><td style="background-color: #d0e7f7; text-align: center;">2</td><td style="background-color: #f7d0d0; text-align: center;">9</td><td style="background-color: #f7d0d0; text-align: center;">4</td><td style="background-color: #f7d0d0; text-align: center;">20</td><td style="background-color: #f7d0d0; text-align: center;">27</td><td style="background-color: #f7d0d0; text-align: center;">22</td></tr><tr><td style="text-align: center;">6</td><td style="text-align: center;">28</td><td style="text-align: center;">35</td><td style="text-align: center;">15</td><td style="text-align: center;">10</td><td style="text-align: center;">17</td></tr><tr><td style="text-align: center;">34</td><td style="text-align: center;">32</td><td style="text-align: center;">30</td><td style="text-align: center;">16</td><td style="text-align: center;">14</td><td style="text-align: center;">12</td></tr><tr><td style="background-color: #d0e7f7; text-align: center;">29</td><td style="text-align: center;">36</td><td style="text-align: center;">31</td><td style="text-align: center;">11</td><td style="text-align: center;">18</td><td style="text-align: center;">13</td></tr></table><table style="width: 270px; height: 270px;"><tr><td style="background-color: #f7d0d0; text-align: center;">33</td><td style="background-color: #f7d0d0; text-align: center;">1</td><td style="background-color: #f7d0d0; text-align: center;">8</td><td style="background-color: #f7d0d0; text-align: center;">24</td><td style="background-color: #f7d0d0; text-align: center;">19</td><td style="background-color: #f7d0d0; text-align: center;">26</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">7</td><td style="background-color: #f7d0d0; text-align: center;">5</td><td style="background-color: #f7d0d0; text-align: center;">3</td><td style="background-color: #f7d0d0; text-align: center;">25</td><td style="background-color: #f7d0d0; text-align: center;">23</td><td style="background-color: #f7d0d0; text-align: center;">21</td></tr><tr><td style="background-color: #d0e7f7; text-align: center;">29</td><td style="background-color: #f7d0d0; text-align: center;">9</td><td style="background-color: #f7d0d0; text-align: center;">4</td><td style="background-color: #f7d0d0; text-align: center;">20</td><td style="background-color: #f7d0d0; text-align: center;">27</td><td style="background-color: #f7d0d0; text-align: center;">22</td></tr><tr><td style="text-align: center;">6</td><td style="text-align: center;">28</td><td style="text-align: center;">35</td><td style="text-align: center;">15</td><td style="text-align: center;">10</td><td style="text-align: center;">17</td></tr><tr><td style="text-align: center;">34</td><td style="text-align: center;">32</td><td style="text-align: center;">30</td><td style="text-align: center;">16</td><td style="text-align: center;">14</td><td style="text-align: center;">12</td></tr><tr><td style="background-color: #d0e7f7; text-align: center;">2</td><td style="text-align: center;">36</td><td style="text-align: center;">31</td><td style="text-align: center;">11</td><td style="text-align: center;">18</td><td style="text-align: center;">13</td></tr></table>
+
+<p>上面區塊的中間列（Row）從 k 位置（綠框）向右 k 格（藍框）跟下方換（k = 1）<br>（※ 不含綠框）</p>
+<table style="width: 270px; height: 270px;"><tr><td style="background-color: #f7d0d0; text-align: center;">33</td><td style="background-color: #f7d0d0; text-align: center;">1</td><td style="background-color: #f7d0d0; text-align: center;">8</td><td style="background-color: #f7d0d0; text-align: center;">24</td><td style="background-color: #f7d0d0; text-align: center;">19</td><td style="background-color: #f7d0d0; text-align: center;">26</td></tr><tr><td style="background-color: #bae8c1; text-align: center;">7</td><td style="background-color: #d0e7f7; text-align: center;">5</td><td style="background-color: #f7d0d0; text-align: center;">3</td><td style="background-color: #f7d0d0; text-align: center;">25</td><td style="background-color: #f7d0d0; text-align: center;">23</td><td style="background-color: #f7d0d0; text-align: center;">21</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">29</td><td style="background-color: #f7d0d0; text-align: center;">9</td><td style="background-color: #f7d0d0; text-align: center;">4</td><td style="background-color: #f7d0d0; text-align: center;">20</td><td style="background-color: #f7d0d0; text-align: center;">27</td><td style="background-color: #f7d0d0; text-align: center;">22</td></tr><tr><td style="text-align: center;">6</td><td style="text-align: center;">28</td><td style="text-align: center;">35</td><td style="text-align: center;">15</td><td style="text-align: center;">10</td><td style="text-align: center;">17</td></tr><tr><td style="background-color: #bae8c1; text-align: center;">34</td><td style="background-color: #d0e7f7; text-align: center;">32</td><td style="text-align: center;">30</td><td style="text-align: center;">16</td><td style="text-align: center;">14</td><td style="text-align: center;">12</td></tr><tr><td style="text-align: center;">2</td><td style="text-align: center;">36</td><td style="text-align: center;">31</td><td style="text-align: center;">11</td><td style="text-align: center;">18</td><td style="text-align: center;">13</td></tr></table><table style="width: 270px; height: 270px;"><tr><td style="background-color: #f7d0d0; text-align: center;">33</td><td style="background-color: #f7d0d0; text-align: center;">1</td><td style="background-color: #f7d0d0; text-align: center;">8</td><td style="background-color: #f7d0d0; text-align: center;">24</td><td style="background-color: #f7d0d0; text-align: center;">19</td><td style="background-color: #f7d0d0; text-align: center;">26</td></tr><tr><td style="background-color: #bae8c1; text-align: center;">7</td><td style="background-color: #d0e7f7; text-align: center;">32</td><td style="background-color: #f7d0d0; text-align: center;">3</td><td style="background-color: #f7d0d0; text-align: center;">25</td><td style="background-color: #f7d0d0; text-align: center;">23</td><td style="background-color: #f7d0d0; text-align: center;">21</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">29</td><td style="background-color: #f7d0d0; text-align: center;">9</td><td style="background-color: #f7d0d0; text-align: center;">4</td><td style="background-color: #f7d0d0; text-align: center;">20</td><td style="background-color: #f7d0d0; text-align: center;">27</td><td style="background-color: #f7d0d0; text-align: center;">22</td></tr><tr><td style="text-align: center;">6</td><td style="text-align: center;">28</td><td style="text-align: center;">35</td><td style="text-align: center;">15</td><td style="text-align: center;">10</td><td style="text-align: center;">17</td></tr><tr><td style="background-color: #bae8c1; text-align: center;">34</td><td style="background-color: #d0e7f7; text-align: center;">5</td><td style="text-align: center;">30</td><td style="text-align: center;">16</td><td style="text-align: center;">14</td><td style="text-align: center;">12</td></tr><tr><td style="text-align: center;">2</td><td style="text-align: center;">36</td><td style="text-align: center;">31</td><td style="text-align: center;">11</td><td style="text-align: center;">18</td><td style="text-align: center;">13</td></tr></table>
+
+<p>上面矩陣的 (n/2)+floor(n/4) 處向右 (k - 1) 格跟下方換，<br>這邊理解一下，雖然看起來很複雜，但 (n/2) 是子方陣的大小、(n/2)/2 = 子方陣大小的一半。<br>從綠框處（含）、往右 0 格（藍框、因為是 0 而無法顯示）</p>
+<table style="width: 270px; height: 270px;"><tr><td style="background-color: #f7d0d0; text-align: center;">33</td><td style="background-color: #f7d0d0; text-align: center;">1</td><td style="background-color: #f7d0d0; text-align: center;">8</td><td style="background-color: #f7d0d0; text-align: center;">24</td><td style="background-color: #bae8c1; text-align: center;">19</td><td style="background-color: #f7d0d0; text-align: center;">26</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">7</td><td style="background-color: #f7d0d0; text-align: center;">32</td><td style="background-color: #f7d0d0; text-align: center;">3</td><td style="background-color: #f7d0d0; text-align: center;">25</td><td style="background-color: #bae8c1; text-align: center;">23</td><td style="background-color: #f7d0d0; text-align: center;">21</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">29</td><td style="background-color: #f7d0d0; text-align: center;">9</td><td style="background-color: #f7d0d0; text-align: center;">4</td><td style="background-color: #f7d0d0; text-align: center;">20</td><td style="background-color: #bae8c1; text-align: center;">27</td><td style="background-color: #f7d0d0; text-align: center;">22</td></tr><tr><td style="text-align: center;">6</td><td style="text-align: center;">28</td><td style="text-align: center;">35</td><td style="text-align: center;">15</td><td style="background-color: #bae8c1; text-align: center;">10</td><td style="text-align: center;">17</td></tr><tr><td style="text-align: center;">34</td><td style="text-align: center;">5</td><td style="text-align: center;">30</td><td style="text-align: center;">16</td><td style="background-color: #bae8c1; text-align: center;">14</td><td style="text-align: center;">12</td></tr><tr><td style="text-align: center;">2</td><td style="text-align: center;">36</td><td style="text-align: center;">31</td><td style="text-align: center;">11</td><td style="background-color: #bae8c1; text-align: center;">18</td><td style="text-align: center;">13</td></tr></table><table style="width: 270px; height: 270px;"><tr><td style="background-color: #f7d0d0; text-align: center;">33</td><td style="background-color: #f7d0d0; text-align: center;">1</td><td style="background-color: #f7d0d0; text-align: center;">8</td><td style="background-color: #f7d0d0; text-align: center;">24</td><td style="background-color: #f7d0d0; text-align: center;">19</td><td style="background-color: #f7d0d0; text-align: center;">26</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">7</td><td style="background-color: #f7d0d0; text-align: center;">32</td><td style="background-color: #f7d0d0; text-align: center;">3</td><td style="background-color: #f7d0d0; text-align: center;">25</td><td style="background-color: #f7d0d0; text-align: center;">23</td><td style="background-color: #f7d0d0; text-align: center;">21</td></tr><tr><td style="background-color: #f7d0d0; text-align: center;">29</td><td style="background-color: #f7d0d0; text-align: center;">9</td><td style="background-color: #f7d0d0; text-align: center;">4</td><td style="background-color: #f7d0d0; text-align: center;">20</td><td style="background-color: #f7d0d0; text-align: center;">27</td><td style="background-color: #f7d0d0; text-align: center;">22</td></tr><tr><td style="text-align: center;">6</td><td style="text-align: center;">28</td><td style="text-align: center;">35</td><td style="text-align: center;">15</td><td style="text-align: center;">10</td><td style="text-align: center;">17</td></tr><tr><td style="text-align: center;">34</td><td style="text-align: center;">5</td><td style="text-align: center;">30</td><td style="text-align: center;">16</td><td style="text-align: center;">14</td><td style="text-align: center;">12</td></tr><tr><td style="text-align: center;">2</td><td style="text-align: center;">36</td><td style="text-align: center;">31</td><td style="text-align: center;">11</td><td style="text-align: center;">18</td><td style="text-align: center;">13</td></tr></table>
+
+<p>這樣最後得到的，就是完好的魔方陣了。</p>
+<table style="width: 270px; height: 270px;"><tr><td style="text-align: center;">33</td><td style="text-align: center;">1</td><td style="text-align: center;">8</td><td style="text-align: center;">24</td><td style="text-align: center;">19</td><td style="text-align: center;">26</td></tr><tr><td style="text-align: center;">7</td><td style="text-align: center;">32</td><td style="text-align: center;">3</td><td style="text-align: center;">25</td><td style="text-align: center;">23</td><td style="text-align: center;">21</td></tr><tr><td style="text-align: center;">29</td><td style="text-align: center;">9</td><td style="text-align: center;">4</td><td style="text-align: center;">20</td><td style="text-align: center;">27</td><td style="text-align: center;">22</td></tr><tr><td style="text-align: center;">6</td><td style="text-align: center;">28</td><td style="text-align: center;">35</td><td style="text-align: center;">15</td><td style="text-align: center;">10</td><td style="text-align: center;">17</td></tr><tr><td style="text-align: center;">34</td><td style="text-align: center;">5</td><td style="text-align: center;">30</td><td style="text-align: center;">16</td><td style="text-align: center;">14</td><td style="text-align: center;">12</td></tr><tr><td style="text-align: center;">2</td><td style="text-align: center;">36</td><td style="text-align: center;">31</td><td style="text-align: center;">11</td><td style="text-align: center;">18</td><td style="text-align: center;">13</td></tr></table>
+
+<h2 id="算法-2"><a href="#算法-2" class="headerlink" title="算法"></a>算法</h2><p>知道了構造方式、接下來的只是土法煉鋼。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//生成 nxn 空間</span></span><br><span class="line"><span class="built_in">map</span>[n][n];</span><br><span class="line"></span><br><span class="line"><span class="comment">//奇數方陣大小</span></span><br><span class="line">odd_size = n/<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//構造奇數方陣</span></span><br><span class="line">odd_magic = magic(odd_size);</span><br><span class="line"></span><br><span class="line"><span class="comment">//組合子方陣</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> x=<span class="number">0</span>; x&amp;lt;odd_size; x++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> y=<span class="number">0</span>; y&amp;lt;odd_size; y++)</span><br><span class="line">    &#123;</span><br><span class="line">            <span class="comment">//組合 A 子方陣</span></span><br><span class="line">        <span class="built_in">map</span>[x][y] = odd_magic[x][y];</span><br><span class="line">        <span class="comment">//組合 B 子方陣</span></span><br><span class="line">        <span class="built_in">map</span>[x+(n/<span class="number">2</span>)][y] = odd_magic[x][y] + <span class="number">2</span>*<span class="built_in">pow</span>(odd_size, <span class="number">2</span>);</span><br><span class="line">        <span class="comment">//組合 C 子方陣</span></span><br><span class="line">        <span class="built_in">map</span>[x][y+(n/<span class="number">2</span>)] = odd_magic[x][y] + <span class="number">3</span>*<span class="built_in">pow</span>(odd_size, <span class="number">2</span>);</span><br><span class="line">        <span class="comment">//組合 D 子方陣</span></span><br><span class="line">        <span class="built_in">map</span>[x+(n/<span class="number">2</span>)][y+(n/<span class="number">2</span>)] = odd_magic[x][y] + <span class="number">1</span>*<span class="built_in">pow</span>(odd_size, <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//計算 k 值</span></span><br><span class="line">k = (n - <span class="number">2</span>)/<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//交換左上角區塊</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> x=<span class="number">0</span>; x&amp;lt;k; x++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> y=<span class="number">0</span>; y&amp;lt;k; y++)</span><br><span class="line">        swap(<span class="built_in">map</span>[x][y], <span class="built_in">map</span>[x][y+odd_size]);</span><br><span class="line"></span><br><span class="line"><span class="comment">//交換左下角區塊</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> x=<span class="number">0</span>; x&amp;lt;k; x++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> y=<span class="number">0</span>; y&amp;lt;k; y++)</span><br><span class="line">        swap(<span class="built_in">map</span>[x][odd_size-y], <span class="built_in">map</span>[x][n-y]);</span><br><span class="line"></span><br><span class="line"><span class="comment">//交換中間區塊</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> x=<span class="number">0</span>; x&amp;lt;k; x++)</span><br><span class="line">    swap(<span class="built_in">map</span>[k+x][odd_size/<span class="number">2</span>], <span class="built_in">map</span>[k+x][n-(odd_size/<span class="number">2</span>)]);</span><br><span class="line"></span><br><span class="line"><span class="comment">//交換右邊的(k-1)區塊</span></span><br><span class="line">pos = oddsize + (odd_size/<span class="number">2</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> x=pos; x&amp;lt;pos+k<span class="number">-1</span>; x++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> y=<span class="number">0</span>; y&amp;lt;odd_size; y++)</span><br><span class="line">        swap(<span class="built_in">map</span>[x][y], <span class="built_in">map</span>[x][y+odd_size]);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="演示-2"><a href="#演示-2" class="headerlink" title="演示"></a>演示</h2><iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/1samkxs3/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/12/stack-and-queue/" rel="prev" title="堆疊與佇列 Stack and Queue">
+                堆疊與佇列 Stack and Queue <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概要
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Tinytusnami">
+            
+              <p class="site-author-name" itemprop="name">Tinytusnami</p>
+              <div class="site-description motion-element" itemprop="description">羊羽的個人部落格</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">文章</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分類</span>
+                  </a>
+                </div>
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/tinytsunami" title="GitHub &rarr; https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:z27619273@gmail.com" title="E-Mail &rarr; mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page &rarr; https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube &rarr; https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#魔方陣定義"><span class="nav-number">1.</span> <span class="nav-text">魔方陣定義</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#奇數魔方陣"><span class="nav-number">2.</span> <span class="nav-text">奇數魔方陣</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法"><span class="nav-number">2.1.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#演示"><span class="nav-number">2.2.</span> <span class="nav-text">演示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#雙偶數魔方陣"><span class="nav-number">3.</span> <span class="nav-text">雙偶數魔方陣</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法-1"><span class="nav-number">3.1.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#演示-1"><span class="nav-number">3.2.</span> <span class="nav-text">演示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#單偶數魔方陣"><span class="nav-number">4.</span> <span class="nav-text">單偶數魔方陣</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法-2"><span class="nav-number">4.1.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#演示-2"><span class="nav-number">4.2.</span> <span class="nav-text">演示</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-bomb"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 強力驅動 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: window.location.pathname,
+      owner: 'tinytsunami',
+      repo: 'https://github.com/tinytsunami/tinytsunami.github.io.git',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        client_secret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+      
+        client_id: '8b224f954e247f37ca81'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

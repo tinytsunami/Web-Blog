@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#536F87">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#536F87">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"right","width":240,"display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="串列是資料結構中，一種重要的資料表達方式，這樣的表達方式可以透過指標來完成。">
+<meta name="keywords" content="技術, 獨立遊戲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="串列 Linked List">
+<meta property="og:url" content="https://www.tinytsunami.info/2018/03/18/linked-list/index.html">
+<meta property="og:site_name" content="羊羽手札">
+<meta property="og:description" content="串列是資料結構中，一種重要的資料表達方式，這樣的表達方式可以透過指標來完成。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:updated_time" content="2018-07-29T17:42:29.778Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="串列 Linked List">
+<meta name="twitter:description" content="串列是資料結構中，一種重要的資料表達方式，這樣的表達方式可以透過指標來完成。">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.tinytsunami.info/2018/03/18/linked-list/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>串列 Linked List | 羊羽手札</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">羊羽手札</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Tinytsunami's Blog</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切換導航欄">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首頁</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分類</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>紀錄</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/2018/03/18/linked-list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tinytusnami">
+      <meta itemprop="description" content="羊羽的個人部落格">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="羊羽手札">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">串列 Linked List
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+
+              
+                
+              
+
+              <time title="創建時間 2018-03-18 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-18T00:00:00Z">2018-03-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新於</span>
+                
+                <time title="修改時間 2018-07-29 17:42:29" itemprop="dateModified" datetime="2018-07-29T17:42:29Z">2018-07-29</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/資料結構與演算法/" itemprop="url" rel="index"><span itemprop="name">資料結構與演算法</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">評論 </span>
+                <a href="/2018/03/18/linked-list/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="https://www.tinytsunami.info/2018/03/18/linked-list/" itemprop="commentCount">0</span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>串列是資料結構中，一種重要的資料表達方式，<br>這樣的表達方式可以透過指標來完成。<br><a id="more"></a></p>
+<p>通常，從這個部分開始，<br>可以看出一個人對指標的熟練程度。</p>
+<hr>
+<h1 id="串列結構"><a href="#串列結構" class="headerlink" title="串列結構"></a>串列結構</h1><p>串列的典型做法是使用 struct 實作：</p>
+<div class="note info">
+            <p>為方便撰寫範例，這裡假設資料為整數。</p>
+          </div>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;   <span class="comment">// 資料</span></span><br><span class="line">    Node *next; <span class="comment">// 下個節點</span></span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line">Node *node_1 = <span class="keyword">new</span> Node; <span class="comment">// 第 1 個節點</span></span><br><span class="line">Node *node_2 = <span class="keyword">new</span> Node; <span class="comment">// 第 2 個節點</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// 把第 2 個節點接在第 1 個後面</span></span><br><span class="line">node_1-&gt;next = node_2;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>串列結構經過良好的封裝更便於使用。</p>
+          </div>
+<hr>
+<h1 id="創建節點"><a href="#創建節點" class="headerlink" title="創建節點"></a>創建節點</h1><p>可以透過一個函數取得節點，<br>動態建立節點後，記得回傳給主程式。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 給定資料建立一個節點</span></span><br><span class="line"><span class="function">Node* <span class="title">create</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = <span class="keyword">new</span> Node; <span class="comment">// 建立新節點</span></span><br><span class="line">    node-&gt;data = value;    <span class="comment">// 設定節點值</span></span><br><span class="line">    node-&gt;next = <span class="literal">nullptr</span>;  <span class="comment">// 初始化指標</span></span><br><span class="line">    <span class="keyword">return</span> node;           <span class="comment">// 回傳給主程序</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下來的插入節點就可以使用這個函數了。</p>
+<hr>
+<h1 id="搜索節點"><a href="#搜索節點" class="headerlink" title="搜索節點"></a>搜索節點</h1><p>我個人認為，搜索節點這件事情，<br>搜索當前節點的效益並不大，通常我們更需要「目標節點的前一個節點」。</p>
+<div class="note info">
+            <p>「搜索目標節點的前一個節點函數」下面簡稱為「搜前函數」。</p>
+          </div>
+<p>個人實作時，會先實作搜前函數，<br>搜索節點的函數則透過這個函數間接完成。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreachPrevious</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node* node = root;</span><br><span class="line">    <span class="keyword">while</span> (node-&gt;next != <span class="literal">nullptr</span>      <span class="comment">// 不是最後一個節點</span></span><br><span class="line">        &amp;&amp; node-&gt;next-&gt;data != value) <span class="comment">// 而且下個節點的值不是目標</span></span><br><span class="line">        node = node-&gt;next;            <span class="comment">// 繼續搜索</span></span><br><span class="line">    <span class="keyword">return</span> node;                      <span class="comment">// 回傳目標的上一節點或最後一個節點</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>這裡的「root」是樹狀結構的名詞，但串列也可以視作一棵樹。</p>
+          </div>
+<p>透過搜前函數，可以實做出的搜索功能。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreach</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;data == value)</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    Node *node = sreachPrevious(root, value);</span><br><span class="line">    <span class="keyword">return</span> node-&gt;next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="插入節點"><a href="#插入節點" class="headerlink" title="插入節點"></a>插入節點</h1><p>插入節點不困難，這裡以插入到末端為例，<br>如果存在一個值不會出現在串列中的話，可以透過搜前函數實作。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 插入一個節點到串列的結尾</span></span><br><span class="line"><span class="function">Node* <span class="title">insert</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = create(value);       <span class="comment">// 新建節點</span></span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">nullptr</span>)              <span class="comment">// 如果串列尚不存在</span></span><br><span class="line">        <span class="keyword">return</span> node;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Node* tail = root;            <span class="comment">// 找尾巴節點</span></span><br><span class="line">        <span class="keyword">while</span> (tail-&gt;next != <span class="literal">nullptr</span>)</span><br><span class="line">            tail = tail-&gt;next;</span><br><span class="line">        tail-&gt;next = node;            <span class="comment">// 新增在尾巴</span></span><br><span class="line">        <span class="keyword">return</span> root;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>插入到特定位置的功能，也可以利用搜前函數的實作。</p>
+          </div>
+<div class="note warning">
+            <p>如果不回傳指標給主程序，則建立串列時會出錯。</p>
+          </div>
+<hr>
+<h1 id="刪除節點"><a href="#刪除節點" class="headerlink" title="刪除節點"></a>刪除節點</h1><p>刪除節點可以直接透過搜前函數實作。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *previous = sreachPrevious(root, value);</span><br><span class="line">    Node *target = previous-&gt;next;</span><br><span class="line">    <span class="keyword">if</span> (target != <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        previous-&gt;next = target-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="遍歷節點"><a href="#遍歷節點" class="headerlink" title="遍歷節點"></a>遍歷節點</h1><p>對串列進行一堆操作後，檢查串列的正確性，<br>或是有時我們需要對整個串列做特定運算，都需要遍歷功能：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traversal</span><span class="params">(Node *root, <span class="keyword">void</span> (*callback)(Node *node))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Node *node = root; node != <span class="literal">nullptr</span>; node = node-&gt;next)</span><br><span class="line">        callback(node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>遍歷功能的第二個參數是函數的指標，<br>串列的每個節點，會被當成這個函數的傳入值操作。</p>
+<p>以印出節點來說，可以這樣調用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(Node *node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; node-&gt;data &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">traversal(root, show);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>演示包含插入與刪除節點，<br>其中插入功能隱含創建節點功能，而刪除功能隱含著搜尋功能。</p>
+<iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/ngkx992u/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/11/linux-screen-display-problem/" rel="next" title="Linux 螢幕解析度問題">
+                <i class="fa fa-chevron-left"></i> Linux 螢幕解析度問題
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/31/sort/" rel="prev" title="排序 Sort">
+                排序 Sort <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概要
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Tinytusnami">
+            
+              <p class="site-author-name" itemprop="name">Tinytusnami</p>
+              <div class="site-description motion-element" itemprop="description">羊羽的個人部落格</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">文章</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分類</span>
+                  </a>
+                </div>
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/tinytsunami" title="GitHub &rarr; https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:z27619273@gmail.com" title="E-Mail &rarr; mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page &rarr; https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube &rarr; https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#串列結構"><span class="nav-number">1.</span> <span class="nav-text">串列結構</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#創建節點"><span class="nav-number">2.</span> <span class="nav-text">創建節點</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#搜索節點"><span class="nav-number">3.</span> <span class="nav-text">搜索節點</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插入節點"><span class="nav-number">4.</span> <span class="nav-text">插入節點</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#刪除節點"><span class="nav-number">5.</span> <span class="nav-text">刪除節點</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#遍歷節點"><span class="nav-number">6.</span> <span class="nav-text">遍歷節點</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#演示"><span class="nav-number">7.</span> <span class="nav-text">演示</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-bomb"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 強力驅動 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: window.location.pathname,
+      owner: 'tinytsunami',
+      repo: 'https://github.com/tinytsunami/tinytsunami.github.io.git',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        client_secret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+      
+        client_id: '8b224f954e247f37ca81'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

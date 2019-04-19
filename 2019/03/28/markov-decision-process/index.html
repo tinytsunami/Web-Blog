@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#536F87">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#536F87">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"right","width":240,"display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。">
+<meta name="keywords" content="技術, 獨立遊戲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="馬可爾夫決策過程 Markov Decision Process">
+<meta property="og:url" content="https://www.tinytsunami.info/2019/03/28/markov-decision-process/index.html">
+<meta property="og:site_name" content="羊羽手札">
+<meta property="og:description" content="這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://i.imgur.com/8g4n6Sv.png">
+<meta property="og:updated_time" content="2019-03-28T15:06:08.726Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="馬可爾夫決策過程 Markov Decision Process">
+<meta name="twitter:description" content="這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。">
+<meta name="twitter:image" content="https://i.imgur.com/8g4n6Sv.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.tinytsunami.info/2019/03/28/markov-decision-process/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>馬可爾夫決策過程 Markov Decision Process | 羊羽手札</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">羊羽手札</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Tinytsunami's Blog</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切換導航欄">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首頁</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分類</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>紀錄</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/2019/03/28/markov-decision-process/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tinytusnami">
+      <meta itemprop="description" content="羊羽的個人部落格">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="羊羽手札">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">馬可爾夫決策過程 Markov Decision Process
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+
+              
+                
+              
+
+              <time title="創建時間 2019-03-28 00:00:00 / 修改時間 15:06:08" itemprop="dateCreated datePublished" datetime="2019-03-28T00:00:00Z">2019-03-28</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/人工智慧/" itemprop="url" rel="index"><span itemprop="name">人工智慧</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">評論 </span>
+                <a href="/2019/03/28/markov-decision-process/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count fb-comments-count" data-href="https://www.tinytsunami.info/2019/03/28/markov-decision-process/" itemprop="commentCount">0</span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，<br>從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。<br><a id="more"></a></p>
+<hr>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前半年太忙一直沒時間更新 Blog，現在終於有時間寫新文章了 XD</p>
+<p>強化學習（reinforcement learning）一直是非常有趣的主題，跟遊戲設計搭配更是如此。<br>我曾經在 RPG Maker MV 中使用手刻的 3 層全連接神經網路來做 ARPG（動作 RPG）怪物的 AI 設計，<br>雖然效果不是很理想，不過確實可以觀察到怪物可以學習到一些玩家的攻擊模式並且迴避。</p>
+<p>全連接神經網路在分類上是屬於監督學習，而本篇著重於強化學習，<br>強化學習是不透過標籤（label），系統直接由環境中取得資訊來學習的 AI 系統。</p>
+<p>當時初學時，關於 Q 學習的部分其實看不太懂，我後來發現有一系列的途徑去理解，<br>一開始是自己閱讀《人工智能：一種現代的方法》，好不容易看懂（筆者數學不好……），<br>後來在 Udacity 的強化學習課程，又做了一次整理才明白。</p>
+<div class="note info">
+            <p>關於課程請至 <a href="https://www.udacity.com/course/reinforcement-learning--ud600" target="_blank" rel="noopener">Udacity 的課程資訊</a></p>
+          </div>
+<p>我認為的最佳學習途徑：</p>
+<ul>
+<li>馬可爾夫決策過程（Markov Decision Process, MDP）</li>
+<li>價值迭代（value iteration）與策略迭代（policy iteration）</li>
+<li>Q 學習（Q-learning）</li>
+<li>深度 Q 網路（Deep Q-Network, DQN）</li>
+</ul>
+<p>其中，前兩部分是序列式決策問題（sequential decision problem）的入門，<br>第三部分 Q 學習是關於序列決策的變體，最後深度 Q 網路則是將 Q 學習結合神經網路所誕生的算法。</p>
+<p>本篇是第一部分，重點擺在討論馬可爾夫決策過程與問題建模，<br>至於策略、效用與貝爾曼方程將在下一篇文章解決。</p>
+<hr>
+<h1 id="馬可爾夫轉移模型"><a href="#馬可爾夫轉移模型" class="headerlink" title="馬可爾夫轉移模型"></a>馬可爾夫轉移模型</h1><p>要理解馬可爾夫決策過程，我們會先用馬可爾夫轉移模型來建模。<br>馬可爾夫轉移模型由下列部分組成：</p>
+<ul>
+<li>狀態集合 $S$</li>
+<li>動作函數 $ACTION: S \mapsto A$ 其中 $A$ 為可執行的動作</li>
+<li>轉移模型 $P(s_{t+1}|s_{t}, a)$ 其中 $s_{t} \in S$ 為當前狀態、$s_{t+1} \in S$ 為下一個狀態，$a \in A$ 為時間 $t$ 時執行的動作</li>
+<li>回報函數 $R(s)$</li>
+</ul>
+<p>其中轉移模型必須滿足馬可爾夫假設（Markov assumption）即「$s_{t+1}$ 的狀態僅受 $s_{t}$ 狀態影響」。</p>
+<div class="note info">
+            <p>動作函數，通常被說是「動作集合」，但在書中公式表達像是「回傳集合的函數」，故在此以函數說明。</p>
+          </div>
+<h1 id="玩具問題"><a href="#玩具問題" class="headerlink" title="玩具問題"></a>玩具問題</h1><p>筆者的經驗是，初學見到這些符號會水土不服，<br>所以可以先過渡到幾個其他的玩具問題（toy problem）來理解馬可爾夫轉移模型。<br>順便練習把問題定義清楚。</p>
+<h2 id="地圖尋路"><a href="#地圖尋路" class="headerlink" title="地圖尋路"></a>地圖尋路</h2><p>這是《人工智能：一種現代的方法》第 17.1 節序列式決策出現的玩具問題。</p>
+<p>地圖大小寬度為 3、長度為 4，位置 $(2, 2)$ 是一堵牆，<br>寶藏在 $(4, 3)$，陷阱在 $(4, 2)$。電腦從 $(1, 1)$ 開始，每次移動 1 格，移動會消耗 0.04 分，<br>目標是透過探索地圖，找到一個最佳策略來獲得高分。</p>
+<p>很難想像的話，看下面的圖片。<br><img src="https://i.imgur.com/8g4n6Sv.png" alt="玩具問題1-地圖圖片"></p>
+<p>對於這個問題來說，建模的四個部分分別為：</p>
+<ul>
+<li>狀態集合，即座標集合 $S = \{(x, y)| x \in \{1, 2, 3\}, y \in \{1, 2, 3, 4\} \}$</li>
+<li>動作函數，即在某一座標可以執行的動作 $MOVE: S \mapsto A$ 其中 $A = \{\text{up}, \text{left}, \text{right}, \text{down}\}$</li>
+<li>轉移模型，即在某座標、執行某動作後，轉移到下個狀態的機率 $P(s_{t+1}|s_{t}, a)$ 其中 $s_{t}, s_{t+1} \in S$ 且 $a \in A$</li>
+<li>回報函數，每個位置的得分 $SCORE(x, y)$</li>
+</ul>
+<p>下面給出一段淺白的描述作為例子。</p>
+<p>目前在某一個座標 $x = 1$ 且 $y = 3$，所以我的「狀態」是 $s = (1, 3) \in S$<br>在這個狀態下，我可以執行的動作為 $MOVE(1, 3) = \text{up}, \text{left}, \text{right}, \text{down}$<br>也就是上下左右；如果此時我選擇 $a = \text{right} \in A$ 即向右移動。</p>
+<div class="note info">
+            <p>注意這裡的動作函數 $MOVE$ 是「一對多映射」，正因如此，玩家才在某些狀態，可以選擇多種動作。</p>
+          </div>
+<p>若動作「一定會成功」則轉移模型為：$P((2, 3)|(1, 3), \text{right}) = 100\%$<br>至於環境的回報（得分）是：</p>
+
+$SCORE(s) = \left\{\begin{array}{l}
++1 && \text{if } s = (4, 3) \\
+-1 && \text{if } s = (4, 2) \\
+-0.04 && \text{otherwise}
+\end{array}\right .$
+
+<h2 id="簡化的二十一點"><a href="#簡化的二十一點" class="headerlink" title="簡化的二十一點"></a>簡化的二十一點</h2><p>為了更理解「轉移模型」的部分，筆者再針對簡化過後的二十一點（Black Jack）建模，<br>這個簡化過後的規則如下：</p>
+<ul>
+<li>牌面 1、2、3、4、5 每種牌都有無限多張且抽到每一種的機率相等</li>
+<li>牌面 1、2、3、4、5 對應點數為牌面的數字</li>
+<li>每一回合莊家、玩家決定要不要繼續抽牌</li>
+<li>若某回合不抽牌，接下來的回合不能繼續抽牌</li>
+<li>若超過 10 點，則判輸</li>
+<li>若雙方皆超過 10 點，則平手</li>
+<li>若雙方皆小於等於 10 點，則點數大者勝</li>
+<li>所有牌都是明牌（玩家可觀察）</li>
+<li>莊家先抽牌</li>
+</ul>
+<p>如果你覺得規則理解有點困難，請嘗試玩玩看：<br><iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/d6bues10/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe></p>
+<div class="note info">
+            <p>因為還沒介紹完策略，暫時不將完整的 AI 放出來，這裡的電腦僅是單純的邏輯模擬。</p>
+          </div>
+<p>對於這個問題來說，建模的四個部分分別為：</p>
+<ul>
+<li>狀態集合，即各種手牌 $s$ 及允許抽牌標誌 $t$ 的集合 $S = \{s = (c, t) | c \subseteq \{1, 2, 3, 4, 5\},  t \in \{1, 0\}\}$</li>
+<li>動作函數，即每回合可以執行的動作 $ACTION: S \mapsto A$ 其中 $A = \{\text{draw}, \text{pass}\}$</li>
+<li>轉移模型，即抽牌後，轉移到下個狀態的機率 $P(s’|s, a)$ 其中 $s \in S, a \in A$</li>
+<li>回報函數，即一局遊戲的牌面數字 $POINT(s), s \in S$</li>
+</ul>
+<p>我們先看動作函數，對於每一種手牌的狀態，<br>除非已經超過 10 點或曾經放棄抽牌，否則可以繼續抽牌，所以有：</p>
+
+$ACTION(c, t) = \left\{\begin{array}{l}
+\text{draw}, \text{pass} && \text{if } t = 1 \text{ and } \sum\limits_{c} \leq 10 \\
+\text{pass} && \text{if }  t = 0 \text{ or } \sum\limits_{c} > 10 \\
+\end{array}\right .$
+<br><br>然後轉移模型此時便不是「確定」的，轉移到不同的狀態是透過機率，<br>比方說目前我有手牌且可抽牌 $s = (\{1, 2, 3\}, 1)$ 考慮動作函數有 $ACTION(c, t) = \text{draw}, \text{pass}$<br>所以轉移模型，有兩種動作可以選擇：<br><br>若選擇不抽牌，那下回合一定保持原來的手牌，但抽牌標誌變成 0。<br>$P((\{1, 2, 3\}, 0)|(\{1, 2, 3\}, 1), \text{pass}) = 100\%$<br><br>若選擇抽牌，那下回合增加手牌（每種機率相等），抽牌標誌不變。<br>$P((\{1, 2, 3, 1\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 1）<br>$P((\{1, 2, 3, 2\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 2）<br>$P((\{1, 2, 3, 3\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 3）<br>$P((\{1, 2, 3, 4\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 4）<br>$P((\{1, 2, 3, 5\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 5）<br><br>不難發現，對於某一種動作，機率和必為 $1$。<br><br>回報函數為牌面點數和，點數和越高越好，但超過 10 點則相當於 0 點：<br><br>
+$POINT(s) = \left\{\begin{array}{l}
+\sum\limits_{s} && \text{if } \sum\limits_{s} \leq 10 \\
+0 && \text{if } \sum\limits_{s} > 10 \\
+\end{array}\right .$
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/24/tinytsunami-update-03/" rel="next" title="羊羽手札更新歷程 03">
+                <i class="fa fa-chevron-left"></i> 羊羽手札更新歷程 03
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/30/sheeps-01/" rel="prev" title="羊與羊的牧場 01">
+                羊與羊的牧場 01 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概要
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Tinytusnami">
+            
+              <p class="site-author-name" itemprop="name">Tinytusnami</p>
+              <div class="site-description motion-element" itemprop="description">羊羽的個人部落格</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">文章</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分類</span>
+                  </a>
+                </div>
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/tinytsunami" title="GitHub &rarr; https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:z27619273@gmail.com" title="E-Mail &rarr; mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page &rarr; https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube &rarr; https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#馬可爾夫轉移模型"><span class="nav-number">2.</span> <span class="nav-text">馬可爾夫轉移模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#玩具問題"><span class="nav-number">3.</span> <span class="nav-text">玩具問題</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#地圖尋路"><span class="nav-number">3.1.</span> <span class="nav-text">地圖尋路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#簡化的二十一點"><span class="nav-number">3.2.</span> <span class="nav-text">簡化的二十一點</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-bomb"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 強力驅動 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: window.location.pathname,
+      owner: 'tinytsunami',
+      repo: 'https://github.com/tinytsunami/tinytsunami.github.io.git',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        client_secret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+      
+        client_id: '8b224f954e247f37ca81'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

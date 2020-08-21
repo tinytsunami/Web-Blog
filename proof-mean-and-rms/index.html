@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#536F87">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#536F87">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。但是後來想了想，作為私人筆記留下來了。">
+<meta name="keywords" content="技術, 獨立遊戲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="平均值與有效值證明">
+<meta property="og:url" content="https://www.tinytsunami.info/proof-mean-and-rms/index.html">
+<meta property="og:site_name" content="羊羽手札">
+<meta property="og:description" content="本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。但是後來想了想，作為私人筆記留下來了。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:updated_time" content="2020-08-11T04:09:25.761Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="平均值與有效值證明">
+<meta name="twitter:description" content="本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。但是後來想了想，作為私人筆記留下來了。">
+
+<link rel="canonical" href="https://www.tinytsunami.info/proof-mean-and-rms/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>平均值與有效值證明 | 羊羽手札</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">羊羽手札</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Tinytsunami's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歷程表</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="https://tinytsunami.itch.io/" rel="noopener" target="_blank"><i class="fas fa-gamepad fa-fw"></i>遊戲</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/proof-mean-and-rms/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Tinytusnami">
+      <meta itemprop="description" content="羊羽的個人部落格">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="羊羽手札">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          平均值與有效值證明
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2017-05-14 00:00:00" itemprop="dateCreated datePublished" datetime="2017-05-14T00:00:00Z">2017-05-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/基本電學與電子學/" itemprop="url" rel="index"><span itemprop="name">基本電學與電子學</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。<br>但是後來想了想，作為私人筆記留下來了。<br><a id="more"></a></p>
+<h1 id="交流電表示式"><a href="#交流電表示式" class="headerlink" title="交流電表示式"></a>交流電表示式</h1><p>在開始之前要先知道這個，<br>技職學校的話，大概是基本電學下半章的最後。</p>
+<p>正弦波的情況：  </p>
+<p>$v(t) = V_{m}sin(&omega;t+&theta;)$</p>
+<p>其中 $V_{m}$ 為峰值（最大值）也就是 $V_{peak}$ 的意思，<br>除此之外，在 $sin$ 函數內的 $&omega;$ 是角頻率（$&omega; = \frac{2&pi;}{T}$）。<br>最後 $&theta;$ 是相位差。</p>
+<h1 id="平均值"><a href="#平均值" class="headerlink" title="平均值"></a>平均值</h1><p>先來看比較簡易的平均值，平均值簡單的說就是取平均。<br>雖然聽起來像是廢話，畢竟正弦曲線誰沒看過？積分取個平均不就寫個 $0$ 而已嗎？<br>別忘了，正弦波在整流之後，它只剩下半波、或是全波。<br>也就是說，我們考慮的平均值，只要考量半波整流、或全波整流之後的就好。</p>
+<h2 id="半波整流"><a href="#半波整流" class="headerlink" title="半波整流"></a>半波整流</h2><p>對於半波整流，由於截去 $sin$ 函數的負半周。<br>我們直接算它正半周（函數週期的一半）有多少面積、再除以它的週期 $T$ 就好。</p>
+<p>$(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T$</p>
+<p>正弦波全部的週期 $T = 2&pi;$ </p>
+<p>$V_{av} = (\int_{0}^{&pi;} V_{m}sin(&omega;t+&theta;) \mathrm{d}t) / 2&pi;$</p>
+<p>角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$</p>
+<p>$V_{av} = (\int_{0}^{&pi;} V_{m}sin(t) \mathrm{d}t) / 2&pi;$</p>
+<p>積分中常數 $V_{m}$ 提到外面</p>
+<p>$V_{av} = (V_{m} \int_{0}^{&pi;} sin(t) \mathrm{d}t) / 2&pi;$</p>
+<p>對 $sin(t)$ 取反導數，準備結束這個積分</p>
+<p>$V_{av} = (V_{m} (-cos(t))\mid_{0}^{&pi;}) / 2&pi;$</p>
+<p>$V_{av} = (V_{m} (-cos(&pi;) + cos(0))) / 2&pi;$</p>
+<p>$V_{av} = (V_{m} (-(-1) + 1)) / 2&pi;$</p>
+<p>$V_{av} = (V_{m} (1 + 1)) / 2&pi;$</p>
+<p>$V_{av} = 2V_{m} / 2&pi;$</p>
+<p>$V_{av} = V_{m} / &pi;$</p>
+<p>得證半波整流的正弦波平均值為 $V_{m} / &pi;$</p>
+<h2 id="全波整流"><a href="#全波整流" class="headerlink" title="全波整流"></a>全波整流</h2><p>全波整流跟半波整流很像，基本上換湯不換藥。<br>直接算它正半周（函數週期的一半）有多少面積，並予以雙倍（負半週被轉正），<br>再除以它的週期 $T$ 就好。</p>
+<p>$2(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T$</p>
+<p>正弦波全部的週期 $T = 2&pi;$ </p>
+<p>$V_{av} = 2(\int_{0}^{&pi;} V_{m}sin(&omega;t+&theta;) \mathrm{d}t) / 2&pi;$</p>
+<p>角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$</p>
+<p>$V_{av} = 2(\int_{0}^{&pi;} V_{m}sin(t) \mathrm{d}t) / 2&pi;$</p>
+<p>常數 $V_{m}$ 提到外面，順便把 $2$ 常數約掉</p>
+<p>$V_{av} = (V_{m} \int_{0}^{&pi;} sin(t) \mathrm{d}t) / &pi;$</p>
+<p>$V_{av} = (V_{m} (-cos(t))\mid_{0}^{&pi;}) / &pi;$</p>
+<p>$V_{av} = (V_{m} (-cos(&pi;) + cos(0))) / &pi;$</p>
+<p>$V_{av} = (V_{m} (-(-1) + 1)) / &pi;$</p>
+<p>$V_{av} = (V_{m} (1 + 1)) / &pi;$</p>
+<p>$V_{av} = 2V_{m} / &pi;$</p>
+<p>$V_{av} = 2V_{m} / &pi;$</p>
+<p>得證全波整流的正弦波平均值為 $2V_{m} / &pi;$</p>
+<h1 id="有效值"><a href="#有效值" class="headerlink" title="有效值"></a>有效值</h1><p>有效值比較機車，不過也沒啥困難的，<br>唯一要注意的是，它會用到三角函數的半角公式。<br>有效值又名「均方根」值，顧名思義：先開方平均、再取根號。  </p>
+<p>對於連續函數 $f(x)$ 在區間 $[a, b]$ 來說：</p>
+<p>$ f(x) = \sqrt{\frac{1}{b - a}\int_{a}^{b} f(x)^2  \mathrm{d}x} $</p>
+<p>寫成我們交流電的形式（區間在 $[0, 2&pi;]$）：<br>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{2&pi;} v(t)^2  \mathrm{d}t} $</p>
+<p>我們來考慮半波、跟全波整流後的情況。</p>
+<h2 id="半波整流-1"><a href="#半波整流-1" class="headerlink" title="半波整流"></a>半波整流</h2><p>半波整流中，負半週整個被刪去。<br>所以說，我們積分的區間要改成 $[0, &pi;]$ 才正確。</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} v(t)^2  \mathrm{d}t} $</p>
+<p>把 $v(t)$ 代換掉，另外角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$。</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} (V_{m}sin(&omega;t+&theta;))^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} (V_{m}sin(t))^2  \mathrm{d}t} $</p>
+<p>把積分那邊的平方移進去，常數 $V_{m}^{2}$ 移出積分。</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} sin(t)^2  \mathrm{d}t} $</p>
+<p>接下來很關鍵，半角公式登場 $sin^{2}(x) = \frac{1}{2}(1 - cos(2x))$  </p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} $</p>
+<p>常數通通丟出去。</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;}\int_{0}^{&pi;} 1 - cos(2x) \mathrm{d}t} $</p>
+<p>取 $1 - cos(2x)$ 的反導數準備結束積分。</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (x - \frac{1}{2}sin(2x))\mid_{0}^{&pi;}} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - \frac{1}{2}sin(0))} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - 0)} $</p>
+<p>當中 $sin(2&pi;) = 0$ 直接拿掉</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - 0)}$</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)(&pi;)}{4&pi;}}$</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)}{4}}$</p>
+<p>$ V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{4}}$</p>
+<p>$ V_{rms} = \frac{V_{m}}{2} $</p>
+<p>半波整流的有效值，是最大值（峰值）的一半。</p>
+<h2 id="全波整流-1"><a href="#全波整流-1" class="headerlink" title="全波整流"></a>全波整流</h2><p>在積分那邊，取個雙倍而已。</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;} 2\int_{0}^{&pi;} v(t)^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{&pi;}\int_{0}^{&pi;} (V_{m}sin(&omega;t+&theta;))^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{&pi;}\int_{0}^{&pi;} (V_{m}sin(t))^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{&pi;}\int_{0}^{&pi;} sin(t)^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{&pi;}\int_{0}^{&pi;} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} 1 - cos(2x) \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (x - \frac{1}{2}sin(2x))\mid_{0}^{&pi;}} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - \frac{1}{2}sin(0))} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - 0)} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - 0)} $</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)(&pi;)}{2&pi;}} $</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)}{2}} $</p>
+<p>$ V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{2}} $</p>
+<p>$ V_{rms} = \frac{V_{m}}{\sqrt{2}} $</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/pokemon-tdv-sorted-list/" rel="prev" title="寶可夢本傳：三防排名表">
+      <i class="fa fa-chevron-left"></i> 寶可夢本傳：三防排名表
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/k-mean-algorithm/" rel="next" title="K均值算法 K-mean Algorithm">
+      K均值算法 K-mean Algorithm <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#交流電表示式"><span class="nav-number">1.</span> <span class="nav-text">交流電表示式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#平均值"><span class="nav-number">2.</span> <span class="nav-text">平均值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#半波整流"><span class="nav-number">2.1.</span> <span class="nav-text">半波整流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全波整流"><span class="nav-number">2.2.</span> <span class="nav-text">全波整流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#有效值"><span class="nav-number">3.</span> <span class="nav-text">有效值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#半波整流-1"><span class="nav-number">3.1.</span> <span class="nav-text">半波整流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全波整流-1"><span class="nav-number">3.2.</span> <span class="nav-text">全波整流</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Tinytusnami"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Tinytusnami</p>
+  <div class="site-description" itemprop="description">羊羽的個人部落格</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/tinytsunami" title="GitHub → https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:z27619273@gmail.com" title="E-Mail → mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友站連結
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://yctseng1227.github.io" title="https://yctseng1227.github.io" rel="noopener" target="_blank">Yctseng's Blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-bomb"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '8b224f954e247f37ca81',
+      clientSecret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+      repo        : 'tinytsunami.github.io',
+      owner       : 'tinytsunami',
+      admin       : ['tinytsunami'],
+      id          : 'e2c906ede089889fbb6789dba6029836',
+        language: 'zh-TW',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

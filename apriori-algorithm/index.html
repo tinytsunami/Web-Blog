@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#536F87">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#536F87">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="資料探勘的文章，多半是我大學資料探勘課程的筆記之類的東西，因為覺得內容有點雜，不是很難，就是很多東西。 所以想開個文章逐一紀錄。以後找資料也方便一點這樣。不過課程吸收的感覺對這個領域把握不高，有錯誤還請見諒就是了。">
+<meta name="keywords" content="技術, 獨立遊戲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="先驗算法 Apriori Algorithm">
+<meta property="og:url" content="https://www.tinytsunami.info/apriori-algorithm/index.html">
+<meta property="og:site_name" content="羊羽手札">
+<meta property="og:description" content="資料探勘的文章，多半是我大學資料探勘課程的筆記之類的東西，因為覺得內容有點雜，不是很難，就是很多東西。 所以想開個文章逐一紀錄。以後找資料也方便一點這樣。不過課程吸收的感覺對這個領域把握不高，有錯誤還請見諒就是了。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:updated_time" content="2020-08-11T04:09:25.756Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="先驗算法 Apriori Algorithm">
+<meta name="twitter:description" content="資料探勘的文章，多半是我大學資料探勘課程的筆記之類的東西，因為覺得內容有點雜，不是很難，就是很多東西。 所以想開個文章逐一紀錄。以後找資料也方便一點這樣。不過課程吸收的感覺對這個領域把握不高，有錯誤還請見諒就是了。">
+
+<link rel="canonical" href="https://www.tinytsunami.info/apriori-algorithm/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>先驗算法 Apriori Algorithm | 羊羽手札</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">羊羽手札</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Tinytsunami's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歷程表</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="https://tinytsunami.itch.io/" rel="noopener" target="_blank"><i class="fas fa-gamepad fa-fw"></i>遊戲</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/apriori-algorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Tinytusnami">
+      <meta itemprop="description" content="羊羽的個人部落格">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="羊羽手札">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          先驗算法 Apriori Algorithm
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2017-05-18 00:00:00" itemprop="dateCreated datePublished" datetime="2017-05-18T00:00:00Z">2017-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/資料結構與演算法/" itemprop="url" rel="index"><span itemprop="name">資料結構與演算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>資料探勘的文章，多半是我大學資料探勘課程的筆記之類的東西，<br>因為覺得內容有點雜，不是很難，就是很多東西。</p>
+<p>所以想開個文章逐一紀錄。以後找資料也方便一點這樣。<br>不過課程吸收的感覺對這個領域把握不高，有錯誤還請見諒就是了。<br><a id="more"></a></p>
+<h1 id="關聯規則"><a href="#關聯規則" class="headerlink" title="關聯規則"></a>關聯規則</h1><p>關聯規則是類似這樣的一個問題：<br><div class="note info">
+            <p>如果我的客戶買了某個商品，那麼要再推薦什麼商品呢？</p>
+          </div></p>
+<p>想當然的，推薦的商品一定是那個「很有可能被加購的」商品。</p>
+<p>那麼，我要怎知道客戶有可能加購什麼呢？<br>事實上，我們大概可以猜到一些事情。  </p>
+<ul>
+<li>與「客戶的屬性」相關<ul>
+<li>客戶是學生，而他剛剛買了筆，是不是折扣的話會買更多？</li>
+<li>客戶是廚師的話呢？</li>
+</ul>
+</li>
+<li>與「外在的屬性」相關<ul>
+<li>天氣炎熱的話，買了午餐再買飲料的關聯，是不是會被加強？</li>
+<li>天氣涼爽的話呢？</li>
+</ul>
+</li>
+<li>與「先前購買的商品」相關  <ul>
+<li>買了鐵鎚，是不是會繼續選購釘子呢？</li>
+<li>推薦買了鐵鎚的人麵包如何？</li>
+</ul>
+</li>
+</ul>
+<p>而資料探勘當中，有一些方法，可以去得到這些關聯規則，</p>
+<p>對於商業行為來說，資料探勘的重點就是找到這些隱含在資料中的「商機」。<br>然而這三種可能，我們通常關注第三種，也就是「先前購買的商品」相關的部份。</p>
+<p>至於為什麼呢？看下面的例子，然後想想看：  </p>
+<ul>
+<li>某個男人在賣場中買了一個麵包，所以男人的職業是？</li>
+<li>早上天氣還很熱，下午開始轉涼了。</li>
+</ul>
+<h1 id="支持率與可信度"><a href="#支持率與可信度" class="headerlink" title="支持率與可信度"></a>支持率與可信度</h1><p>在開始進行算法之前，得先介紹一下：</p>
+<p>支持率（Support）以及可信度（Confidence）這兩個參數。  </p>
+<ul>
+<li>支持率：出現的概率。</li>
+<li>可信度：條件機率，當商品出現時，出現另一件商品的概率。</li>
+</ul>
+<p>下面做一些描述：  </p>
+<p>$Support(A) = P(A)$<br>$Confidence(A \Rightarrow B) = P(B \mid A)$  </p>
+<p>參數的作用，從這裡可以發現一些指標：</p>
+<div class="note info">
+            <p>支持率代表一條規則的重要程度。</p>
+          </div>
+<p>$Confidence(A \Rightarrow B) = 99%, Support({A, B}) = 1%$</p>
+<p>雖然買了 A 商品，幾乎也會買 B 商品，但出現這種買法相當罕見。<br>如果很少人會這樣買，是不是就沒有商機呢？</p>
+<div class="note info">
+            <p>可信度代表一條規則的準確程度</p>
+          </div>
+<div class="note info">
+            <p>想想看，有沒有可能出現可信度很高、但支持率很低的情況？</p>
+          </div>
+<p>$Confidence(A \Rightarrow B) = P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{Support({A, B})}{P(A)}$</p>
+<h1 id="先驗算法"><a href="#先驗算法" class="headerlink" title="先驗算法"></a>先驗算法</h1><p>先驗算法（Apriori Algorithm）是資料探勘中的一種基本方法，<br>讓我們可以從資料中取得這些關聯規則。</p>
+<p>實際操作的說明：  </p>
+<ul>
+<li>設定 $\text{minimum_support}$</li>
+<li>計算每種商品的 $\text{support}$</li>
+<li>刪去 $\text{support}$ 小於 $\text{minimum_support}$ 的商品</li>
+<li>組合剩下的商品</li>
+<li>重複 2 ～ 4 步，直到無法組合或滿足其他停止條件</li>
+<li>計算所有的 $\text{confidence}$</li>
+</ul>
+<p>公式化：  </p>
+<ul>
+<li>$\alpha = \text{Minimum Support}, X_{0} = \text{All Objects}$</li>
+<li>$X_{p+1} = { x_{i} \cup x_{j} : support(x_{i}) &gt; \alpha \land support(x_{j}) &gt; \alpha , x_{i} \neq x_{j}, \forall x_{i}, x_{j} \in X_{p} }$</li>
+<li>$\text{Repeat step.2, until } X_{n} = \varnothing$</li>
+</ul>
+<p>大致上就這個樣子，直到 $X$ 無法組合為止，而這時的最長規則，長度為 $n-1$ 單位，<br>很多時候，由於要人工篩選規則，所以所有出現過的 $X$ 都要考慮。</p>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="400px" src="//jsfiddle.net/okfyq5ub/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/k-mean-algorithm/" rel="prev" title="K均值算法 K-mean Algorithm">
+      <i class="fa fa-chevron-left"></i> K均值算法 K-mean Algorithm
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/differential-trigonometric-functions/" rel="next" title="三角函數的微分">
+      三角函數的微分 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#關聯規則"><span class="nav-number">1.</span> <span class="nav-text">關聯規則</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#支持率與可信度"><span class="nav-number">2.</span> <span class="nav-text">支持率與可信度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#先驗算法"><span class="nav-number">3.</span> <span class="nav-text">先驗算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#演示"><span class="nav-number">4.</span> <span class="nav-text">演示</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Tinytusnami"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Tinytusnami</p>
+  <div class="site-description" itemprop="description">羊羽的個人部落格</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/tinytsunami" title="GitHub → https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:z27619273@gmail.com" title="E-Mail → mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友站連結
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://yctseng1227.github.io" title="https://yctseng1227.github.io" rel="noopener" target="_blank">Yctseng's Blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-bomb"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '8b224f954e247f37ca81',
+      clientSecret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+      repo        : 'tinytsunami.github.io',
+      owner       : 'tinytsunami',
+      admin       : ['tinytsunami'],
+      id          : '7a0ad82b3759039aa03839669bde98af',
+        language: 'zh-TW',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

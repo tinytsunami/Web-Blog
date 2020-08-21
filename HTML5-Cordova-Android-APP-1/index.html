@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#536F87">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#536F87">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="這篇是紀錄一個基於 HTML5 的 Android APP 開發流程。 雖然筆者常常寫 HTML、CSS 以及 JavaScript 程式，也聽說 HTML5 對 APP 開發速度的幫助很大，但從未有自己的 APP 上架。">
+<meta name="keywords" content="技術, 獨立遊戲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTML5 Cordova Android APP 環境配置">
+<meta property="og:url" content="https://www.tinytsunami.info/HTML5-Cordova-Android-APP-1/index.html">
+<meta property="og:site_name" content="羊羽手札">
+<meta property="og:description" content="這篇是紀錄一個基於 HTML5 的 Android APP 開發流程。 雖然筆者常常寫 HTML、CSS 以及 JavaScript 程式，也聽說 HTML5 對 APP 開發速度的幫助很大，但從未有自己的 APP 上架。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://i.imgur.com/MPA5e7Ql.png">
+<meta property="og:image" content="https://i.imgur.com/ftOp2ZBl.png">
+<meta property="og:image" content="https://i.imgur.com/U2FzEL5l.png">
+<meta property="og:image" content="https://i.imgur.com/MVsvsq5l.png">
+<meta property="og:image" content="https://i.imgur.com/cglnTXb.png">
+<meta property="og:updated_time" content="2020-08-11T04:09:25.752Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTML5 Cordova Android APP 環境配置">
+<meta name="twitter:description" content="這篇是紀錄一個基於 HTML5 的 Android APP 開發流程。 雖然筆者常常寫 HTML、CSS 以及 JavaScript 程式，也聽說 HTML5 對 APP 開發速度的幫助很大，但從未有自己的 APP 上架。">
+<meta name="twitter:image" content="https://i.imgur.com/MPA5e7Ql.png">
+
+<link rel="canonical" href="https://www.tinytsunami.info/HTML5-Cordova-Android-APP-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>HTML5 Cordova Android APP 環境配置 | 羊羽手札</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">羊羽手札</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Tinytsunami's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歷程表</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="https://tinytsunami.itch.io/" rel="noopener" target="_blank"><i class="fas fa-gamepad fa-fw"></i>遊戲</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/HTML5-Cordova-Android-APP-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Tinytusnami">
+      <meta itemprop="description" content="羊羽的個人部落格">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="羊羽手札">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HTML5 Cordova Android APP 環境配置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2018-07-02 00:04:23" itemprop="dateCreated datePublished" datetime="2018-07-02T00:04:23Z">2018-07-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/行動裝置/" itemprop="url" rel="index"><span itemprop="name">行動裝置</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>這篇是紀錄一個基於 HTML5 的 Android APP 開發流程。</p>
+<p>雖然筆者常常寫 HTML、CSS 以及 JavaScript 程式，<br>也聽說 HTML5 對 APP 開發速度的幫助很大，但從未有自己的 APP 上架。<br><a id="more"></a></p>
+<p>這篇文章將介紹 Cordova 的環境配置。</p>
+<div class="note info">
+            <p>本篇預設讀者都已掌握開發技術，不會介紹 Web 程式的撰寫。</p>
+          </div>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>開發環境的配置需要安裝：</p>
+<ul>
+<li>Node.js</li>
+<li>Cordova</li>
+<li>Java Development Kit (JDK)</li>
+<li>Android Software Development Kit (SDK)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">名稱</th>
+<th style="text-align:left">功能</th>
+<th style="text-align:left">下載網站</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Node.js</td>
+<td style="text-align:left">Cordova 在 Node.js 的命令列上執行</td>
+<td style="text-align:left"><a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Cordova</td>
+<td style="text-align:left">將 Web 專案部屬到指定行動裝置平台</td>
+<td style="text-align:left"><a href="https://cordova.apache.org/" target="_blank" rel="noopener">Apache Cordova</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Java Development Kit (JDK)</td>
+<td style="text-align:left">Cordova 新增、部屬 Android 平台時需要</td>
+<td style="text-align:left"><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">Oracle Technology Network</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Android Software Development Kit (SDK)</td>
+<td style="text-align:left">Cordova 新增、部屬 Android 平台時需要</td>
+<td style="text-align:left"><a href="https://developer.android.com/studio/" target="_blank" rel="noopener">Android Developers</a></td>
+</tr>
+<tr>
+<td style="text-align:left">Gradle*</td>
+<td style="text-align:left">Android 的官方構建工具</td>
+<td style="text-align:left"><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle Build Tool</a></td>
+</tr>
+</tbody>
+</table>
+<div class="note info">
+            <p>SDK 及 Gradle 的下載有無需要，請在 <a href="#安裝-SDK">安裝 SDK</a> 的章節中確認。</p>
+          </div>
+<div class="note info">
+            <p>筆者接下來會將 Java Development Kit 簡稱為 JDK；而 Android Software Development Kit 簡稱為 SDK。</p>
+          </div>
+<h1 id="安裝-Node-js"><a href="#安裝-Node-js" class="headerlink" title="安裝 Node.js"></a>安裝 Node.js</h1><p>先到 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js 官網</a> 下載 Node.js，<br>官網左邊的 LTS 表示推薦的穩定版本、而右邊的 Current 表示最新的版本，<br>官網畫面請參考圖 1，筆者這邊使用的是 LTS 版本：</p>
+<p><img src="https://i.imgur.com/MPA5e7Ql.png" alt="圖 1、Node.js 官網示意圖"></p>
+<p>然後安裝 Node.js 的部分，不會花太多時間，跟一般的安裝差不多。<br>安裝好後，透過下列指令測試正確安裝，畫面請參考圖 2：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node --version</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://i.imgur.com/ftOp2ZBl.png" alt="圖 2、Node.js 測試示意圖"></p>
+<div class="note info">
+            <p>通常情況下，可能 Node.js 版本與筆者不同，但操作應該大同小異。</p>
+          </div>
+<h1 id="安裝-Cordova"><a href="#安裝-Cordova" class="headerlink" title="安裝 Cordova"></a>安裝 Cordova</h1><p>在 <a href="https://cordova.apache.org/" target="_blank" rel="noopener">Apache Cordova</a> 官網有說明絕大多數操作，<br>透過 npm 安裝 Cordova 即可，指令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cordova</span><br></pre></td></tr></table></figure></p>
+<p>安裝好後，一樣透過指令測試，畫面請參考圖 3：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cordova --version</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://i.imgur.com/U2FzEL5l.png" alt="圖 3、測試 Cordova 示意圖"></p>
+<p>上圖是安裝完後，透過指令測試的</p>
+<div class="note info">
+            <p>Node Package Manager (npm) 是 Node.js 預設的套件包管理器；其中參數 -g 代表全局安裝。</p>
+          </div>
+<h1 id="安裝-JDK"><a href="#安裝-JDK" class="headerlink" title="安裝 JDK"></a>安裝 JDK</h1><p>接著到 <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">Oracle Technology Network</a> 網站，<br>下載 JDK，如圖 4 所示，注意下圖中藍框的同意條款要勾選才能下載：</p>
+<p><img src="https://i.imgur.com/MVsvsq5l.png" alt="圖 4、下載 JDK 示意圖"></p>
+<p>注意兩個安裝的路徑：</p>
+<ul>
+<li>JDK</li>
+<li>Java Runtime Environment (JRE)</li>
+</ul>
+<p>這兩個路徑可能之後會使用到，務必記下來，<br>預設路徑是「C:\Program Files\Java\」或「C:\Program Files (x86)\Java\」。</p>
+<h1 id="安裝-SDK"><a href="#安裝-SDK" class="headerlink" title="安裝 SDK"></a>安裝 SDK</h1><p>安裝 SDK 的部分，可以分成兩個方法：</p>
+<ul>
+<li>使用 Android Studio 附帶的 SDK 包</li>
+<li>獨立安裝 SDK Tools 與 SDK Platform Tools</li>
+</ul>
+<p>如果已經安裝過 Android Studio 的話，就直接使用其附帶的 SDK 即可；<br>反之，如果沒有安裝過 Android Studio；且未來也不打算安裝，則推薦獨立安裝 SDK。<br>（如果讀者覺得可能會使用到 Android Studio 則建議安裝。）</p>
+<p>安裝好 Android Studio 時，應該會指定安裝 SDK 的位置；<br>獨立下載時，解壓縮到喜歡的目錄下即可。</p>
+<p>獨立安裝 SDK Tools 的下載網址：<a href="https://developer.android.com/studio/" target="_blank" rel="noopener">Android Developers</a><br>此外，要再下載 SDK Platform Tools，網址：<a href="https://developer.android.com/studio/releases/platform-tools" target="_blank" rel="noopener">SDK Platform Tools Release</a></p>
+<h1 id="安裝-Gradle"><a href="#安裝-Gradle" class="headerlink" title="安裝 Gradle"></a>安裝 Gradle</h1><p>這個部分同樣取決於是否安裝 Android Studio：</p>
+<ul>
+<li>使用 Android Studio 附帶的 Gradle</li>
+<li>獨立安裝 Gradle </li>
+</ul>
+<p>與 SDK 的狀況一樣，至於 Android Studio 安裝時，<br>不會另外讓你設定 Gradle 的安裝位置，預設在「Android Studio\gradle\gradle-x.x」<br>（其中 x.x 為 Gradle 的版本號。）</p>
+<h1 id="配置環境變數"><a href="#配置環境變數" class="headerlink" title="配置環境變數"></a>配置環境變數</h1><p>接下來是比較容易出錯的部分，<br>由於安裝了很多東西，有一些自動幫你配置環境變數；有些則無。<br>我們需要配置的環境變數如下：</p>
+<table>
+<thead>
+<tr>
+<th>來源軟體</th>
+<th>配置方法</th>
+<th>環境變數名稱</th>
+<th>環境變數位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Node.js</td>
+<td>安裝 Node.js 時自動配置</td>
+<td>Path（系統變數）</td>
+<td>nodejs\</td>
+</tr>
+<tr>
+<td>Node.js (npm)</td>
+<td>安裝 Node.js 時自動配置</td>
+<td>Path（使用者變數）</td>
+<td>AppData\Roaming\npm\</td>
+</tr>
+<tr>
+<td>Cordova</td>
+<td>透過 npm 呼叫</td>
+<td>無</td>
+<td>無</td>
+</tr>
+<tr>
+<td>JDK</td>
+<td>使用者手動配置</td>
+<td>JAVA_HOME（使用者變數）</td>
+<td>jdk1.8.0_171\</td>
+</tr>
+<tr>
+<td>SDK Tools（A.S. 附帶）</td>
+<td>使用者手動配置</td>
+<td>ANDROID_HOME（使用者變數）</td>
+<td>SDK\</td>
+</tr>
+<tr>
+<td>SDK Tools（獨立安裝）</td>
+<td>使用者手動配置</td>
+<td>ANDROID_HOME（使用者變數）</td>
+<td>SDK\</td>
+</tr>
+<tr>
+<td>SDK Platform Tools（A.S. 附帶）</td>
+<td>使用者手動配置</td>
+<td>Path（系統變數）</td>
+<td>platform-tools\</td>
+</tr>
+<tr>
+<td>SDK Platform Tools（獨立安裝）</td>
+<td>使用者手動配置</td>
+<td>Path（系統變數）</td>
+<td>platform-tools\</td>
+</tr>
+<tr>
+<td>SDK Tools（A.S. 附帶）</td>
+<td>使用者手動配置</td>
+<td>Path（使用者變數）</td>
+<td>tools\bin\</td>
+</tr>
+<tr>
+<td>SDK Tools（獨立安裝）</td>
+<td>使用者手動配置</td>
+<td>Path（使用者變數）</td>
+<td>tools\bin\</td>
+</tr>
+<tr>
+<td>Gradle（A.S. 附帶）</td>
+<td>使用者手動配置</td>
+<td>Path（系統變數）</td>
+<td>gradle\gradle-x.x\bin\</td>
+</tr>
+<tr>
+<td>Gradle（獨立安裝）</td>
+<td>使用者手動配置</td>
+<td>Path（系統變數）</td>
+<td>gradle-x.x\</td>
+</tr>
+</tbody>
+</table>
+<div class="note info">
+            <p>記號「A.S.」表示「Android Studio」</p>
+          </div>
+<div class="note warning">
+            <p>環境變數位置為相對位置，請依照安裝時設定的位置為準。</p>
+          </div>
+<h1 id="測試環境變數"><a href="#測試環境變數" class="headerlink" title="測試環境變數"></a>測試環境變數</h1><p>這裡提供一個檢測環境變數的方法，<br>在這裡使用的 Cordova 專案可能不是最終使用的專案。</p>
+<p>首先到自己喜歡的目錄下，透過指令建立 Cordova 專案，<br>其中 myApp 為自訂的專案名稱：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cordova create myApp</span><br></pre></td></tr></table></figure>
+<p>然後將進入建立好的目錄，透過指令將 Android 加入部屬的平台：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd myApp</span><br><span class="line">cordova platform add android</span><br></pre></td></tr></table></figure></p>
+<p>然後透過指令檢測環境：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cordova requirements</span><br></pre></td></tr></table></figure></p>
+<p>整個操作的示意如圖 5，<br>如果有錯誤，應該會提示哪裡沒有配置好：<br><img src="https://i.imgur.com/cglnTXb.png" alt="圖 5、檢測命令示意圖"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/tinytsunami-update-02/" rel="prev" title="羊羽手札更新歷程 02">
+      <i class="fa fa-chevron-left"></i> 羊羽手札更新歷程 02
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/n-puzzle/" rel="next" title="推盤遊戲  n-puzzle">
+      推盤遊戲  n-puzzle <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安裝-Node-js"><span class="nav-number">2.</span> <span class="nav-text">安裝 Node.js</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安裝-Cordova"><span class="nav-number">3.</span> <span class="nav-text">安裝 Cordova</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安裝-JDK"><span class="nav-number">4.</span> <span class="nav-text">安裝 JDK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安裝-SDK"><span class="nav-number">5.</span> <span class="nav-text">安裝 SDK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安裝-Gradle"><span class="nav-number">6.</span> <span class="nav-text">安裝 Gradle</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置環境變數"><span class="nav-number">7.</span> <span class="nav-text">配置環境變數</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#測試環境變數"><span class="nav-number">8.</span> <span class="nav-text">測試環境變數</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Tinytusnami"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Tinytusnami</p>
+  <div class="site-description" itemprop="description">羊羽的個人部落格</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/tinytsunami" title="GitHub → https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:z27619273@gmail.com" title="E-Mail → mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友站連結
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://yctseng1227.github.io" title="https://yctseng1227.github.io" rel="noopener" target="_blank">Yctseng's Blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-bomb"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '8b224f954e247f37ca81',
+      clientSecret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+      repo        : 'tinytsunami.github.io',
+      owner       : 'tinytsunami',
+      admin       : ['tinytsunami'],
+      id          : '732f8828bd538f535f79c93310cd9e46',
+        language: 'zh-TW',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

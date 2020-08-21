@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#536F87">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#536F87">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="這篇文章的起因是想到過去寫的 JS Demo 多數沒有保留，好不容易，上次在學校弄人工智慧有保留一份帶有檔案處理的。 所以這篇文章整理了過去做過、未來也可能用在本網誌的演示部份而寫。">
+<meta name="keywords" content="技術, 獨立遊戲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 檔案處理">
+<meta property="og:url" content="https://www.tinytsunami.info/javascript-file-process/index.html">
+<meta property="og:site_name" content="羊羽手札">
+<meta property="og:description" content="這篇文章的起因是想到過去寫的 JS Demo 多數沒有保留，好不容易，上次在學校弄人工智慧有保留一份帶有檔案處理的。 所以這篇文章整理了過去做過、未來也可能用在本網誌的演示部份而寫。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:updated_time" content="2020-08-11T04:09:25.752Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript 檔案處理">
+<meta name="twitter:description" content="這篇文章的起因是想到過去寫的 JS Demo 多數沒有保留，好不容易，上次在學校弄人工智慧有保留一份帶有檔案處理的。 所以這篇文章整理了過去做過、未來也可能用在本網誌的演示部份而寫。">
+
+<link rel="canonical" href="https://www.tinytsunami.info/javascript-file-process/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>JavaScript 檔案處理 | 羊羽手札</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">羊羽手札</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Tinytsunami's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歷程表</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="https://tinytsunami.itch.io/" rel="noopener" target="_blank"><i class="fas fa-gamepad fa-fw"></i>遊戲</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/javascript-file-process/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Tinytusnami">
+      <meta itemprop="description" content="羊羽的個人部落格">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="羊羽手札">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript 檔案處理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2017-11-05 00:00:00" itemprop="dateCreated datePublished" datetime="2017-11-05T00:00:00Z">2017-11-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/網頁設計/" itemprop="url" rel="index"><span itemprop="name">網頁設計</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>這篇文章的起因是想到過去寫的 JS Demo 多數沒有保留，<br>好不容易，上次在學校弄人工智慧有保留一份帶有檔案處理的。</p>
+<p>所以這篇文章整理了過去做過、<br>未來也可能用在本網誌的演示部份而寫。<br><a id="more"></a></p>
+<h1 id="歷史"><a href="#歷史" class="headerlink" title="歷史"></a>歷史</h1><p>沒記錯的話，早期的瀏覽器是不太允許讀取本機資料的。</p>
+<p>理由是，如果瀏覽器的 JavaScript 可以隨意讀取本機資料，<br>那可能看一看網站，所有東西都偷偷被上傳了。</p>
+<p>然而，這造成了一個問題：<br>「每次要檔案處理，都要透過檔案上傳到伺服器，然後再下載回來」</p>
+<p>這個模式的問題在於網路頻寬的浪費，<br>也有可能網路的傳輸時間遠大於檔案處理的時間。</p>
+<p>HTML5 標準中出現了 File API 處理了這個問題。<br><div class="note warning">
+            <p>注意：File API 在部分瀏覽器尚未普及。請參閱 <a href="https://developer.mozilla.org/zh-TW/docs/Web/API/FileReader" target="_blank" rel="noopener">MDN FileReader</a>。</p>
+          </div></p>
+<h1 id="讀取檔案"><a href="#讀取檔案" class="headerlink" title="讀取檔案"></a>讀取檔案</h1><p>下面是直接從本機拿資料給 JavaScript 的做法：</p>
+<p>HTML 必須的有 input 標籤，<br>至於按鈕只是為了給使用者按的（不然設定在 input.onchange 也是可以）</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>基本的上傳檔案<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> /&gt;</span> <span class="tag">&lt;<span class="name">button</span>&gt;</span>上傳<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>JavaScript 的部份，最主要就是那個 FileReader 的物件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">buttonNode.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">let</span> file = inputNode.files[<span class="number">0</span>];        <span class="comment">// 取得輸入標籤的檔案</span></span><br><span class="line">  <span class="keyword">let</span> fileReader = <span class="keyword">new</span> FileReader();    <span class="comment">// 建立 FileReader 物件</span></span><br><span class="line"></span><br><span class="line">  fileReader.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;      <span class="comment">// 設定讀檔後的函數</span></span><br><span class="line">    <span class="keyword">let</span> contents = event.target.result; <span class="comment">// 取得資料</span></span><br><span class="line">    ...                                 <span class="comment">// 處理資料</span></span><br><span class="line">  &#125;;</span><br><span class="line">  fileReader.readAsDataURL(file);       <span class="comment">// 載入檔案</span></span><br><span class="line">&#125;;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>這個演示從本機端直接讀取檔案，然後顯示出檔案內容（文字）：<br><div class="note info">
+            <p>本演示的 input(file) 標籤做了樣式處理，可供參考。</p>
+          </div></p>
+<iframe scrolling="no" width="100%" height="310px" src="//jsfiddle.net/yaamhnmw/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<h1 id="讀取進度"><a href="#讀取進度" class="headerlink" title="讀取進度"></a>讀取進度</h1><p>雖然從本機端直接讀取不用透過網路已經很快了，<br>但有時候檔案還是大的多，這個時候我們可能會想知道讀取的進度。</p>
+<p>這時，我們的進度可以從 FileReader 的 onprogress 取得（可以搭配 progress 標籤使用）</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">progress</span> <span class="attr">value</span>=<span class="string">"0"</span> <span class="attr">max</span>=<span class="string">"100"</span>&gt;</span><span class="tag">&lt;/<span class="name">progress</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>JavaScript 的部份：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">// 過程進行的函數</span></span><br><span class="line">fileReader.onprogress = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> rate = event.loaded / event.total; <span class="comment">// 得到讀取的比例</span></span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h2><p>這個演示製作了進度條（需要大一點的檔案才能看到）<br><div class="note info">
+            <p>本演示的 progress 標籤做了樣式處理，可供參考。</p>
+          </div></p>
+<iframe scrolling="no" width="100%" height="310px" src="//jsfiddle.net/xmee4x4j/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<h1 id="讀取圖像"><a href="#讀取圖像" class="headerlink" title="讀取圖像"></a>讀取圖像</h1><p>畫布（Canvas）是 HTML5 幾乎最核心的功能之一，<br>當然讀取圖像繪畫到畫布上，也是很常見的。</p>
+<h2 id="使用-Image-物件"><a href="#使用-Image-物件" class="headerlink" title="使用 Image 物件"></a>使用 Image 物件</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">// 從 input 標籤取得檔案</span></span><br><span class="line"><span class="keyword">let</span> file = inputNode.files[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 建立 Image 物件 </span></span><br><span class="line"><span class="keyword">let</span> img = <span class="keyword">new</span> Image();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 圖片載入後的事件函數</span></span><br><span class="line">img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 畫到畫布上</span></span><br><span class="line">  context.drawImage(img, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 建立 URL 掛到 Image 物件上</span></span><br><span class="line">img.src = URL.createObjectURL(file);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="演示-2"><a href="#演示-2" class="headerlink" title="演示"></a>演示</h3><p>這個演示示範了基本從 Image 到 Canvas 的過程：</p>
+<iframe scrolling="no" width="100%" height="410px" src="//jsfiddle.net/cjpbjrxL/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<h2 id="使用-FileReader-物件"><a href="#使用-FileReader-物件" class="headerlink" title="使用 FileReader 物件"></a>使用 FileReader 物件</h2><p>通常而言會推薦使用 Image 物件，不過透過 FileReader 也可實作。</p>
+<div class="note info">
+            <p>如果是圖像處理建議使用 Image 物件；<br>這是因為 FileReader 的瀏覽器支援度不如 Image 物件普及。</p>
+          </div>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">// 取得檔案、建立 FileReader 物件</span></span><br><span class="line"><span class="keyword">let</span> file = inputNode.files[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">let</span> fileReader = <span class="keyword">new</span> FileReader();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 載入完成的事件函數</span></span><br><span class="line">fileReader.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">let</span> content = event.target.result;    </span><br><span class="line">  <span class="keyword">let</span> img = <span class="keyword">new</span> Image();</span><br><span class="line">  img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        context.drawImage(img, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">  img.src = contents;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 載入檔案</span></span><br><span class="line">fileReader.readAsDataURL(file);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="演示-3"><a href="#演示-3" class="headerlink" title="演示"></a>演示</h3><p>如果透過 FileReader 一樣可以畫在畫布上：</p>
+<iframe scrolling="no" width="100%" height="440px" src="//jsfiddle.net/rtjd137s/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<h1 id="二進位檔案處理"><a href="#二進位檔案處理" class="headerlink" title="二進位檔案處理"></a>二進位檔案處理</h1><p>取得了檔案通常需要做處理（透過 JavaScript）尤其是二進位的檔案，<br>轉檔、壓縮之類的往往需要二進位的控制，然而這個已經被 JavaScript 支援了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">// 這個只是方便取得檔案中的文字塊</span></span><br><span class="line"><span class="comment">// 然後把函數掛到了 DataView 底下</span></span><br><span class="line"><span class="built_in">DataView</span>.prototype.getString = <span class="function"><span class="keyword">function</span>(<span class="params">offset, len</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">let</span> result = <span class="string">""</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        <span class="keyword">let</span> value = <span class="keyword">this</span>.getUint8(offset + i);</span><br><span class="line">    result += <span class="built_in">String</span>.fromCharCode(value);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line"><span class="comment">// 取得檔案、建立 FileReader 物件</span></span><br><span class="line"><span class="keyword">let</span> file = inputNode.files[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">let</span> fileReader = <span class="keyword">new</span> FileReader();</span><br><span class="line"></span><br><span class="line">fileReader.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 建立 DataView 做控制</span></span><br><span class="line">  <span class="keyword">let</span> contents = <span class="keyword">new</span> <span class="built_in">DataView</span>(event.target.result);</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意這邊 readAsDataURL 改成 readAsArrayBuffer 函數</span></span><br><span class="line">fileReader.readAsArrayBuffer(file);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="演示-4"><a href="#演示-4" class="headerlink" title="演示"></a>演示</h2><div class="note primary">
+            <p>這個演示需要 WAV 檔案，可跳至 <a href="#演示-5">下載檔案演示</a> 的部分；<br>該演示將由二進制組合一個 WAV 檔案下載。</p>
+          </div>
+<p>它解析檔案內容，讀取資料（首個聲道的內容）繪畫到畫布上：</p>
+<iframe scrolling="no" width="100%" height="250px" src="//jsfiddle.net/0qs13nyk/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<h1 id="下載檔案"><a href="#下載檔案" class="headerlink" title="下載檔案"></a>下載檔案</h1><p>我們討論了很多的讀取、操作檔案的方法，<br>同樣的，我們也要讓使用者能把檔案從瀏覽器上拿回來才行。</p>
+<p>具體的作法是，透過一個連結標籤。<br>然後設定相關參數，並執行自身（讓瀏覽器自動處理）下載：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">let</span> buffer = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(...);              <span class="comment">// 設定空間</span></span><br><span class="line"><span class="keyword">let</span> contents = <span class="keyword">new</span> <span class="built_in">DataView</span>(buffer);            <span class="comment">// 建立 DataView 控制</span></span><br><span class="line"></span><br><span class="line">... <span class="comment">/* 在這邊使用 DataView 物件操作檔案 */</span> ...</span><br><span class="line"></span><br><span class="line"><span class="comment">// 透過 ArrayBuffer 建立 Blob 物件</span></span><br><span class="line"><span class="comment">// 後面的 type 屬性是二進位的流，請參考 Content-type 資訊</span></span><br><span class="line"><span class="keyword">let</span> blob = <span class="keyword">new</span> Blob([buffer], &#123;<span class="attr">type</span>: <span class="string">"application/octet-stream"</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> url = <span class="built_in">window</span>.URL.createObjectURL(blob);     <span class="comment">// 建立 URL</span></span><br><span class="line"><span class="keyword">let</span> downloadNode = <span class="built_in">document</span>.createElement(<span class="string">"a"</span>); <span class="comment">// 創造 a 標籤</span></span><br><span class="line"></span><br><span class="line">downloadNode.style.display = <span class="string">"none"</span>;            <span class="comment">// 設定標籤不可見</span></span><br><span class="line">downloadNode.href = url;                        <span class="comment">// 設定標籤位置（URL）</span></span><br><span class="line">downloadNode.download = <span class="string">"..."</span>;                  <span class="comment">// 設定下載檔案檔名</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.body.appendChild(downloadNode);        <span class="comment">// 加入標籤到網頁</span></span><br><span class="line">downloadNode.click();                           <span class="comment">// 自動點擊執行</span></span><br><span class="line"></span><br><span class="line">URL.revokeObjectURL(url);                       <span class="comment">// 將創造的 URL 釋放掉</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="演示-5"><a href="#演示-5" class="headerlink" title="演示"></a>演示</h2><p>這個演示會根據你的函數內容生成、下載 WAV 檔案：<br><div class="note info">
+            <p>對於 16-bit 的 WAV 文件，範圍在 [-32768, 32767] 的區間內。</p>
+          </div></p>
+<iframe scrolling="no" width="100%" height="200px" src="//jsfiddle.net/fcgbq61a/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><ul>
+<li><a href="https://developer.mozilla.org/zh-TW/docs/Web/API/HTMLImageElement/Image" target="_blank" rel="noopener">MDN Web Docs : Image</a></li>
+<li><a href="https://developer.mozilla.org/zh-TW/docs/Web/API/FileReader" target="_blank" rel="noopener">MDN Web Docs : FileReader</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/WAV" target="_blank" rel="noopener">Wikipedia: WAV</a></li>
+<li><a href="http://soundfile.sapp.org/doc/WaveFormat/" target="_blank" rel="noopener">WAVE PCM Soundfile Format</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/palindrome-process/" rel="prev" title="迴文處理 Palindrome Process">
+      <i class="fa fa-chevron-left"></i> 迴文處理 Palindrome Process
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/tinytsunami-update-01/" rel="next" title="羊羽手札更新歷程 01">
+      羊羽手札更新歷程 01 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#歷史"><span class="nav-number">1.</span> <span class="nav-text">歷史</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#讀取檔案"><span class="nav-number">2.</span> <span class="nav-text">讀取檔案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#演示"><span class="nav-number">2.1.</span> <span class="nav-text">演示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#讀取進度"><span class="nav-number">3.</span> <span class="nav-text">讀取進度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#演示-1"><span class="nav-number">3.1.</span> <span class="nav-text">演示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#讀取圖像"><span class="nav-number">4.</span> <span class="nav-text">讀取圖像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Image-物件"><span class="nav-number">4.1.</span> <span class="nav-text">使用 Image 物件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#演示-2"><span class="nav-number">4.1.1.</span> <span class="nav-text">演示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-FileReader-物件"><span class="nav-number">4.2.</span> <span class="nav-text">使用 FileReader 物件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#演示-3"><span class="nav-number">4.2.1.</span> <span class="nav-text">演示</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二進位檔案處理"><span class="nav-number">5.</span> <span class="nav-text">二進位檔案處理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#演示-4"><span class="nav-number">5.1.</span> <span class="nav-text">演示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#下載檔案"><span class="nav-number">6.</span> <span class="nav-text">下載檔案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#演示-5"><span class="nav-number">6.1.</span> <span class="nav-text">演示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#參考資料"><span class="nav-number">7.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Tinytusnami"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Tinytusnami</p>
+  <div class="site-description" itemprop="description">羊羽的個人部落格</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/tinytsunami" title="GitHub → https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:z27619273@gmail.com" title="E-Mail → mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友站連結
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://yctseng1227.github.io" title="https://yctseng1227.github.io" rel="noopener" target="_blank">Yctseng's Blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-bomb"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '8b224f954e247f37ca81',
+      clientSecret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+      repo        : 'tinytsunami.github.io',
+      owner       : 'tinytsunami',
+      admin       : ['tinytsunami'],
+      id          : '3e6fbc11c5c9bf4ed111e0ba145f1a95',
+        language: 'zh-TW',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

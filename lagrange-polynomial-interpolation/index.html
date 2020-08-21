@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#536F87">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#536F87">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="第一次認識拉格朗日插值，源自於名叫 Paint.NET 的繪圖軟體，這個軟體陪我走過 RPG Maker VX 的許多歲月。">
+<meta name="keywords" content="技術, 獨立遊戲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拉格朗日插值 Lagrange polynomial interpolation">
+<meta property="og:url" content="https://www.tinytsunami.info/lagrange-polynomial-interpolation/index.html">
+<meta property="og:site_name" content="羊羽手札">
+<meta property="og:description" content="第一次認識拉格朗日插值，源自於名叫 Paint.NET 的繪圖軟體，這個軟體陪我走過 RPG Maker VX 的許多歲月。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://i.imgur.com/WCnpBLH.jpg">
+<meta property="og:image" content="https://i.imgur.com/fw0N6s6.jpg">
+<meta property="og:updated_time" content="2020-08-11T04:09:25.761Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="拉格朗日插值 Lagrange polynomial interpolation">
+<meta name="twitter:description" content="第一次認識拉格朗日插值，源自於名叫 Paint.NET 的繪圖軟體，這個軟體陪我走過 RPG Maker VX 的許多歲月。">
+<meta name="twitter:image" content="https://i.imgur.com/WCnpBLH.jpg">
+
+<link rel="canonical" href="https://www.tinytsunami.info/lagrange-polynomial-interpolation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>拉格朗日插值 Lagrange polynomial interpolation | 羊羽手札</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">羊羽手札</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Tinytsunami's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歷程表</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="https://tinytsunami.itch.io/" rel="noopener" target="_blank"><i class="fas fa-gamepad fa-fw"></i>遊戲</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/lagrange-polynomial-interpolation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Tinytusnami">
+      <meta itemprop="description" content="羊羽的個人部落格">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="羊羽手札">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          拉格朗日插值 Lagrange polynomial interpolation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2019-10-07 00:00:00" itemprop="dateCreated datePublished" datetime="2019-10-07T00:00:00Z">2019-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/資料結構與演算法/" itemprop="url" rel="index"><span itemprop="name">資料結構與演算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>第一次認識拉格朗日插值，源自於名叫 Paint.NET 的繪圖軟體，<br>這個軟體陪我走過 RPG Maker VX 的許多歲月。</p>
+<a id="more"></a>
+<p>當初在尋找適合製作 Pixel art 的軟體時，筆者當時選擇軟體的條件是「既不能太複雜、也不能太陽春」。<br>因緣際會遇到了 Paint.NET，它的功能足夠，操作也很簡單，所以我很快就喜歡上了。</p>
+<p><img src="https://i.imgur.com/WCnpBLH.jpg" alt="圖 1、個人製作的遊戲畫面圖（素材皆為 Paint.NET 繪製）"></p>
+<p>當時除了用它製作基本的 Pixel 素材之外，也會用它做一些遊戲的特殊效果（像光影）之類的，<br>它其中一個重要的功能是「設定各個顏色的曲線」：</p>
+<p><img src="https://i.imgur.com/fw0N6s6.jpg" alt="圖 2、Paint.NET 的曲線功能"></p>
+<p>當時就在想，要怎麼實作這個功能呢？網路上一查，就碰到「拉格朗日（Lagrange）插值」了！</p>
+<h1 id="插值"><a href="#插值" class="headerlink" title="插值"></a>插值</h1><p>插值，意思就是手上有一些資料點：</p>
+<p>$\{(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})\}$</p>
+<p>找一個函數，去「穿過」這些點：</p>
+<p>$f(x_i) = y_i, \quad i = 0, 1, …, n-1$</p>
+<p>而這邊接下來討論的是「多項式插值」，<br>也就是說，我們預期 $f(x)$ 是一個多項式，我們表示成 $P(x)$</p>
+<div class="note success">
+            <p>建議閱讀 <a href="/linear-regression-and-gradient-descent/" title="線性回歸與梯度下降 Linear Regression and Gradient Descent">線性回歸與梯度下降 Linear Regression and Gradient Descent</a><br>比較「插值（interpolation）」跟「擬合（fitting）」的差別。</p>
+          </div>
+<div class="note info">
+            <p>插值可以細分為內插（interpolation）與外插（extrapolation）；<br>一般說插值是指內插，而如果預測的點出現在資料點的最大區間之外，則稱為外插。</p>
+          </div>
+<h1 id="拉格朗日插值"><a href="#拉格朗日插值" class="headerlink" title="拉格朗日插值"></a>拉格朗日插值</h1><p>拉格朗日插值多項式：</p>
+<p>$$<br>P(x) = \sum\limits_{i=0}^{n-1} y_i \ell_i(x)<br>$$</p>
+<p>其中 $\ell_i(x)$ 為插值基函數：</p>
+<p>$$<br>\ell_i(x) = \prod\limits_{j=0, j \neq i}^{n-1} \frac{(x - x_i)}{(x_i - x_j)}<br>$$</p>
+<p>因為有特性：<br>$$<br>\ell_i(x_j) = \delta_{ij} =<br>\begin{cases}<br>    1, \qquad\text{if } i = j \\<br>    0, \qquad\text{if } i \neq j \\<br>\end{cases}<br>$$</p>
+<div class="note info">
+            <p>式中的 $\delta_{ij}$ 是指 <a href="https://en.wikipedia.org/wiki/Kronecker_delta" target="_blank" rel="noopener">克羅內克 delta 函數 (Kronecker delta function)</a></p>
+          </div>
+<p>導致任意點對 $(x_k, y_k)$ 帶入後都有：</p>
+<p>$$<br>y_k \ell_k(x_k) = y_k<br>$$</p>
+<p>所以 $P(x)$ 必可穿過 $0, 1, …, n-1$ 所有的點對。</p>
+<h1 id="多項式的點值表示"><a href="#多項式的點值表示" class="headerlink" title="多項式的點值表示"></a>多項式的點值表示</h1><p>插值在最初我看到時，是用在影像處理編輯圖片的操作上；<br>直到有次在《算法導論》中看到插值結果的唯一性證明，發現它也可以用多項式的點值表示，<br>更進一步可以用在計算快速傅立葉轉換上。</p>
+<p>原本我們是有點對：<br>$\{(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})\}$</p>
+<p>透過這些點對找多項式函數，也就是多項式函數的係數，滿足：</p>
+<p>$$<br>P(x_k) = a_0 + a_1x_k + a_2x_k^2 + \dots + a_{n-1}x_k^{n-1} = y_k, \quad k = 0, 1, \dots, n-1<br>$$</p>
+<p>通常我們都將 $x$ 當成函數輸入，即 $Ax = y$；<br>但現在我們改以 $a$ 當成函數輸入，並將 $k$ 展開，表示成矩陣有：</p>
+<p>$$<br>Xa = y<br>$$</p>
+<p>$$<br>\left[ \begin{matrix}<br>1 &amp; x_{0} &amp; x_{0}^{2} &amp; \dots &amp; x_{0}^{n-1} \\<br>1 &amp; x_{1} &amp; x_{1}^{2} &amp; \dots &amp; x_{1}^{n-1} \\<br>\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>1 &amp; x_{n-1} &amp; x_{n-1}^{2} &amp; \dots  &amp; x_{n-1}^{n-1}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>a_{0} \\<br>a_{1} \\<br>\vdots \\<br>a_{n-1}<br>\end{matrix} \right]<br>=<br>\left[ \begin{matrix}<br>y_{0} \\<br>y_{1} \\<br>\vdots \\<br>y_{n-1}<br>\end{matrix} \right]<br>$$</p>
+<p>其中 $X$ 為 <a href="https://zh.wikipedia.org/wiki/%E8%8C%83%E5%BE%B7%E8%92%99%E7%9F%A9%E9%99%A3" target="_blank" rel="noopener">Vandermonde 矩陣</a><br>當 $i \neq j$ 時，有 $x_i \neq x_j$，則行列式 $det(X) \neq 0$<br>$X$ 可逆，代表唯一存在一組 $a$ 是唯一解，滿足 $Xa = y$</p>
+<p>既然係數 $a$ 是唯一的，那多項式函數 $P(x)$ 也是唯一的，<br>代表了，表示多項式時，我有兩種選擇方法：</p>
+<ol>
+<li>直接儲存 $a_0, a_1, \dots, a_n$ 共 $n$ 個係數</li>
+<li>儲存 $(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})$ 共 $n$ 組點對</li>
+</ol>
+<p>而第二種儲存點對的方式，被稱為多項式的「點值表示」。</p>
+<div class="note info">
+            <p>點值表示有一些很有趣的性質，<br>比方說兩個多項式相乘的複雜度，在係數表示時是 $\Theta(n^2)$，但在點值表示僅需 $\Theta(n)$。</p>
+          </div>
+<p>至於用點值表示做其他事情，就超出本文的範圍了。</p>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>這個演示可以上傳一張照片，用插值曲線調整顏色。</p>
+<iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/hyjb39e7/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ming-chuan-university-homework/" rel="prev" title="我的大學作業整理">
+      <i class="fa fa-chevron-left"></i> 我的大學作業整理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/thinking-at-night/" rel="next" title="Thinking at night">
+      Thinking at night <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#插值"><span class="nav-number">1.</span> <span class="nav-text">插值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拉格朗日插值"><span class="nav-number">2.</span> <span class="nav-text">拉格朗日插值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多項式的點值表示"><span class="nav-number">3.</span> <span class="nav-text">多項式的點值表示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#演示"><span class="nav-number">4.</span> <span class="nav-text">演示</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Tinytusnami"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Tinytusnami</p>
+  <div class="site-description" itemprop="description">羊羽的個人部落格</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/tinytsunami" title="GitHub → https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:z27619273@gmail.com" title="E-Mail → mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友站連結
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://yctseng1227.github.io" title="https://yctseng1227.github.io" rel="noopener" target="_blank">Yctseng's Blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-bomb"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '8b224f954e247f37ca81',
+      clientSecret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+      repo        : 'tinytsunami.github.io',
+      owner       : 'tinytsunami',
+      admin       : ['tinytsunami'],
+      id          : '67a3c64e4684f2c95a75fc7d4ec53f7b',
+        language: 'zh-TW',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

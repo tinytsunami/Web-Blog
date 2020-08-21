@@ -222,35 +222,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Linux 螢幕解析度問題</title>
-    <url>/linux-screen-display-problem/</url>
-    <content><![CDATA[<p>我當初剛裝 Linux 時，被雙螢幕的問題搞了許久，<br>這篇主要是做個解決方案的筆記，以免之後又碰到相同的問題。</p>
-<p>本解決方案來自網路上的資料，我將把參考資料陳列於下方。<br><a id="more"></a></p>
-<div class="note info">
-            <p>本篇的 Linux 版本為 <a href="https://linuxmint.com/" target="_blank" rel="noopener">Linux Mint</a><br>如果你的不是 Linux Mint 的話，解決方案可能大同小異，請參考其他資料處理。</p>
-          </div>
-<h1 id="解析度問題"><a href="#解析度問題" class="headerlink" title="解析度問題"></a>解析度問題</h1><p>有時候安裝好 Linux 螢幕並不會自動抓到適當的解析度，<br>筆者的雙螢幕中，發生問題的螢幕是電視螢幕，具體參考圖 1。</p>
-<p>我的猜測是，螢幕本身不是電腦螢幕的話，可能發生機會會大得多。</p>
-<p><img src="https://i.imgur.com/w7Kga59.png" alt="圖 1、Linux Mint 螢幕設定畫面"></p>
-<p>如上圖所示，問題螢幕為 DVI-I 輸出，正常情況應為 1920x1080 解析度；<br>但由於某種原因，最高只到 1024x768 解析度。</p>
-<h1 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案"></a>解決方案</h1><p>我們會利用 cvt 及 xrandr 指令解決這個問題：</p>
-<ul>
-<li>利用 xrandr 找出問題螢幕的代號</li>
-<li>透過 cvt 生成 modeline</li>
-<li>透過 xrandr 以及 modeline 建立解析度</li>
-<li>透過 xrandr 增加解析度到螢幕代號</li>
-<li>設定螢幕為新解析度</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr</span><br><span class="line">Screen 0: minimum 320 x 200, current 2944 x 1080, maximum 16384 x 16384</span><br><span class="line">DVI-I-1 connected 1024x768+0+0 (normal left inverted right x axis y axis) 0mm x 0mm</span><br><span class="line">   1024x768      60.00* </span><br><span class="line">   800x600       60.32    56.25  </span><br><span class="line">   848x480       60.00  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">HDMI-1 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">VGA-1 connected primary 1920x1080+1024+0 (normal left inverted right x axis y axis) 477mm x 268mm</span><br><span class="line">   1920x1080     60.00*+</span><br><span class="line">   1680x1050     59.95  </span><br><span class="line">   1600x900      60.00  </span><br><span class="line">   1280x1024     60.02  </span><br><span class="line">   1280x800      59.81  </span><br><span class="line">   1280x720      60.00  </span><br><span class="line">   1024x768      60.00  </span><br><span class="line">   800x600       60.32  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ cvt 1920 1080 60</span><br><span class="line"><span class="meta">#</span> 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz</span><br><span class="line">Modeline "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --addmode DVI-I-1 "1920x1080_60.00"</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
-<p>這個方法是暫時的，完成這些步驟後，要做一些設定來保存這個配置，<br>我的方案是使用開機執行程式（.sh）開機時自動完成上面那些操作：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">xrandr --addmode DVI-I-1 1920x1080_60.00</span><br><span class="line">xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
-<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574" target="_blank" rel="noopener">https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574</a><br><a href="https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution" target="_blank" rel="noopener">https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution</a></p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>JavaScript 檔案處理</title>
     <url>/javascript-file-process/</url>
     <content><![CDATA[<p>這篇文章的起因是想到過去寫的 JS Demo 多數沒有保留，<br>好不容易，上次在學校弄人工智慧有保留一份帶有檔案處理的。</p>
@@ -769,6 +740,140 @@
       </categories>
   </entry>
   <entry>
+    <title>三角函數的微分</title>
+    <url>/differential-trigonometric-functions/</url>
+    <content><![CDATA[<p>總之一個因緣際會複習微積分，所以寫下這篇文章。<br>本篇文章部分要仰賴一些先備知識：<br><a id="more"></a></p>
+<p>$\displaystyle{ \lim_{\theta \to 0} \frac{sin(\theta)}{\theta} = 1 }$</p>
+<p>（證明可以參考：<a href="http://mathtrain.jp/sinc\" target="_blank" rel="noopener">sinx/xについて覚えておくべき２つのこと</a>）</p>
+<p>題外話，在 tutor 板上出現過為什麼不可以用羅必達法則（l’H&ocirc;pital’s Rule）證明的問題。<br>有興趣可以自己前去觀看：<a href="https://www.ptt.cc/man/tutor/DFC5/D338/D20E/M.1174228073.A.6B3.html" target="_blank" rel="noopener">[討論] limsinx/x＝1 when x&rarr;0</a></p>
+<p>另一個部分是：</p>
+<p>$\displaystyle{ \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} = 0 }$</p>
+<p>推倒如下。</p>
+<p>$\displaystyle{ \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} = \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} \cdot \frac{cos(\theta) + 1}{cos(\theta) + 1}}$</p>
+<p>$\displaystyle{ = \lim_{\theta&nbsp;\to 0} \frac{cos^{2}(\theta) - 1^{2}}{\theta [cos(\theta) + 1]} = \lim_{\theta&nbsp;\to 0} \frac{-sin^{2}(\theta)}{\theta [cos(\theta) + 1]}}$</p>
+<p>$\displaystyle{ = - \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{\theta}\frac{sin(\theta)}{cos(\theta) + 1} = - \{ \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{\theta} \cdot \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{cos(\theta) + 1} \} }$</p>
+<p>$\displaystyle{ = - \{ 1&nbsp;\cdot \frac{0}{1 + 1} \} = 0 }$&nbsp;</p>
+<h1 id="sin-x-正弦"><a href="#sin-x-正弦" class="headerlink" title="sin(x) 正弦"></a>sin(x) 正弦</h1><p>利用微分定義推導：</p>
+<p>$\displaystyle{ \frac{d}{dx} sin(x) = \lim_{h \to 0} \frac{sin(x + h) - sin(x)}{h} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)cos(h) + cos(x)sin(h) - sin(x)}{h} \text{（※ 正弦和角公式）} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)cos(h) - sin(x) + cos(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)&nbsp;[cos(h) - 1]}{h} + \lim_{h&nbsp;\to 0} \frac{cos(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ = sin(x) \cdot \lim_{h&nbsp;\to 0} \frac{cos(h) - 1}{h} + cos(x) \cdot&nbsp;\lim_{h&nbsp;\to 0} \frac{sin(h)}{h} }$</p>
+<p>$\displaystyle{ = sin(x) \cdot 0&nbsp;+ cos(x) \cdot 1 = cos(x) }$</p>
+<h1 id="cos-x-餘弦"><a href="#cos-x-餘弦" class="headerlink" title="cos(x) 餘弦"></a>cos(x) 餘弦</h1><p>利用微分定義推導：</p>
+<p>$\displaystyle{ \frac{d}{dx} cos(x) = \lim_{h \to 0} \frac{cos(x + h) - cos(x)}{h} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x)cos(h) - sin(x)sin(h) - cos(x)}{h} \text{（※ 餘弦和角公式）} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x)cos(h) -&nbsp;cos(x) -&nbsp;sin(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x) [cos(h) - 1]}{h} - \lim_{h&nbsp;\to 0}&nbsp;\frac{sin(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ = cos(x) \cdot \lim_{h&nbsp;\to 0} \frac{cos(h) - 1}{h} - sin(x) \cdot&nbsp;\lim_{h&nbsp;\to 0}&nbsp;\frac{sin(h)}{h} }$</p>
+<p>$\displaystyle{ = cos(x) \cdot 0&nbsp;- sin(x) \cdot 1 = - sin(x) }$</p>
+<h1 id="tan-x-正切"><a href="#tan-x-正切" class="headerlink" title="tan(x) 正切"></a>tan(x) 正切</h1><p>由 $tan(x) = \frac{sin(x)}{cos(x)}$ 開始：</p>
+<p>$\frac{d}{dx} tan(x) = \frac{d}{dx} \frac{sin(x)}{cos(x)}$</p>
+<p>$ = \frac{\frac{d}{dx}sin(x) \cdot&nbsp;cos(x) - sin(x) \cdot \frac{d}{dx}cos(x)}{cos^{2}(x)} \text{（※ 微分除法公式）}$</p>
+<p>$ = \frac{cos(x) \cdot&nbsp;cos(x) - sin(x) \cdot [-sin(x)]}{cos^{2}(x)} = \frac{cos^{2}(x) +&nbsp;sin^{2}(x)}{cos^{2}(x)}$</p>
+<p>$ = \frac{1}{cos^{2}(x)} = sec^{2}(x)$</p>
+<p>（※ 使用了 $sin^{2}(x) + cos^{2}(x) = 1$ 這條式子，證明請參考：<a href="https://www.youtube.com/watch?v=91Jxfu4FntM" target="_blank" rel="noopener">sin^2+cos^2=1</a>）</p>
+<h1 id="csc-x-餘割"><a href="#csc-x-餘割" class="headerlink" title="csc(x) 餘割"></a>csc(x) 餘割</h1><p>由 $csc(x) = \frac{1}{sin(x)}$ 開始：</p>
+<p>$\frac{d}{dx} csc(x) = \frac{d}{dx} \frac{1}{sin(x)}$</p>
+<p>$ = \frac{\frac{d}{dx} 1 \cdot sin(x) - 1 \cdot \frac{d}{dx} sin(x)}{sin^{2}(x)} \text{（※ 微分除法公式）}$</p>
+<p>$ = \frac{0 \cdot sin(x) - 1 \cdot cos(x)}{sin^{2}(x)} = - \frac{cos(x)}{sin^{2}(x)}$</p>
+<p>$ = - \frac{cos(x)}{sin(x)} \cdot \frac{1}{sin(x)} = - cot(x) csc(x)$</p>
+<h1 id="sec-x-正割"><a href="#sec-x-正割" class="headerlink" title="sec(x) 正割"></a>sec(x) 正割</h1><p>由 $sec(x) = \frac{1}{cos(x)}$ 開始：</p>
+<p>$\frac{d}{dx} sec(x) = \frac{d}{dx} \frac{1}{cos(x)}$</p>
+<p>$ = \frac{\frac{d}{dx} 1 \cdot cos(x) - 1 \cdot \frac{d}{dx} cos(x)}{cos^{2}(x)} \text{（※ 微分除法公式）}$</p>
+<p>$ = \frac{0 \cdot cos(x) - 1 \cdot [-sin(x)] }{cos^{2}(x)} = \frac{sin(x)}{cos^{2}(x)}$</p>
+<p>$ = \frac{sin(x)}{cos(x)} \cdot \frac{1}{cos(x)} = tan(x) sec(x)$</p>
+<h1 id="cot-x-餘切"><a href="#cot-x-餘切" class="headerlink" title="cot(x) 餘切"></a>cot(x) 餘切</h1><p>由 $cot(x) = \frac{cos(x)}{sin(x)}$ 開始：</p>
+<p>$\frac{d}{dx} cot(x) = \frac{d}{dx} \frac{cos(x)}{sin(x)}$</p>
+<p>$ = \frac{\frac{d}{dx}cos(x) \cdot sin(x) - cos(x) \cdot \frac{d}{dx} sin(x)}{sin^{2}(x)} \text{（※ 微分除法公式）}$</p>
+<p>$ = \frac{[-sin(x)] \cdot sin(x) - cos(x) \cdot cos(x)}{sin^{2}(x)} = \frac{ - sin^{2}(x) - cos^{2}(x)}{sin^{2}(x)}$</p>
+<p>$ = - \{\frac{sin^{2}(x) +&nbsp;cos^{2}(x)}{sin^{2}(x)}\}&nbsp;= - \frac{1}{sin^{2}(x)} = -csc^{2}(x)$</p>
+<p>（※ 跟 $tan(x)$ 一樣使用了 $sin^{2}(x) + cos^{2}(x) = 1$ 這條式子，證明請參考上面的資料。）</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>可以發現一些手法，除了 $sin(x)$ 以及 $cos(x)$ 要從定義來之外，<br>其他的有兩兩對應的步驟，像是 $tan(x)$ 跟 $cot(x)$ 就很類似、而 $csc(x)$ 跟 $sec(x)$ 也很相像。</p>
+]]></content>
+      <categories>
+        <category>微積分</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>串列 Linked List</title>
+    <url>/linked-list/</url>
+    <content><![CDATA[<p>串列是資料結構中，一種重要的資料表達方式，<br>這樣的表達方式可以透過指標來完成。</p>
+<a id="more"></a>
+<p>通常，從這個部分開始，<br>可以看出一個人對指標的熟練程度。</p>
+<h1 id="串列結構"><a href="#串列結構" class="headerlink" title="串列結構"></a>串列結構</h1><p>串列的典型做法是使用 struct 實作：</p>
+<div class="note info">
+            <p>為方便撰寫範例，這裡假設資料為整數。</p>
+          </div>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;   <span class="comment">// 資料</span></span><br><span class="line">    Node *next; <span class="comment">// 下個節點</span></span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line">Node *node_1 = <span class="keyword">new</span> Node; <span class="comment">// 第 1 個節點</span></span><br><span class="line">Node *node_2 = <span class="keyword">new</span> Node; <span class="comment">// 第 2 個節點</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// 把第 2 個節點接在第 1 個後面</span></span><br><span class="line">node_1-&gt;next = node_2;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>串列結構經過良好的封裝更便於使用。</p>
+          </div>
+<h1 id="創建節點"><a href="#創建節點" class="headerlink" title="創建節點"></a>創建節點</h1><p>可以透過一個函數取得節點，<br>動態建立節點後，記得回傳給主程式。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 給定資料建立一個節點</span></span><br><span class="line"><span class="function">Node* <span class="title">create</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = <span class="keyword">new</span> Node; <span class="comment">// 建立新節點</span></span><br><span class="line">    node-&gt;data = value;    <span class="comment">// 設定節點值</span></span><br><span class="line">    node-&gt;next = <span class="literal">nullptr</span>;  <span class="comment">// 初始化指標</span></span><br><span class="line">    <span class="keyword">return</span> node;           <span class="comment">// 回傳給主程序</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下來的插入節點就可以使用這個函數了。</p>
+<h1 id="搜索節點"><a href="#搜索節點" class="headerlink" title="搜索節點"></a>搜索節點</h1><p>我個人認為，搜索節點這件事情，<br>搜索當前節點的效益並不大，通常我們更需要「目標節點的前一個節點」。</p>
+<div class="note info">
+            <p>「搜索目標節點的前一個節點函數」下面簡稱為「搜前函數」。</p>
+          </div>
+<p>個人實作時，會先實作搜前函數，<br>搜索節點的函數則透過這個函數間接完成。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreachPrevious</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node* node = root;</span><br><span class="line">    <span class="keyword">while</span> (node-&gt;next != <span class="literal">nullptr</span>      <span class="comment">// 不是最後一個節點</span></span><br><span class="line">        &amp;&amp; node-&gt;next-&gt;data != value) <span class="comment">// 而且下個節點的值不是目標</span></span><br><span class="line">        node = node-&gt;next;            <span class="comment">// 繼續搜索</span></span><br><span class="line">    <span class="keyword">return</span> node;                      <span class="comment">// 回傳目標的上一節點或最後一個節點</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>這裡的「root」是樹狀結構的名詞，但串列也可以視作一棵樹。</p>
+          </div>
+<p>透過搜前函數，可以實做出的搜索功能。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreach</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;data == value)</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    Node *node = sreachPrevious(root, value);</span><br><span class="line">    <span class="keyword">return</span> node-&gt;next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="插入節點"><a href="#插入節點" class="headerlink" title="插入節點"></a>插入節點</h1><p>插入節點不困難，這裡以插入到末端為例，<br>如果存在一個值不會出現在串列中的話，可以透過搜前函數實作。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 插入一個節點到串列的結尾</span></span><br><span class="line"><span class="function">Node* <span class="title">insert</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = create(value);       <span class="comment">// 新建節點</span></span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">nullptr</span>)              <span class="comment">// 如果串列尚不存在</span></span><br><span class="line">        <span class="keyword">return</span> node;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Node* tail = root;            <span class="comment">// 找尾巴節點</span></span><br><span class="line">        <span class="keyword">while</span> (tail-&gt;next != <span class="literal">nullptr</span>)</span><br><span class="line">            tail = tail-&gt;next;</span><br><span class="line">        tail-&gt;next = node;            <span class="comment">// 新增在尾巴</span></span><br><span class="line">        <span class="keyword">return</span> root;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>插入到特定位置的功能，也可以利用搜前函數的實作。</p>
+          </div>
+<div class="note warning">
+            <p>如果不回傳指標給主程序，則建立串列時會出錯。</p>
+          </div>
+<h1 id="刪除節點"><a href="#刪除節點" class="headerlink" title="刪除節點"></a>刪除節點</h1><p>刪除節點可以直接透過搜前函數實作。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *previous = sreachPrevious(root, value);</span><br><span class="line">    Node *target = previous-&gt;next;</span><br><span class="line">    <span class="keyword">if</span> (target != <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        previous-&gt;next = target-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="遍歷節點"><a href="#遍歷節點" class="headerlink" title="遍歷節點"></a>遍歷節點</h1><p>對串列進行一堆操作後，檢查串列的正確性，<br>或是有時我們需要對整個串列做特定運算，都需要遍歷功能：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traversal</span><span class="params">(Node *root, <span class="keyword">void</span> (*callback)(Node *node))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Node *node = root; node != <span class="literal">nullptr</span>; node = node-&gt;next)</span><br><span class="line">        callback(node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>遍歷功能的第二個參數是函數的指標，<br>串列的每個節點，會被當成這個函數的傳入值操作。</p>
+<p>以印出節點來說，可以這樣調用：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(Node *node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; node-&gt;data &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">traversal(root, show);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>演示包含插入與刪除節點，<br>其中插入功能隱含創建節點功能，而刪除功能隱含著搜尋功能。</p>
+<iframe scrolling="no" width="100%" height="130px" src="//jsfiddle.net/ngkx992u/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>程式設計</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux 螢幕解析度問題</title>
+    <url>/linux-screen-display-problem/</url>
+    <content><![CDATA[<p>我當初剛裝 Linux 時，被雙螢幕的問題搞了許久，<br>這篇主要是做個解決方案的筆記，以免之後又碰到相同的問題。</p>
+<p>本解決方案來自網路上的資料，我將把參考資料陳列於下方。<br><a id="more"></a></p>
+<div class="note info">
+            <p>本篇的 Linux 版本為 <a href="https://linuxmint.com/" target="_blank" rel="noopener">Linux Mint</a><br>如果你的不是 Linux Mint 的話，解決方案可能大同小異，請參考其他資料處理。</p>
+          </div>
+<h1 id="解析度問題"><a href="#解析度問題" class="headerlink" title="解析度問題"></a>解析度問題</h1><p>有時候安裝好 Linux 螢幕並不會自動抓到適當的解析度，<br>筆者的雙螢幕中，發生問題的螢幕是電視螢幕，具體參考圖 1。</p>
+<p>我的猜測是，螢幕本身不是電腦螢幕的話，可能發生機會會大得多。</p>
+<p><img src="https://i.imgur.com/w7Kga59.png" alt="圖 1、Linux Mint 螢幕設定畫面"></p>
+<p>如上圖所示，問題螢幕為 DVI-I 輸出，正常情況應為 1920x1080 解析度；<br>但由於某種原因，最高只到 1024x768 解析度。</p>
+<h1 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案"></a>解決方案</h1><p>我們會利用 cvt 及 xrandr 指令解決這個問題：</p>
+<ul>
+<li>利用 xrandr 找出問題螢幕的代號</li>
+<li>透過 cvt 生成 modeline</li>
+<li>透過 xrandr 以及 modeline 建立解析度</li>
+<li>透過 xrandr 增加解析度到螢幕代號</li>
+<li>設定螢幕為新解析度</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr</span><br><span class="line">Screen 0: minimum 320 x 200, current 2944 x 1080, maximum 16384 x 16384</span><br><span class="line">DVI-I-1 connected 1024x768+0+0 (normal left inverted right x axis y axis) 0mm x 0mm</span><br><span class="line">   1024x768      60.00* </span><br><span class="line">   800x600       60.32    56.25  </span><br><span class="line">   848x480       60.00  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">HDMI-1 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">VGA-1 connected primary 1920x1080+1024+0 (normal left inverted right x axis y axis) 477mm x 268mm</span><br><span class="line">   1920x1080     60.00*+</span><br><span class="line">   1680x1050     59.95  </span><br><span class="line">   1600x900      60.00  </span><br><span class="line">   1280x1024     60.02  </span><br><span class="line">   1280x800      59.81  </span><br><span class="line">   1280x720      60.00  </span><br><span class="line">   1024x768      60.00  </span><br><span class="line">   800x600       60.32  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ cvt 1920 1080 60</span><br><span class="line"><span class="meta">#</span> 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz</span><br><span class="line">Modeline "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --addmode DVI-I-1 "1920x1080_60.00"</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
+<p>這個方法是暫時的，完成這些步驟後，要做一些設定來保存這個配置，<br>我的方案是使用開機執行程式（.sh）開機時自動完成上面那些操作：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">xrandr --addmode DVI-I-1 1920x1080_60.00</span><br><span class="line">xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
+<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574" target="_blank" rel="noopener">https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574</a><br><a href="https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution" target="_blank" rel="noopener">https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Thinking at night</title>
     <url>/thinking-at-night/</url>
     <content><![CDATA[<p>這是一個蒐集我編曲作品的音樂遊戲。</p>
@@ -938,111 +1043,6 @@
 ]]></content>
       <categories>
         <category>獨立遊戲製作</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>三角函數的微分</title>
-    <url>/differential-trigonometric-functions/</url>
-    <content><![CDATA[<p>總之一個因緣際會複習微積分，所以寫下這篇文章。<br>本篇文章部分要仰賴一些先備知識：<br><a id="more"></a></p>
-<p>$\displaystyle{ \lim_{\theta \to 0} \frac{sin(\theta)}{\theta} = 1 }$</p>
-<p>（證明可以參考：<a href="http://mathtrain.jp/sinc\" target="_blank" rel="noopener">sinx/xについて覚えておくべき２つのこと</a>）</p>
-<p>題外話，在 tutor 板上出現過為什麼不可以用羅必達法則（l’H&ocirc;pital’s Rule）證明的問題。<br>有興趣可以自己前去觀看：<a href="https://www.ptt.cc/man/tutor/DFC5/D338/D20E/M.1174228073.A.6B3.html" target="_blank" rel="noopener">[討論] limsinx/x＝1 when x&rarr;0</a></p>
-<p>另一個部分是：</p>
-<p>$\displaystyle{ \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} = 0 }$</p>
-<p>推倒如下。</p>
-<p>$\displaystyle{ \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} = \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} \cdot \frac{cos(\theta) + 1}{cos(\theta) + 1}}$</p>
-<p>$\displaystyle{ = \lim_{\theta&nbsp;\to 0} \frac{cos^{2}(\theta) - 1^{2}}{\theta [cos(\theta) + 1]} = \lim_{\theta&nbsp;\to 0} \frac{-sin^{2}(\theta)}{\theta [cos(\theta) + 1]}}$</p>
-<p>$\displaystyle{ = - \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{\theta}\frac{sin(\theta)}{cos(\theta) + 1} = - \{ \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{\theta} \cdot \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{cos(\theta) + 1} \} }$</p>
-<p>$\displaystyle{ = - \{ 1&nbsp;\cdot \frac{0}{1 + 1} \} = 0 }$&nbsp;</p>
-<h1 id="sin-x-正弦"><a href="#sin-x-正弦" class="headerlink" title="sin(x) 正弦"></a>sin(x) 正弦</h1><p>利用微分定義推導：</p>
-<p>$\displaystyle{ \frac{d}{dx} sin(x) = \lim_{h \to 0} \frac{sin(x + h) - sin(x)}{h} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)cos(h) + cos(x)sin(h) - sin(x)}{h} \text{（※ 正弦和角公式）} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)cos(h) - sin(x) + cos(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)&nbsp;[cos(h) - 1]}{h} + \lim_{h&nbsp;\to 0} \frac{cos(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ = sin(x) \cdot \lim_{h&nbsp;\to 0} \frac{cos(h) - 1}{h} + cos(x) \cdot&nbsp;\lim_{h&nbsp;\to 0} \frac{sin(h)}{h} }$</p>
-<p>$\displaystyle{ = sin(x) \cdot 0&nbsp;+ cos(x) \cdot 1 = cos(x) }$</p>
-<h1 id="cos-x-餘弦"><a href="#cos-x-餘弦" class="headerlink" title="cos(x) 餘弦"></a>cos(x) 餘弦</h1><p>利用微分定義推導：</p>
-<p>$\displaystyle{ \frac{d}{dx} cos(x) = \lim_{h \to 0} \frac{cos(x + h) - cos(x)}{h} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x)cos(h) - sin(x)sin(h) - cos(x)}{h} \text{（※ 餘弦和角公式）} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x)cos(h) -&nbsp;cos(x) -&nbsp;sin(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x) [cos(h) - 1]}{h} - \lim_{h&nbsp;\to 0}&nbsp;\frac{sin(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ = cos(x) \cdot \lim_{h&nbsp;\to 0} \frac{cos(h) - 1}{h} - sin(x) \cdot&nbsp;\lim_{h&nbsp;\to 0}&nbsp;\frac{sin(h)}{h} }$</p>
-<p>$\displaystyle{ = cos(x) \cdot 0&nbsp;- sin(x) \cdot 1 = - sin(x) }$</p>
-<h1 id="tan-x-正切"><a href="#tan-x-正切" class="headerlink" title="tan(x) 正切"></a>tan(x) 正切</h1><p>由 $tan(x) = \frac{sin(x)}{cos(x)}$ 開始：</p>
-<p>$\frac{d}{dx} tan(x) = \frac{d}{dx} \frac{sin(x)}{cos(x)}$</p>
-<p>$ = \frac{\frac{d}{dx}sin(x) \cdot&nbsp;cos(x) - sin(x) \cdot \frac{d}{dx}cos(x)}{cos^{2}(x)} \text{（※ 微分除法公式）}$</p>
-<p>$ = \frac{cos(x) \cdot&nbsp;cos(x) - sin(x) \cdot [-sin(x)]}{cos^{2}(x)} = \frac{cos^{2}(x) +&nbsp;sin^{2}(x)}{cos^{2}(x)}$</p>
-<p>$ = \frac{1}{cos^{2}(x)} = sec^{2}(x)$</p>
-<p>（※ 使用了 $sin^{2}(x) + cos^{2}(x) = 1$ 這條式子，證明請參考：<a href="https://www.youtube.com/watch?v=91Jxfu4FntM" target="_blank" rel="noopener">sin^2+cos^2=1</a>）</p>
-<h1 id="csc-x-餘割"><a href="#csc-x-餘割" class="headerlink" title="csc(x) 餘割"></a>csc(x) 餘割</h1><p>由 $csc(x) = \frac{1}{sin(x)}$ 開始：</p>
-<p>$\frac{d}{dx} csc(x) = \frac{d}{dx} \frac{1}{sin(x)}$</p>
-<p>$ = \frac{\frac{d}{dx} 1 \cdot sin(x) - 1 \cdot \frac{d}{dx} sin(x)}{sin^{2}(x)} \text{（※ 微分除法公式）}$</p>
-<p>$ = \frac{0 \cdot sin(x) - 1 \cdot cos(x)}{sin^{2}(x)} = - \frac{cos(x)}{sin^{2}(x)}$</p>
-<p>$ = - \frac{cos(x)}{sin(x)} \cdot \frac{1}{sin(x)} = - cot(x) csc(x)$</p>
-<h1 id="sec-x-正割"><a href="#sec-x-正割" class="headerlink" title="sec(x) 正割"></a>sec(x) 正割</h1><p>由 $sec(x) = \frac{1}{cos(x)}$ 開始：</p>
-<p>$\frac{d}{dx} sec(x) = \frac{d}{dx} \frac{1}{cos(x)}$</p>
-<p>$ = \frac{\frac{d}{dx} 1 \cdot cos(x) - 1 \cdot \frac{d}{dx} cos(x)}{cos^{2}(x)} \text{（※ 微分除法公式）}$</p>
-<p>$ = \frac{0 \cdot cos(x) - 1 \cdot [-sin(x)] }{cos^{2}(x)} = \frac{sin(x)}{cos^{2}(x)}$</p>
-<p>$ = \frac{sin(x)}{cos(x)} \cdot \frac{1}{cos(x)} = tan(x) sec(x)$</p>
-<h1 id="cot-x-餘切"><a href="#cot-x-餘切" class="headerlink" title="cot(x) 餘切"></a>cot(x) 餘切</h1><p>由 $cot(x) = \frac{cos(x)}{sin(x)}$ 開始：</p>
-<p>$\frac{d}{dx} cot(x) = \frac{d}{dx} \frac{cos(x)}{sin(x)}$</p>
-<p>$ = \frac{\frac{d}{dx}cos(x) \cdot sin(x) - cos(x) \cdot \frac{d}{dx} sin(x)}{sin^{2}(x)} \text{（※ 微分除法公式）}$</p>
-<p>$ = \frac{[-sin(x)] \cdot sin(x) - cos(x) \cdot cos(x)}{sin^{2}(x)} = \frac{ - sin^{2}(x) - cos^{2}(x)}{sin^{2}(x)}$</p>
-<p>$ = - \{\frac{sin^{2}(x) +&nbsp;cos^{2}(x)}{sin^{2}(x)}\}&nbsp;= - \frac{1}{sin^{2}(x)} = -csc^{2}(x)$</p>
-<p>（※ 跟 $tan(x)$ 一樣使用了 $sin^{2}(x) + cos^{2}(x) = 1$ 這條式子，證明請參考上面的資料。）</p>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>可以發現一些手法，除了 $sin(x)$ 以及 $cos(x)$ 要從定義來之外，<br>其他的有兩兩對應的步驟，像是 $tan(x)$ 跟 $cot(x)$ 就很類似、而 $csc(x)$ 跟 $sec(x)$ 也很相像。</p>
-]]></content>
-      <categories>
-        <category>微積分</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>串列 Linked List</title>
-    <url>/linked-list/</url>
-    <content><![CDATA[<p>串列是資料結構中，一種重要的資料表達方式，<br>這樣的表達方式可以透過指標來完成。</p>
-<a id="more"></a>
-<p>通常，從這個部分開始，<br>可以看出一個人對指標的熟練程度。</p>
-<h1 id="串列結構"><a href="#串列結構" class="headerlink" title="串列結構"></a>串列結構</h1><p>串列的典型做法是使用 struct 實作：</p>
-<div class="note info">
-            <p>為方便撰寫範例，這裡假設資料為整數。</p>
-          </div>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;   <span class="comment">// 資料</span></span><br><span class="line">    Node *next; <span class="comment">// 下個節點</span></span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line">Node *node_1 = <span class="keyword">new</span> Node; <span class="comment">// 第 1 個節點</span></span><br><span class="line">Node *node_2 = <span class="keyword">new</span> Node; <span class="comment">// 第 2 個節點</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// 把第 2 個節點接在第 1 個後面</span></span><br><span class="line">node_1-&gt;next = node_2;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<div class="note info">
-            <p>串列結構經過良好的封裝更便於使用。</p>
-          </div>
-<h1 id="創建節點"><a href="#創建節點" class="headerlink" title="創建節點"></a>創建節點</h1><p>可以透過一個函數取得節點，<br>動態建立節點後，記得回傳給主程式。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 給定資料建立一個節點</span></span><br><span class="line"><span class="function">Node* <span class="title">create</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = <span class="keyword">new</span> Node; <span class="comment">// 建立新節點</span></span><br><span class="line">    node-&gt;data = value;    <span class="comment">// 設定節點值</span></span><br><span class="line">    node-&gt;next = <span class="literal">nullptr</span>;  <span class="comment">// 初始化指標</span></span><br><span class="line">    <span class="keyword">return</span> node;           <span class="comment">// 回傳給主程序</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>接下來的插入節點就可以使用這個函數了。</p>
-<h1 id="搜索節點"><a href="#搜索節點" class="headerlink" title="搜索節點"></a>搜索節點</h1><p>我個人認為，搜索節點這件事情，<br>搜索當前節點的效益並不大，通常我們更需要「目標節點的前一個節點」。</p>
-<div class="note info">
-            <p>「搜索目標節點的前一個節點函數」下面簡稱為「搜前函數」。</p>
-          </div>
-<p>個人實作時，會先實作搜前函數，<br>搜索節點的函數則透過這個函數間接完成。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreachPrevious</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node* node = root;</span><br><span class="line">    <span class="keyword">while</span> (node-&gt;next != <span class="literal">nullptr</span>      <span class="comment">// 不是最後一個節點</span></span><br><span class="line">        &amp;&amp; node-&gt;next-&gt;data != value) <span class="comment">// 而且下個節點的值不是目標</span></span><br><span class="line">        node = node-&gt;next;            <span class="comment">// 繼續搜索</span></span><br><span class="line">    <span class="keyword">return</span> node;                      <span class="comment">// 回傳目標的上一節點或最後一個節點</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div class="note info">
-            <p>這裡的「root」是樹狀結構的名詞，但串列也可以視作一棵樹。</p>
-          </div>
-<p>透過搜前函數，可以實做出的搜索功能。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreach</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;data == value)</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    Node *node = sreachPrevious(root, value);</span><br><span class="line">    <span class="keyword">return</span> node-&gt;next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="插入節點"><a href="#插入節點" class="headerlink" title="插入節點"></a>插入節點</h1><p>插入節點不困難，這裡以插入到末端為例，<br>如果存在一個值不會出現在串列中的話，可以透過搜前函數實作。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 插入一個節點到串列的結尾</span></span><br><span class="line"><span class="function">Node* <span class="title">insert</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = create(value);       <span class="comment">// 新建節點</span></span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">nullptr</span>)              <span class="comment">// 如果串列尚不存在</span></span><br><span class="line">        <span class="keyword">return</span> node;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Node* tail = root;            <span class="comment">// 找尾巴節點</span></span><br><span class="line">        <span class="keyword">while</span> (tail-&gt;next != <span class="literal">nullptr</span>)</span><br><span class="line">            tail = tail-&gt;next;</span><br><span class="line">        tail-&gt;next = node;            <span class="comment">// 新增在尾巴</span></span><br><span class="line">        <span class="keyword">return</span> root;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div class="note info">
-            <p>插入到特定位置的功能，也可以利用搜前函數的實作。</p>
-          </div>
-<div class="note warning">
-            <p>如果不回傳指標給主程序，則建立串列時會出錯。</p>
-          </div>
-<h1 id="刪除節點"><a href="#刪除節點" class="headerlink" title="刪除節點"></a>刪除節點</h1><p>刪除節點可以直接透過搜前函數實作。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *previous = sreachPrevious(root, value);</span><br><span class="line">    Node *target = previous-&gt;next;</span><br><span class="line">    <span class="keyword">if</span> (target != <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        previous-&gt;next = target-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="遍歷節點"><a href="#遍歷節點" class="headerlink" title="遍歷節點"></a>遍歷節點</h1><p>對串列進行一堆操作後，檢查串列的正確性，<br>或是有時我們需要對整個串列做特定運算，都需要遍歷功能：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traversal</span><span class="params">(Node *root, <span class="keyword">void</span> (*callback)(Node *node))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Node *node = root; node != <span class="literal">nullptr</span>; node = node-&gt;next)</span><br><span class="line">        callback(node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>遍歷功能的第二個參數是函數的指標，<br>串列的每個節點，會被當成這個函數的傳入值操作。</p>
-<p>以印出節點來說，可以這樣調用：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(Node *node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; node-&gt;data &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">traversal(root, show);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>演示包含插入與刪除節點，<br>其中插入功能隱含創建節點功能，而刪除功能隱含著搜尋功能。</p>
-<iframe scrolling="no" width="100%" height="130px" src="//jsfiddle.net/ngkx992u/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
-      <categories>
-        <category>程式設計</category>
       </categories>
   </entry>
   <entry>
@@ -1241,6 +1241,83 @@
       </categories>
   </entry>
   <entry>
+    <title>先驗算法 Apriori Algorithm</title>
+    <url>/apriori-algorithm/</url>
+    <content><![CDATA[<p>資料探勘的文章，多半是我大學資料探勘課程的筆記之類的東西，<br>因為覺得內容有點雜，不是很難，就是很多東西。</p>
+<p>所以想開個文章逐一紀錄。以後找資料也方便一點這樣。<br>不過課程吸收的感覺對這個領域把握不高，有錯誤還請見諒就是了。<br><a id="more"></a></p>
+<h1 id="關聯規則"><a href="#關聯規則" class="headerlink" title="關聯規則"></a>關聯規則</h1><p>關聯規則是類似這樣的一個問題：<br><div class="note info">
+            <p>如果我的客戶買了某個商品，那麼要再推薦什麼商品呢？</p>
+          </div></p>
+<p>想當然的，推薦的商品一定是那個「很有可能被加購的」商品。</p>
+<p>那麼，我要怎知道客戶有可能加購什麼呢？<br>事實上，我們大概可以猜到一些事情。  </p>
+<ul>
+<li>與「客戶的屬性」相關<ul>
+<li>客戶是學生，而他剛剛買了筆，是不是折扣的話會買更多？</li>
+<li>客戶是廚師的話呢？</li>
+</ul>
+</li>
+<li>與「外在的屬性」相關<ul>
+<li>天氣炎熱的話，買了午餐再買飲料的關聯，是不是會被加強？</li>
+<li>天氣涼爽的話呢？</li>
+</ul>
+</li>
+<li>與「先前購買的商品」相關  <ul>
+<li>買了鐵鎚，是不是會繼續選購釘子呢？</li>
+<li>推薦買了鐵鎚的人麵包如何？</li>
+</ul>
+</li>
+</ul>
+<p>而資料探勘當中，有一些方法，可以去得到這些關聯規則，</p>
+<p>對於商業行為來說，資料探勘的重點就是找到這些隱含在資料中的「商機」。<br>然而這三種可能，我們通常關注第三種，也就是「先前購買的商品」相關的部份。</p>
+<p>至於為什麼呢？看下面的例子，然後想想看：  </p>
+<ul>
+<li>某個男人在賣場中買了一個麵包，所以男人的職業是？</li>
+<li>早上天氣還很熱，下午開始轉涼了。</li>
+</ul>
+<h1 id="支持率與可信度"><a href="#支持率與可信度" class="headerlink" title="支持率與可信度"></a>支持率與可信度</h1><p>在開始進行算法之前，得先介紹一下：</p>
+<p>支持率（Support）以及可信度（Confidence）這兩個參數。  </p>
+<ul>
+<li>支持率：出現的概率。</li>
+<li>可信度：條件機率，當商品出現時，出現另一件商品的概率。</li>
+</ul>
+<p>下面做一些描述：  </p>
+<p>$Support(A) = P(A)$<br>$Confidence(A \Rightarrow B) = P(B \mid A)$  </p>
+<p>參數的作用，從這裡可以發現一些指標：</p>
+<div class="note info">
+            <p>支持率代表一條規則的重要程度。</p>
+          </div>
+<p>$Confidence(A \Rightarrow B) = 99%, Support({A, B}) = 1%$</p>
+<p>雖然買了 A 商品，幾乎也會買 B 商品，但出現這種買法相當罕見。<br>如果很少人會這樣買，是不是就沒有商機呢？</p>
+<div class="note info">
+            <p>可信度代表一條規則的準確程度</p>
+          </div>
+<div class="note info">
+            <p>想想看，有沒有可能出現可信度很高、但支持率很低的情況？</p>
+          </div>
+<p>$Confidence(A \Rightarrow B) = P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{Support({A, B})}{P(A)}$</p>
+<h1 id="先驗算法"><a href="#先驗算法" class="headerlink" title="先驗算法"></a>先驗算法</h1><p>先驗算法（Apriori Algorithm）是資料探勘中的一種基本方法，<br>讓我們可以從資料中取得這些關聯規則。</p>
+<p>實際操作的說明：  </p>
+<ul>
+<li>設定 $\text{minimum_support}$</li>
+<li>計算每種商品的 $\text{support}$</li>
+<li>刪去 $\text{support}$ 小於 $\text{minimum_support}$ 的商品</li>
+<li>組合剩下的商品</li>
+<li>重複 2 ～ 4 步，直到無法組合或滿足其他停止條件</li>
+<li>計算所有的 $\text{confidence}$</li>
+</ul>
+<p>公式化：  </p>
+<ul>
+<li>$\alpha = \text{Minimum Support}, X_{0} = \text{All Objects}$</li>
+<li>$X_{p+1} = { x_{i} \cup x_{j} : support(x_{i}) &gt; \alpha \land support(x_{j}) &gt; \alpha , x_{i} \neq x_{j}, \forall x_{i}, x_{j} \in X_{p} }$</li>
+<li>$\text{Repeat step.2, until } X_{n} = \varnothing$</li>
+</ul>
+<p>大致上就這個樣子，直到 $X$ 無法組合為止，而這時的最長規則，長度為 $n-1$ 單位，<br>很多時候，由於要人工篩選規則，所以所有出現過的 $X$ 都要考慮。</p>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="400px" src="//jsfiddle.net/okfyq5ub/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>資料結構與演算法</category>
+      </categories>
+  </entry>
+  <entry>
     <title>價值迭代 Value Iteration</title>
     <url>/value-iteration/</url>
     <content><![CDATA[<p>這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，<br>從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。<br><a id="more"></a></p>
@@ -1418,83 +1495,6 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
 ]]></content>
       <categories>
         <category>人工智慧</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>先驗算法 Apriori Algorithm</title>
-    <url>/apriori-algorithm/</url>
-    <content><![CDATA[<p>資料探勘的文章，多半是我大學資料探勘課程的筆記之類的東西，<br>因為覺得內容有點雜，不是很難，就是很多東西。</p>
-<p>所以想開個文章逐一紀錄。以後找資料也方便一點這樣。<br>不過課程吸收的感覺對這個領域把握不高，有錯誤還請見諒就是了。<br><a id="more"></a></p>
-<h1 id="關聯規則"><a href="#關聯規則" class="headerlink" title="關聯規則"></a>關聯規則</h1><p>關聯規則是類似這樣的一個問題：<br><div class="note info">
-            <p>如果我的客戶買了某個商品，那麼要再推薦什麼商品呢？</p>
-          </div></p>
-<p>想當然的，推薦的商品一定是那個「很有可能被加購的」商品。</p>
-<p>那麼，我要怎知道客戶有可能加購什麼呢？<br>事實上，我們大概可以猜到一些事情。  </p>
-<ul>
-<li>與「客戶的屬性」相關<ul>
-<li>客戶是學生，而他剛剛買了筆，是不是折扣的話會買更多？</li>
-<li>客戶是廚師的話呢？</li>
-</ul>
-</li>
-<li>與「外在的屬性」相關<ul>
-<li>天氣炎熱的話，買了午餐再買飲料的關聯，是不是會被加強？</li>
-<li>天氣涼爽的話呢？</li>
-</ul>
-</li>
-<li>與「先前購買的商品」相關  <ul>
-<li>買了鐵鎚，是不是會繼續選購釘子呢？</li>
-<li>推薦買了鐵鎚的人麵包如何？</li>
-</ul>
-</li>
-</ul>
-<p>而資料探勘當中，有一些方法，可以去得到這些關聯規則，</p>
-<p>對於商業行為來說，資料探勘的重點就是找到這些隱含在資料中的「商機」。<br>然而這三種可能，我們通常關注第三種，也就是「先前購買的商品」相關的部份。</p>
-<p>至於為什麼呢？看下面的例子，然後想想看：  </p>
-<ul>
-<li>某個男人在賣場中買了一個麵包，所以男人的職業是？</li>
-<li>早上天氣還很熱，下午開始轉涼了。</li>
-</ul>
-<h1 id="支持率與可信度"><a href="#支持率與可信度" class="headerlink" title="支持率與可信度"></a>支持率與可信度</h1><p>在開始進行算法之前，得先介紹一下：</p>
-<p>支持率（Support）以及可信度（Confidence）這兩個參數。  </p>
-<ul>
-<li>支持率：出現的概率。</li>
-<li>可信度：條件機率，當商品出現時，出現另一件商品的概率。</li>
-</ul>
-<p>下面做一些描述：  </p>
-<p>$Support(A) = P(A)$<br>$Confidence(A \Rightarrow B) = P(B \mid A)$  </p>
-<p>參數的作用，從這裡可以發現一些指標：</p>
-<div class="note info">
-            <p>支持率代表一條規則的重要程度。</p>
-          </div>
-<p>$Confidence(A \Rightarrow B) = 99%, Support({A, B}) = 1%$</p>
-<p>雖然買了 A 商品，幾乎也會買 B 商品，但出現這種買法相當罕見。<br>如果很少人會這樣買，是不是就沒有商機呢？</p>
-<div class="note info">
-            <p>可信度代表一條規則的準確程度</p>
-          </div>
-<div class="note info">
-            <p>想想看，有沒有可能出現可信度很高、但支持率很低的情況？</p>
-          </div>
-<p>$Confidence(A \Rightarrow B) = P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{Support({A, B})}{P(A)}$</p>
-<h1 id="先驗算法"><a href="#先驗算法" class="headerlink" title="先驗算法"></a>先驗算法</h1><p>先驗算法（Apriori Algorithm）是資料探勘中的一種基本方法，<br>讓我們可以從資料中取得這些關聯規則。</p>
-<p>實際操作的說明：  </p>
-<ul>
-<li>設定 $\text{minimum_support}$</li>
-<li>計算每種商品的 $\text{support}$</li>
-<li>刪去 $\text{support}$ 小於 $\text{minimum_support}$ 的商品</li>
-<li>組合剩下的商品</li>
-<li>重複 2 ～ 4 步，直到無法組合或滿足其他停止條件</li>
-<li>計算所有的 $\text{confidence}$</li>
-</ul>
-<p>公式化：  </p>
-<ul>
-<li>$\alpha = \text{Minimum Support}, X_{0} = \text{All Objects}$</li>
-<li>$X_{p+1} = { x_{i} \cup x_{j} : support(x_{i}) &gt; \alpha \land support(x_{j}) &gt; \alpha , x_{i} \neq x_{j}, \forall x_{i}, x_{j} \in X_{p} }$</li>
-<li>$\text{Repeat step.2, until } X_{n} = \varnothing$</li>
-</ul>
-<p>大致上就這個樣子，直到 $X$ 無法組合為止，而這時的最長規則，長度為 $n-1$ 單位，<br>很多時候，由於要人工篩選規則，所以所有出現過的 $X$ 都要考慮。</p>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="400px" src="//jsfiddle.net/okfyq5ub/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
-      <categories>
-        <category>資料結構與演算法</category>
       </categories>
   </entry>
   <entry>
@@ -1960,6 +1960,30 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
       </categories>
   </entry>
   <entry>
+    <title>堆疊與佇列 Stack and Queue</title>
+    <url>/stack-and-queue/</url>
+    <content><![CDATA[<p>本文僅為資料結構的筆記。</p>
+<p>對於較高階的語言來說有許多現成的函式庫，<br>儘管如此，還是需要瞭解基本規則。<br><a id="more"></a></p>
+<h1 id="堆疊"><a href="#堆疊" class="headerlink" title="堆疊"></a>堆疊</h1><p>堆疊是一種基本結構，核心的思維是「先進後出」。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//create stack</span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">stack</span>[SIZE];</span><br><span class="line"><span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//stack push data</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">stack</span>[top++] = data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//stack pop data</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">stack</span>[--top];</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>這是 C/C++ 的作法，<br>對於更高階的語言（比方說 JavaScript）來說，<br>這些功能都已經內建了。</p>
+<div class="note info">
+            <p>實際上 C++ STL 有內建；另外雖然建立很簡單，但 C 語言方面也有函示庫可以使用。</p>
+          </div>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> stack = <span class="keyword">new</span> <span class="built_in">Array</span>(); <span class="comment">//create stack</span></span><br><span class="line">stack.push(..);          <span class="comment">//stack push data</span></span><br><span class="line">stack.pop(..);           <span class="comment">//stack pop data</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>接下來來看看基本堆疊的資料進出方式。</p>
+<iframe scrolling="no" width="100%" height="300px" src="//jsfiddle.net/6xb1L6my/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<h1 id="佇列"><a href="#佇列" class="headerlink" title="佇列"></a>佇列</h1><p>佇列是一種基本結構，核心的思維是「先進先出」。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//create queue</span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">queue</span>[SIZE];</span><br><span class="line"><span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//queue push data</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">queue</span>[top++] = data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//queue shift data</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shift</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> data = <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; top; i++)</span><br><span class="line">        <span class="built_in">queue</span>[i] = <span class="built_in">queue</span>[i + <span class="number">1</span>];</span><br><span class="line">    top--;</span><br><span class="line">    <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>這是C/C++的作法，<br>對於更高階的語言（比方說 JavaScript）來說，<br>這些功能都也已經內建了。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> queue = <span class="keyword">new</span> <span class="built_in">Array</span>(); <span class="comment">//create queue</span></span><br><span class="line">queue.push(..);          <span class="comment">//queue push data</span></span><br><span class="line">queue.shift(..);         <span class="comment">//queue shift data</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h2><p>接下來來看看基本佇列的資料進出方式。</p>
+<iframe scrolling="no" width="100%" height="300px" src="//jsfiddle.net/zfq3ucak/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>資料結構與演算法</category>
+      </categories>
+  </entry>
+  <entry>
     <title>我的大學作業整理</title>
     <url>/ming-chuan-university-homework/</url>
     <content><![CDATA[<p>隨著銘傳大學畢業後，攻讀研究所，一直很捨不得一些過去大學時期的作業；<br>這篇是整理大學時期的所有作業（當成是個人的小作品）放在這篇文章裡。</p>
@@ -2000,27 +2024,90 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
       </categories>
   </entry>
   <entry>
-    <title>堆疊與佇列 Stack and Queue</title>
-    <url>/stack-and-queue/</url>
-    <content><![CDATA[<p>本文僅為資料結構的筆記。</p>
-<p>對於較高階的語言來說有許多現成的函式庫，<br>儘管如此，還是需要瞭解基本規則。<br><a id="more"></a></p>
-<h1 id="堆疊"><a href="#堆疊" class="headerlink" title="堆疊"></a>堆疊</h1><p>堆疊是一種基本結構，核心的思維是「先進後出」。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//create stack</span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">stack</span>[SIZE];</span><br><span class="line"><span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//stack push data</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">stack</span>[top++] = data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//stack pop data</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">stack</span>[--top];</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>這是 C/C++ 的作法，<br>對於更高階的語言（比方說 JavaScript）來說，<br>這些功能都已經內建了。</p>
-<div class="note info">
-            <p>實際上 C++ STL 有內建；另外雖然建立很簡單，但 C 語言方面也有函示庫可以使用。</p>
-          </div>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> stack = <span class="keyword">new</span> <span class="built_in">Array</span>(); <span class="comment">//create stack</span></span><br><span class="line">stack.push(..);          <span class="comment">//stack push data</span></span><br><span class="line">stack.pop(..);           <span class="comment">//stack pop data</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>接下來來看看基本堆疊的資料進出方式。</p>
-<iframe scrolling="no" width="100%" height="300px" src="//jsfiddle.net/6xb1L6my/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
-<h1 id="佇列"><a href="#佇列" class="headerlink" title="佇列"></a>佇列</h1><p>佇列是一種基本結構，核心的思維是「先進先出」。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//create queue</span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">queue</span>[SIZE];</span><br><span class="line"><span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//queue push data</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">queue</span>[top++] = data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//queue shift data</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shift</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> data = <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; top; i++)</span><br><span class="line">        <span class="built_in">queue</span>[i] = <span class="built_in">queue</span>[i + <span class="number">1</span>];</span><br><span class="line">    top--;</span><br><span class="line">    <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>這是C/C++的作法，<br>對於更高階的語言（比方說 JavaScript）來說，<br>這些功能都也已經內建了。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> queue = <span class="keyword">new</span> <span class="built_in">Array</span>(); <span class="comment">//create queue</span></span><br><span class="line">queue.push(..);          <span class="comment">//queue push data</span></span><br><span class="line">queue.shift(..);         <span class="comment">//queue shift data</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h2 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h2><p>接下來來看看基本佇列的資料進出方式。</p>
-<iframe scrolling="no" width="100%" height="300px" src="//jsfiddle.net/zfq3ucak/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+    <title>平均值與有效值證明</title>
+    <url>/proof-mean-and-rms/</url>
+    <content><![CDATA[<p>本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。<br>但是後來想了想，作為私人筆記留下來了。<br><a id="more"></a></p>
+<h1 id="交流電表示式"><a href="#交流電表示式" class="headerlink" title="交流電表示式"></a>交流電表示式</h1><p>在開始之前要先知道這個，<br>技職學校的話，大概是基本電學下半章的最後。</p>
+<p>正弦波的情況：  </p>
+<p>$v(t) = V_{m}sin(&omega;t+&theta;)$</p>
+<p>其中 $V_{m}$ 為峰值（最大值）也就是 $V_{peak}$ 的意思，<br>除此之外，在 $sin$ 函數內的 $&omega;$ 是角頻率（$&omega; = \frac{2&pi;}{T}$）。<br>最後 $&theta;$ 是相位差。</p>
+<h1 id="平均值"><a href="#平均值" class="headerlink" title="平均值"></a>平均值</h1><p>先來看比較簡易的平均值，平均值簡單的說就是取平均。<br>雖然聽起來像是廢話，畢竟正弦曲線誰沒看過？積分取個平均不就寫個 $0$ 而已嗎？<br>別忘了，正弦波在整流之後，它只剩下半波、或是全波。<br>也就是說，我們考慮的平均值，只要考量半波整流、或全波整流之後的就好。</p>
+<h2 id="半波整流"><a href="#半波整流" class="headerlink" title="半波整流"></a>半波整流</h2><p>對於半波整流，由於截去 $sin$ 函數的負半周。<br>我們直接算它正半周（函數週期的一半）有多少面積、再除以它的週期 $T$ 就好。</p>
+<p>$(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T$</p>
+<p>正弦波全部的週期 $T = 2&pi;$ </p>
+<p>$V_{av} = (\int_{0}^{&pi;} V_{m}sin(&omega;t+&theta;) \mathrm{d}t) / 2&pi;$</p>
+<p>角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$</p>
+<p>$V_{av} = (\int_{0}^{&pi;} V_{m}sin(t) \mathrm{d}t) / 2&pi;$</p>
+<p>積分中常數 $V_{m}$ 提到外面</p>
+<p>$V_{av} = (V_{m} \int_{0}^{&pi;} sin(t) \mathrm{d}t) / 2&pi;$</p>
+<p>對 $sin(t)$ 取反導數，準備結束這個積分</p>
+<p>$V_{av} = (V_{m} (-cos(t))\mid_{0}^{&pi;}) / 2&pi;$</p>
+<p>$V_{av} = (V_{m} (-cos(&pi;) + cos(0))) / 2&pi;$</p>
+<p>$V_{av} = (V_{m} (-(-1) + 1)) / 2&pi;$</p>
+<p>$V_{av} = (V_{m} (1 + 1)) / 2&pi;$</p>
+<p>$V_{av} = 2V_{m} / 2&pi;$</p>
+<p>$V_{av} = V_{m} / &pi;$</p>
+<p>得證半波整流的正弦波平均值為 $V_{m} / &pi;$</p>
+<h2 id="全波整流"><a href="#全波整流" class="headerlink" title="全波整流"></a>全波整流</h2><p>全波整流跟半波整流很像，基本上換湯不換藥。<br>直接算它正半周（函數週期的一半）有多少面積，並予以雙倍（負半週被轉正），<br>再除以它的週期 $T$ 就好。</p>
+<p>$2(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T$</p>
+<p>正弦波全部的週期 $T = 2&pi;$ </p>
+<p>$V_{av} = 2(\int_{0}^{&pi;} V_{m}sin(&omega;t+&theta;) \mathrm{d}t) / 2&pi;$</p>
+<p>角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$</p>
+<p>$V_{av} = 2(\int_{0}^{&pi;} V_{m}sin(t) \mathrm{d}t) / 2&pi;$</p>
+<p>常數 $V_{m}$ 提到外面，順便把 $2$ 常數約掉</p>
+<p>$V_{av} = (V_{m} \int_{0}^{&pi;} sin(t) \mathrm{d}t) / &pi;$</p>
+<p>$V_{av} = (V_{m} (-cos(t))\mid_{0}^{&pi;}) / &pi;$</p>
+<p>$V_{av} = (V_{m} (-cos(&pi;) + cos(0))) / &pi;$</p>
+<p>$V_{av} = (V_{m} (-(-1) + 1)) / &pi;$</p>
+<p>$V_{av} = (V_{m} (1 + 1)) / &pi;$</p>
+<p>$V_{av} = 2V_{m} / &pi;$</p>
+<p>$V_{av} = 2V_{m} / &pi;$</p>
+<p>得證全波整流的正弦波平均值為 $2V_{m} / &pi;$</p>
+<h1 id="有效值"><a href="#有效值" class="headerlink" title="有效值"></a>有效值</h1><p>有效值比較機車，不過也沒啥困難的，<br>唯一要注意的是，它會用到三角函數的半角公式。<br>有效值又名「均方根」值，顧名思義：先開方平均、再取根號。  </p>
+<p>對於連續函數 $f(x)$ 在區間 $[a, b]$ 來說：</p>
+<p>$ f(x) = \sqrt{\frac{1}{b - a}\int_{a}^{b} f(x)^2  \mathrm{d}x} $</p>
+<p>寫成我們交流電的形式（區間在 $[0, 2&pi;]$）：<br>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{2&pi;} v(t)^2  \mathrm{d}t} $</p>
+<p>我們來考慮半波、跟全波整流後的情況。</p>
+<h2 id="半波整流-1"><a href="#半波整流-1" class="headerlink" title="半波整流"></a>半波整流</h2><p>半波整流中，負半週整個被刪去。<br>所以說，我們積分的區間要改成 $[0, &pi;]$ 才正確。</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} v(t)^2  \mathrm{d}t} $</p>
+<p>把 $v(t)$ 代換掉，另外角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$。</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} (V_{m}sin(&omega;t+&theta;))^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} (V_{m}sin(t))^2  \mathrm{d}t} $</p>
+<p>把積分那邊的平方移進去，常數 $V_{m}^{2}$ 移出積分。</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} sin(t)^2  \mathrm{d}t} $</p>
+<p>接下來很關鍵，半角公式登場 $sin^{2}(x) = \frac{1}{2}(1 - cos(2x))$  </p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} $</p>
+<p>常數通通丟出去。</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;}\int_{0}^{&pi;} 1 - cos(2x) \mathrm{d}t} $</p>
+<p>取 $1 - cos(2x)$ 的反導數準備結束積分。</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (x - \frac{1}{2}sin(2x))\mid_{0}^{&pi;}} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - \frac{1}{2}sin(0))} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - 0)} $</p>
+<p>當中 $sin(2&pi;) = 0$ 直接拿掉</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - 0)}$</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)(&pi;)}{4&pi;}}$</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)}{4}}$</p>
+<p>$ V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{4}}$</p>
+<p>$ V_{rms} = \frac{V_{m}}{2} $</p>
+<p>半波整流的有效值，是最大值（峰值）的一半。</p>
+<h2 id="全波整流-1"><a href="#全波整流-1" class="headerlink" title="全波整流"></a>全波整流</h2><p>在積分那邊，取個雙倍而已。</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;} 2\int_{0}^{&pi;} v(t)^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{&pi;}\int_{0}^{&pi;} (V_{m}sin(&omega;t+&theta;))^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{&pi;}\int_{0}^{&pi;} (V_{m}sin(t))^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{&pi;}\int_{0}^{&pi;} sin(t)^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{&pi;}\int_{0}^{&pi;} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} 1 - cos(2x) \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (x - \frac{1}{2}sin(2x))\mid_{0}^{&pi;}} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - \frac{1}{2}sin(0))} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - 0)} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - 0)} $</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)(&pi;)}{2&pi;}} $</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)}{2}} $</p>
+<p>$ V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{2}} $</p>
+<p>$ V_{rms} = \frac{V_{m}}{\sqrt{2}} $</p>
+]]></content>
       <categories>
-        <category>資料結構與演算法</category>
+        <category>基本電學與電子學</category>
       </categories>
   </entry>
   <entry>
@@ -2149,93 +2236,6 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
 ]]></content>
       <categories>
         <category>資料結構與演算法</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>平均值與有效值證明</title>
-    <url>/proof-mean-and-rms/</url>
-    <content><![CDATA[<p>本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。<br>但是後來想了想，作為私人筆記留下來了。<br><a id="more"></a></p>
-<h1 id="交流電表示式"><a href="#交流電表示式" class="headerlink" title="交流電表示式"></a>交流電表示式</h1><p>在開始之前要先知道這個，<br>技職學校的話，大概是基本電學下半章的最後。</p>
-<p>正弦波的情況：  </p>
-<p>$v(t) = V_{m}sin(&omega;t+&theta;)$</p>
-<p>其中 $V_{m}$ 為峰值（最大值）也就是 $V_{peak}$ 的意思，<br>除此之外，在 $sin$ 函數內的 $&omega;$ 是角頻率（$&omega; = \frac{2&pi;}{T}$）。<br>最後 $&theta;$ 是相位差。</p>
-<h1 id="平均值"><a href="#平均值" class="headerlink" title="平均值"></a>平均值</h1><p>先來看比較簡易的平均值，平均值簡單的說就是取平均。<br>雖然聽起來像是廢話，畢竟正弦曲線誰沒看過？積分取個平均不就寫個 $0$ 而已嗎？<br>別忘了，正弦波在整流之後，它只剩下半波、或是全波。<br>也就是說，我們考慮的平均值，只要考量半波整流、或全波整流之後的就好。</p>
-<h2 id="半波整流"><a href="#半波整流" class="headerlink" title="半波整流"></a>半波整流</h2><p>對於半波整流，由於截去 $sin$ 函數的負半周。<br>我們直接算它正半周（函數週期的一半）有多少面積、再除以它的週期 $T$ 就好。</p>
-<p>$(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T$</p>
-<p>正弦波全部的週期 $T = 2&pi;$ </p>
-<p>$V_{av} = (\int_{0}^{&pi;} V_{m}sin(&omega;t+&theta;) \mathrm{d}t) / 2&pi;$</p>
-<p>角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$</p>
-<p>$V_{av} = (\int_{0}^{&pi;} V_{m}sin(t) \mathrm{d}t) / 2&pi;$</p>
-<p>積分中常數 $V_{m}$ 提到外面</p>
-<p>$V_{av} = (V_{m} \int_{0}^{&pi;} sin(t) \mathrm{d}t) / 2&pi;$</p>
-<p>對 $sin(t)$ 取反導數，準備結束這個積分</p>
-<p>$V_{av} = (V_{m} (-cos(t))\mid_{0}^{&pi;}) / 2&pi;$</p>
-<p>$V_{av} = (V_{m} (-cos(&pi;) + cos(0))) / 2&pi;$</p>
-<p>$V_{av} = (V_{m} (-(-1) + 1)) / 2&pi;$</p>
-<p>$V_{av} = (V_{m} (1 + 1)) / 2&pi;$</p>
-<p>$V_{av} = 2V_{m} / 2&pi;$</p>
-<p>$V_{av} = V_{m} / &pi;$</p>
-<p>得證半波整流的正弦波平均值為 $V_{m} / &pi;$</p>
-<h2 id="全波整流"><a href="#全波整流" class="headerlink" title="全波整流"></a>全波整流</h2><p>全波整流跟半波整流很像，基本上換湯不換藥。<br>直接算它正半周（函數週期的一半）有多少面積，並予以雙倍（負半週被轉正），<br>再除以它的週期 $T$ 就好。</p>
-<p>$2(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T$</p>
-<p>正弦波全部的週期 $T = 2&pi;$ </p>
-<p>$V_{av} = 2(\int_{0}^{&pi;} V_{m}sin(&omega;t+&theta;) \mathrm{d}t) / 2&pi;$</p>
-<p>角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$</p>
-<p>$V_{av} = 2(\int_{0}^{&pi;} V_{m}sin(t) \mathrm{d}t) / 2&pi;$</p>
-<p>常數 $V_{m}$ 提到外面，順便把 $2$ 常數約掉</p>
-<p>$V_{av} = (V_{m} \int_{0}^{&pi;} sin(t) \mathrm{d}t) / &pi;$</p>
-<p>$V_{av} = (V_{m} (-cos(t))\mid_{0}^{&pi;}) / &pi;$</p>
-<p>$V_{av} = (V_{m} (-cos(&pi;) + cos(0))) / &pi;$</p>
-<p>$V_{av} = (V_{m} (-(-1) + 1)) / &pi;$</p>
-<p>$V_{av} = (V_{m} (1 + 1)) / &pi;$</p>
-<p>$V_{av} = 2V_{m} / &pi;$</p>
-<p>$V_{av} = 2V_{m} / &pi;$</p>
-<p>得證全波整流的正弦波平均值為 $2V_{m} / &pi;$</p>
-<h1 id="有效值"><a href="#有效值" class="headerlink" title="有效值"></a>有效值</h1><p>有效值比較機車，不過也沒啥困難的，<br>唯一要注意的是，它會用到三角函數的半角公式。<br>有效值又名「均方根」值，顧名思義：先開方平均、再取根號。  </p>
-<p>對於連續函數 $f(x)$ 在區間 $[a, b]$ 來說：</p>
-<p>$ f(x) = \sqrt{\frac{1}{b - a}\int_{a}^{b} f(x)^2  \mathrm{d}x} $</p>
-<p>寫成我們交流電的形式（區間在 $[0, 2&pi;]$）：<br>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{2&pi;} v(t)^2  \mathrm{d}t} $</p>
-<p>我們來考慮半波、跟全波整流後的情況。</p>
-<h2 id="半波整流-1"><a href="#半波整流-1" class="headerlink" title="半波整流"></a>半波整流</h2><p>半波整流中，負半週整個被刪去。<br>所以說，我們積分的區間要改成 $[0, &pi;]$ 才正確。</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} v(t)^2  \mathrm{d}t} $</p>
-<p>把 $v(t)$ 代換掉，另外角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$。</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} (V_{m}sin(&omega;t+&theta;))^2  \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} (V_{m}sin(t))^2  \mathrm{d}t} $</p>
-<p>把積分那邊的平方移進去，常數 $V_{m}^{2}$ 移出積分。</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} sin(t)^2  \mathrm{d}t} $</p>
-<p>接下來很關鍵，半角公式登場 $sin^{2}(x) = \frac{1}{2}(1 - cos(2x))$  </p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} $</p>
-<p>常數通通丟出去。</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;}\int_{0}^{&pi;} 1 - cos(2x) \mathrm{d}t} $</p>
-<p>取 $1 - cos(2x)$ 的反導數準備結束積分。</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (x - \frac{1}{2}sin(2x))\mid_{0}^{&pi;}} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - \frac{1}{2}sin(0))} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - 0)} $</p>
-<p>當中 $sin(2&pi;) = 0$ 直接拿掉</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - 0)}$</p>
-<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)(&pi;)}{4&pi;}}$</p>
-<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)}{4}}$</p>
-<p>$ V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{4}}$</p>
-<p>$ V_{rms} = \frac{V_{m}}{2} $</p>
-<p>半波整流的有效值，是最大值（峰值）的一半。</p>
-<h2 id="全波整流-1"><a href="#全波整流-1" class="headerlink" title="全波整流"></a>全波整流</h2><p>在積分那邊，取個雙倍而已。</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;} 2\int_{0}^{&pi;} v(t)^2  \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{&pi;}\int_{0}^{&pi;} (V_{m}sin(&omega;t+&theta;))^2  \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{&pi;}\int_{0}^{&pi;} (V_{m}sin(t))^2  \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{&pi;}\int_{0}^{&pi;} sin(t)^2  \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{&pi;}\int_{0}^{&pi;} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} 1 - cos(2x) \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (x - \frac{1}{2}sin(2x))\mid_{0}^{&pi;}} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - \frac{1}{2}sin(0))} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - 0)} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - 0)} $</p>
-<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)(&pi;)}{2&pi;}} $</p>
-<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)}{2}} $</p>
-<p>$ V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{2}} $</p>
-<p>$ V_{rms} = \frac{V_{m}}{\sqrt{2}} $</p>
-]]></content>
-      <categories>
-        <category>基本電學與電子學</category>
       </categories>
   </entry>
   <entry>
@@ -2542,6 +2542,63 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
       </categories>
   </entry>
   <entry>
+    <title>拉格朗日插值 Lagrange polynomial interpolation</title>
+    <url>/lagrange-polynomial-interpolation/</url>
+    <content><![CDATA[<p>第一次認識拉格朗日插值，源自於名叫 Paint.NET 的繪圖軟體，<br>這個軟體陪我走過 RPG Maker VX 的許多歲月。</p>
+<a id="more"></a>
+<p>當初在尋找適合製作 Pixel art 的軟體時，筆者當時選擇軟體的條件是「既不能太複雜、也不能太陽春」。<br>因緣際會遇到了 Paint.NET，它的功能足夠，操作也很簡單，所以我很快就喜歡上了。</p>
+<p><img src="https://i.imgur.com/WCnpBLH.jpg" alt="圖 1、個人製作的遊戲畫面圖（素材皆為 Paint.NET 繪製）"></p>
+<p>當時除了用它製作基本的 Pixel 素材之外，也會用它做一些遊戲的特殊效果（像光影）之類的，<br>它其中一個重要的功能是「設定各個顏色的曲線」：</p>
+<p><img src="https://i.imgur.com/fw0N6s6.jpg" alt="圖 2、Paint.NET 的曲線功能"></p>
+<p>當時就在想，要怎麼實作這個功能呢？網路上一查，就碰到「拉格朗日（Lagrange）插值」了！</p>
+<h1 id="插值"><a href="#插值" class="headerlink" title="插值"></a>插值</h1><p>插值，意思就是手上有一些資料點：</p>
+<p>$\{(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})\}$</p>
+<p>找一個函數，去「穿過」這些點：</p>
+<p>$f(x_i) = y_i, \quad i = 0, 1, …, n-1$</p>
+<p>而這邊接下來討論的是「多項式插值」，<br>也就是說，我們預期 $f(x)$ 是一個多項式，我們表示成 $P(x)$</p>
+<div class="note success">
+            <p>建議閱讀 <a href="/linear-regression-and-gradient-descent/" title="線性回歸與梯度下降 Linear Regression and Gradient Descent">線性回歸與梯度下降 Linear Regression and Gradient Descent</a><br>比較「插值（interpolation）」跟「擬合（fitting）」的差別。</p>
+          </div>
+<div class="note info">
+            <p>插值可以細分為內插（interpolation）與外插（extrapolation）；<br>一般說插值是指內插，而如果預測的點出現在資料點的最大區間之外，則稱為外插。</p>
+          </div>
+<h1 id="拉格朗日插值"><a href="#拉格朗日插值" class="headerlink" title="拉格朗日插值"></a>拉格朗日插值</h1><p>拉格朗日插值多項式：</p>
+<p>$$<br>P(x) = \sum\limits_{i=0}^{n-1} y_i \ell_i(x)<br>$$</p>
+<p>其中 $\ell_i(x)$ 為插值基函數：</p>
+<p>$$<br>\ell_i(x) = \prod\limits_{j=0, j \neq i}^{n-1} \frac{(x - x_i)}{(x_i - x_j)}<br>$$</p>
+<p>因為有特性：<br>$$<br>\ell_i(x_j) = \delta_{ij} =<br>\begin{cases}<br>    1, \qquad\text{if } i = j \\<br>    0, \qquad\text{if } i \neq j \\<br>\end{cases}<br>$$</p>
+<div class="note info">
+            <p>式中的 $\delta_{ij}$ 是指 <a href="https://en.wikipedia.org/wiki/Kronecker_delta" target="_blank" rel="noopener">克羅內克 delta 函數 (Kronecker delta function)</a></p>
+          </div>
+<p>導致任意點對 $(x_k, y_k)$ 帶入後都有：</p>
+<p>$$<br>y_k \ell_k(x_k) = y_k<br>$$</p>
+<p>所以 $P(x)$ 必可穿過 $0, 1, …, n-1$ 所有的點對。</p>
+<h1 id="多項式的點值表示"><a href="#多項式的點值表示" class="headerlink" title="多項式的點值表示"></a>多項式的點值表示</h1><p>插值在最初我看到時，是用在影像處理編輯圖片的操作上；<br>直到有次在《算法導論》中看到插值結果的唯一性證明，發現它也可以用多項式的點值表示，<br>更進一步可以用在計算快速傅立葉轉換上。</p>
+<p>原本我們是有點對：<br>$\{(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})\}$</p>
+<p>透過這些點對找多項式函數，也就是多項式函數的係數，滿足：</p>
+<p>$$<br>P(x_k) = a_0 + a_1x_k + a_2x_k^2 + \dots + a_{n-1}x_k^{n-1} = y_k, \quad k = 0, 1, \dots, n-1<br>$$</p>
+<p>通常我們都將 $x$ 當成函數輸入，即 $Ax = y$；<br>但現在我們改以 $a$ 當成函數輸入，並將 $k$ 展開，表示成矩陣有：</p>
+<p>$$<br>Xa = y<br>$$</p>
+<p>$$<br>\left[ \begin{matrix}<br>1 &amp; x_{0} &amp; x_{0}^{2} &amp; \dots &amp; x_{0}^{n-1} \\<br>1 &amp; x_{1} &amp; x_{1}^{2} &amp; \dots &amp; x_{1}^{n-1} \\<br>\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>1 &amp; x_{n-1} &amp; x_{n-1}^{2} &amp; \dots  &amp; x_{n-1}^{n-1}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>a_{0} \\<br>a_{1} \\<br>\vdots \\<br>a_{n-1}<br>\end{matrix} \right]<br>=<br>\left[ \begin{matrix}<br>y_{0} \\<br>y_{1} \\<br>\vdots \\<br>y_{n-1}<br>\end{matrix} \right]<br>$$</p>
+<p>其中 $X$ 為 <a href="https://zh.wikipedia.org/wiki/%E8%8C%83%E5%BE%B7%E8%92%99%E7%9F%A9%E9%99%A3" target="_blank" rel="noopener">Vandermonde 矩陣</a><br>當 $i \neq j$ 時，有 $x_i \neq x_j$，則行列式 $det(X) \neq 0$<br>$X$ 可逆，代表唯一存在一組 $a$ 是唯一解，滿足 $Xa = y$</p>
+<p>既然係數 $a$ 是唯一的，那多項式函數 $P(x)$ 也是唯一的，<br>代表了，表示多項式時，我有兩種選擇方法：</p>
+<ol>
+<li>直接儲存 $a_0, a_1, \dots, a_n$ 共 $n$ 個係數</li>
+<li>儲存 $(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})$ 共 $n$ 組點對</li>
+</ol>
+<p>而第二種儲存點對的方式，被稱為多項式的「點值表示」。</p>
+<div class="note info">
+            <p>點值表示有一些很有趣的性質，<br>比方說兩個多項式相乘的複雜度，在係數表示時是 $\Theta(n^2)$，但在點值表示僅需 $\Theta(n)$。</p>
+          </div>
+<p>至於用點值表示做其他事情，就超出本文的範圍了。</p>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>這個演示可以上傳一張照片，用插值曲線調整顏色。</p>
+<iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/hyjb39e7/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+]]></content>
+      <categories>
+        <category>資料結構與演算法</category>
+      </categories>
+  </entry>
+  <entry>
     <title>推盤遊戲  n-puzzle</title>
     <url>/n-puzzle/</url>
     <content><![CDATA[<p>這是人工智慧課程的教學筆記。<br>同時也是學期初上課的內容，因為不太好寫演示所以拖到暑假來完成。<br><a id="more"></a></p>
@@ -2704,63 +2761,6 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
           </div>]]></content>
       <categories>
         <category>人工智慧</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>拉格朗日插值 Lagrange polynomial interpolation</title>
-    <url>/lagrange-polynomial-interpolation/</url>
-    <content><![CDATA[<p>第一次認識拉格朗日插值，源自於名叫 Paint.NET 的繪圖軟體，<br>這個軟體陪我走過 RPG Maker VX 的許多歲月。</p>
-<a id="more"></a>
-<p>當初在尋找適合製作 Pixel art 的軟體時，筆者當時選擇軟體的條件是「既不能太複雜、也不能太陽春」。<br>因緣際會遇到了 Paint.NET，它的功能足夠，操作也很簡單，所以我很快就喜歡上了。</p>
-<p><img src="https://i.imgur.com/WCnpBLH.jpg" alt="圖 1、個人製作的遊戲畫面圖（素材皆為 Paint.NET 繪製）"></p>
-<p>當時除了用它製作基本的 Pixel 素材之外，也會用它做一些遊戲的特殊效果（像光影）之類的，<br>它其中一個重要的功能是「設定各個顏色的曲線」：</p>
-<p><img src="https://i.imgur.com/fw0N6s6.jpg" alt="圖 2、Paint.NET 的曲線功能"></p>
-<p>當時就在想，要怎麼實作這個功能呢？網路上一查，就碰到「拉格朗日（Lagrange）插值」了！</p>
-<h1 id="插值"><a href="#插值" class="headerlink" title="插值"></a>插值</h1><p>插值，意思就是手上有一些資料點：</p>
-<p>$\{(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})\}$</p>
-<p>找一個函數，去「穿過」這些點：</p>
-<p>$f(x_i) = y_i, \quad i = 0, 1, …, n-1$</p>
-<p>而這邊接下來討論的是「多項式插值」，<br>也就是說，我們預期 $f(x)$ 是一個多項式，我們表示成 $P(x)$</p>
-<div class="note success">
-            <p>建議閱讀 <a href="/linear-regression-and-gradient-descent/" title="線性回歸與梯度下降 Linear Regression and Gradient Descent">線性回歸與梯度下降 Linear Regression and Gradient Descent</a><br>比較「插值（interpolation）」跟「擬合（fitting）」的差別。</p>
-          </div>
-<div class="note info">
-            <p>插值可以細分為內插（interpolation）與外插（extrapolation）；<br>一般說插值是指內插，而如果預測的點出現在資料點的最大區間之外，則稱為外插。</p>
-          </div>
-<h1 id="拉格朗日插值"><a href="#拉格朗日插值" class="headerlink" title="拉格朗日插值"></a>拉格朗日插值</h1><p>拉格朗日插值多項式：</p>
-<p>$$<br>P(x) = \sum\limits_{i=0}^{n-1} y_i \ell_i(x)<br>$$</p>
-<p>其中 $\ell_i(x)$ 為插值基函數：</p>
-<p>$$<br>\ell_i(x) = \prod\limits_{j=0, j \neq i}^{n-1} \frac{(x - x_i)}{(x_i - x_j)}<br>$$</p>
-<p>因為有特性：<br>$$<br>\ell_i(x_j) = \delta_{ij} =<br>\begin{cases}<br>    1, \qquad\text{if } i = j \\<br>    0, \qquad\text{if } i \neq j \\<br>\end{cases}<br>$$</p>
-<div class="note info">
-            <p>式中的 $\delta_{ij}$ 是指 <a href="https://en.wikipedia.org/wiki/Kronecker_delta" target="_blank" rel="noopener">克羅內克 delta 函數 (Kronecker delta function)</a></p>
-          </div>
-<p>導致任意點對 $(x_k, y_k)$ 帶入後都有：</p>
-<p>$$<br>y_k \ell_k(x_k) = y_k<br>$$</p>
-<p>所以 $P(x)$ 必可穿過 $0, 1, …, n-1$ 所有的點對。</p>
-<h1 id="多項式的點值表示"><a href="#多項式的點值表示" class="headerlink" title="多項式的點值表示"></a>多項式的點值表示</h1><p>插值在最初我看到時，是用在影像處理編輯圖片的操作上；<br>直到有次在《算法導論》中看到插值結果的唯一性證明，發現它也可以用多項式的點值表示，<br>更進一步可以用在計算快速傅立葉轉換上。</p>
-<p>原本我們是有點對：<br>$\{(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})\}$</p>
-<p>透過這些點對找多項式函數，也就是多項式函數的係數，滿足：</p>
-<p>$$<br>P(x_k) = a_0 + a_1x_k + a_2x_k^2 + \dots + a_{n-1}x_k^{n-1} = y_k, \quad k = 0, 1, \dots, n-1<br>$$</p>
-<p>通常我們都將 $x$ 當成函數輸入，即 $Ax = y$；<br>但現在我們改以 $a$ 當成函數輸入，並將 $k$ 展開，表示成矩陣有：</p>
-<p>$$<br>Xa = y<br>$$</p>
-<p>$$<br>\left[ \begin{matrix}<br>1 &amp; x_{0} &amp; x_{0}^{2} &amp; \dots &amp; x_{0}^{n-1} \\<br>1 &amp; x_{1} &amp; x_{1}^{2} &amp; \dots &amp; x_{1}^{n-1} \\<br>\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>1 &amp; x_{n-1} &amp; x_{n-1}^{2} &amp; \dots  &amp; x_{n-1}^{n-1}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>a_{0} \\<br>a_{1} \\<br>\vdots \\<br>a_{n-1}<br>\end{matrix} \right]<br>=<br>\left[ \begin{matrix}<br>y_{0} \\<br>y_{1} \\<br>\vdots \\<br>y_{n-1}<br>\end{matrix} \right]<br>$$</p>
-<p>其中 $X$ 為 <a href="https://zh.wikipedia.org/wiki/%E8%8C%83%E5%BE%B7%E8%92%99%E7%9F%A9%E9%99%A3" target="_blank" rel="noopener">Vandermonde 矩陣</a><br>當 $i \neq j$ 時，有 $x_i \neq x_j$，則行列式 $det(X) \neq 0$<br>$X$ 可逆，代表唯一存在一組 $a$ 是唯一解，滿足 $Xa = y$</p>
-<p>既然係數 $a$ 是唯一的，那多項式函數 $P(x)$ 也是唯一的，<br>代表了，表示多項式時，我有兩種選擇方法：</p>
-<ol>
-<li>直接儲存 $a_0, a_1, \dots, a_n$ 共 $n$ 個係數</li>
-<li>儲存 $(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})$ 共 $n$ 組點對</li>
-</ol>
-<p>而第二種儲存點對的方式，被稱為多項式的「點值表示」。</p>
-<div class="note info">
-            <p>點值表示有一些很有趣的性質，<br>比方說兩個多項式相乘的複雜度，在係數表示時是 $\Theta(n^2)$，但在點值表示僅需 $\Theta(n)$。</p>
-          </div>
-<p>至於用點值表示做其他事情，就超出本文的範圍了。</p>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>這個演示可以上傳一張照片，用插值曲線調整顏色。</p>
-<iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/hyjb39e7/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
-]]></content>
-      <categories>
-        <category>資料結構與演算法</category>
       </categories>
   </entry>
   <entry>
@@ -3054,6 +3054,26 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
       </categories>
   </entry>
   <entry>
+    <title>羊羽手札更新歷程 01</title>
+    <url>/tinytsunami-update-01/</url>
+    <content><![CDATA[<p>將網站更新成 Hexo 框架。<br>最主要的原因是舊的 Blog 系統當初寫得太急促，而且往往為了嘗試新東西而直接邊學邊做，導致系統問題有點多。<br>在重複考慮之下，決定改成目前的模式。這篇文章接下來寫的，是「羊羽手札」建立到目前為止的雜事以及更新狀況。<br><a id="more"></a></p>
+<h1 id="更新歷程"><a href="#更新歷程" class="headerlink" title="更新歷程"></a>更新歷程</h1><ul>
+<li>2016.10.24 羊羽手札v1（PHP）</li>
+<li>2017.12.18 羊羽手札v2（Vue.js+Express）</li>
+<li>2017.02.25 羊羽手札v3（Hexo）</li>
+</ul>
+<h1 id="雜記"><a href="#雜記" class="headerlink" title="雜記"></a>雜記</h1><p>到目前為止，羊羽手札的特徵是文章頁面中有 JS 演示的部分，先談談之前的做法。<br>最早的 PHP 頁面想要時做這個部份時，想到的做法是將 HTML 直接寫到資料庫，然後 CSS 採用行內樣式，比方說：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"demo_01"</span> <span class="attr">style</span>=<span class="string">"..."</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">...</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">...</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>因為透過編輯器寫入，需要跳脫過濾一些 HTML（像是 script 標籤）以及 JS 語法。<br>所以 JS 是另外上傳單個檔案，採用外鏈式加載：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> root = <span class="built_in">document</span>.getElementById(<span class="string">"demo_01"</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p>這個的主要問題在於，每次更新系統時，<br>需要檢查 JS 檔案是否還在（有時會改動檔案上傳的部分、或遷移主機商平台等等）<br>也因為這件事，我有遺失幾個文章內的 JS 演示腳本。</p>
+<p>經過考慮後，第 3 版的羊羽手札，屆時將會改成 HTML、CSS、JS 遊樂場（JSbin、JSfiddle 或 Codepen）來嵌入演示。</p>
+]]></content>
+      <categories>
+        <category>羊羽手札</category>
+      </categories>
+  </entry>
+  <entry>
     <title>線性回歸與梯度下降 Linear Regression and Gradient Descent</title>
     <url>/linear-regression-and-gradient-descent/</url>
     <content><![CDATA[<p>這篇是 Coursera 中 Machine Learning 的筆記。<br><a id="more"></a></p>
@@ -3157,26 +3177,6 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
       </categories>
   </entry>
   <entry>
-    <title>羊羽手札更新歷程 01</title>
-    <url>/tinytsunami-update-01/</url>
-    <content><![CDATA[<p>將網站更新成 Hexo 框架。<br>最主要的原因是舊的 Blog 系統當初寫得太急促，而且往往為了嘗試新東西而直接邊學邊做，導致系統問題有點多。<br>在重複考慮之下，決定改成目前的模式。這篇文章接下來寫的，是「羊羽手札」建立到目前為止的雜事以及更新狀況。<br><a id="more"></a></p>
-<h1 id="更新歷程"><a href="#更新歷程" class="headerlink" title="更新歷程"></a>更新歷程</h1><ul>
-<li>2016.10.24 羊羽手札v1（PHP）</li>
-<li>2017.12.18 羊羽手札v2（Vue.js+Express）</li>
-<li>2017.02.25 羊羽手札v3（Hexo）</li>
-</ul>
-<h1 id="雜記"><a href="#雜記" class="headerlink" title="雜記"></a>雜記</h1><p>到目前為止，羊羽手札的特徵是文章頁面中有 JS 演示的部分，先談談之前的做法。<br>最早的 PHP 頁面想要時做這個部份時，想到的做法是將 HTML 直接寫到資料庫，然後 CSS 採用行內樣式，比方說：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"demo_01"</span> <span class="attr">style</span>=<span class="string">"..."</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">...</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">...</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>因為透過編輯器寫入，需要跳脫過濾一些 HTML（像是 script 標籤）以及 JS 語法。<br>所以 JS 是另外上傳單個檔案，採用外鏈式加載：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> root = <span class="built_in">document</span>.getElementById(<span class="string">"demo_01"</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
-<p>這個的主要問題在於，每次更新系統時，<br>需要檢查 JS 檔案是否還在（有時會改動檔案上傳的部分、或遷移主機商平台等等）<br>也因為這件事，我有遺失幾個文章內的 JS 演示腳本。</p>
-<p>經過考慮後，第 3 版的羊羽手札，屆時將會改成 HTML、CSS、JS 遊樂場（JSbin、JSfiddle 或 Codepen）來嵌入演示。</p>
-]]></content>
-      <categories>
-        <category>羊羽手札</category>
-      </categories>
-  </entry>
-  <entry>
     <title>羊羽手札更新歷程 02</title>
     <url>/tinytsunami-update-02/</url>
     <content><![CDATA[<p>這學期一開始還好，期中之後就很忙，<br>這個部落格也就在後半學期暫緩一下子了。</p>
@@ -3253,6 +3253,29 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
       </categories>
   </entry>
   <entry>
+    <title>羊與羊的牧場 01</title>
+    <url>/sheeps-01/</url>
+    <content><![CDATA[<p>這篇是我的獨立遊戲《羊與羊的牧場》開發的紀錄。<br><a id="more"></a></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>原本都是發消息到 FB，但是後來覺得 FB 的文章之後好像找不到……<br>所以決定從版本 v0.2 開始，把開發的紀錄整理到 Blog。</p>
+<h1 id="羊與羊的牧場故事"><a href="#羊與羊的牧場故事" class="headerlink" title="羊與羊的牧場故事"></a>羊與羊的牧場故事</h1><p>《羊與羊的牧場》是具經營成分的 RPG 遊戲。</p>
+<p>很久以前，羊神從天降下傳說的肥料澆灌大地，<br>荒蕪的大地從此長出了黃金的牧草，羊群們稱這種肥料為「金肥（Gold fertilizer）」<br>使用金肥種出的黃金牧草被當作重要的資產在大陸上流通著……<br>現在，金肥資源已經接近枯竭，羊群陷入一片混亂之中。</p>
+<p>玩家扮演著羊，經營拆遷式牧場，在羊之大陸上尋找金肥。</p>
+<h1 id="開發紀錄"><a href="#開發紀錄" class="headerlink" title="開發紀錄"></a>開發紀錄</h1><div class="video-container"><iframe src="//www.youtube.com/embed/WQ8pBReNaOE" frameborder="0" allowfullscreen></iframe></div>
+<p>這個版本完成了：</p>
+<ul>
+<li>紙娃娃系統</li>
+<li>地圖及部分物件的設定</li>
+</ul>
+<p>雖然圖像還有可能再更動，不過暫時多少有遊戲原型的樣子了。</p>
+<p><img src="https://i.imgur.com/C134U4E.gif" alt="圖 1、羊群們"></p>
+<div class="note info">
+            <p>所有的設計都只是原型，實際情況可能還會改變。</p>
+          </div>]]></content>
+      <categories>
+        <category>獨立遊戲製作</category>
+      </categories>
+  </entry>
+  <entry>
     <title>羊羽手札更新歷程 05</title>
     <url>/tinytsunami-update-05/</url>
     <content><![CDATA[<p>總之雖然有點遲到，預祝 2020 諸事順遂；<br>然後接下來應該會準備發新文章了。</p>
@@ -3277,21 +3300,20 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
       </categories>
   </entry>
   <entry>
-    <title>羊與羊的牧場 01</title>
-    <url>/sheeps-01/</url>
-    <content><![CDATA[<p>這篇是我的獨立遊戲《羊與羊的牧場》開發的紀錄。<br><a id="more"></a></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>原本都是發消息到 FB，但是後來覺得 FB 的文章之後好像找不到……<br>所以決定從版本 v0.2 開始，把開發的紀錄整理到 Blog。</p>
-<h1 id="羊與羊的牧場故事"><a href="#羊與羊的牧場故事" class="headerlink" title="羊與羊的牧場故事"></a>羊與羊的牧場故事</h1><p>《羊與羊的牧場》是具經營成分的 RPG 遊戲。</p>
-<p>很久以前，羊神從天降下傳說的肥料澆灌大地，<br>荒蕪的大地從此長出了黃金的牧草，羊群們稱這種肥料為「金肥（Gold fertilizer）」<br>使用金肥種出的黃金牧草被當作重要的資產在大陸上流通著……<br>現在，金肥資源已經接近枯竭，羊群陷入一片混亂之中。</p>
-<p>玩家扮演著羊，經營拆遷式牧場，在羊之大陸上尋找金肥。</p>
-<h1 id="開發紀錄"><a href="#開發紀錄" class="headerlink" title="開發紀錄"></a>開發紀錄</h1><div class="video-container"><iframe src="//www.youtube.com/embed/WQ8pBReNaOE" frameborder="0" allowfullscreen></iframe></div>
-<p>這個版本完成了：</p>
-<ul>
-<li>紙娃娃系統</li>
-<li>地圖及部分物件的設定</li>
-</ul>
-<p>雖然圖像還有可能再更動，不過暫時多少有遊戲原型的樣子了。</p>
-<p><img src="https://i.imgur.com/C134U4E.gif" alt="圖 1、羊群們"></p>
+    <title>羊與羊的草原 02</title>
+    <url>/sheeps-02/</url>
+    <content><![CDATA[<p>這篇是我的獨立遊戲《羊與羊的草原》開發的紀錄；<br>《羊與羊的牧場》已被更名為《羊與羊的草原》。</p>
+<a id="more"></a>
+<div class="note info">
+            <p>本文為 v0.3 版《羊與羊的草原》的開發紀錄。</p>
+          </div>
+<h1 id="系統改動"><a href="#系統改動" class="headerlink" title="系統改動"></a>系統改動</h1><p>原本想說用牧場為單位可以對戰，中間有極少許的劇情過渡。</p>
+<p>原本玩家所在牧場點 A、敵人牧場點 B，<br>如果兩者要鄰接交戰，要嘛 A 遷移到 B 旁邊，要嘛 B 遷移到 A 旁邊。</p>
+<p>但是後來發現，我沒辦法說服玩家「為什麼牧場可以瞬間移動？」<br>本來想說設計一種空間移動的魔法石什麼的，覺得太微妙而作罷。</p>
+<p>後來改成「建立移動車」之類的東西，遊戲中的術語稱為「Vessel」<br>玩家在過程中可以裝設容器與組織團隊，在各地移動。</p>
+<p>於是《羊與羊的牧場》就被更名為《羊與羊的草原》了。</p>
+<h1 id="開發紀錄"><a href="#開發紀錄" class="headerlink" title="開發紀錄"></a>開發紀錄</h1><p><img src="https://i.imgur.com/hg8R09t.png" alt="圖 1、Vessel 的設定畫面"></p>
+<p>目前 Vessel 設定已經完成，玩家可以拖曳道具欄中的物品裝置於 Vessel 中。</p>
 <div class="note info">
             <p>所有的設計都只是原型，實際情況可能還會改變。</p>
           </div>]]></content>
@@ -3326,28 +3348,6 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
 <p>拋射物的最大特點是可以越過 Vessel 的牆壁，攻擊內部的物品，<br>同時也是可以對 Vessel 地板造成攻擊的投擲物品，<br>當地版損毀時，上方的置物會全部損毀，對於戰局會造成很重要的結果。</p>
 <p>儘管如此，拋射物依然得面對命中率的問題，拋射物體的高度會造成風力影響加劇，<br>射出的高度跟距離相關度非常高，這代表發射前需要蓄力不少時間。</p>
 <p><img src="https://i.imgur.com/jg8BfE2.gif" alt="圖 2、拋射物：素材石頭"></p>
-<div class="note info">
-            <p>所有的設計都只是原型，實際情況可能還會改變。</p>
-          </div>]]></content>
-      <categories>
-        <category>獨立遊戲製作</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>羊與羊的草原 02</title>
-    <url>/sheeps-02/</url>
-    <content><![CDATA[<p>這篇是我的獨立遊戲《羊與羊的草原》開發的紀錄；<br>《羊與羊的牧場》已被更名為《羊與羊的草原》。</p>
-<a id="more"></a>
-<div class="note info">
-            <p>本文為 v0.3 版《羊與羊的草原》的開發紀錄。</p>
-          </div>
-<h1 id="系統改動"><a href="#系統改動" class="headerlink" title="系統改動"></a>系統改動</h1><p>原本想說用牧場為單位可以對戰，中間有極少許的劇情過渡。</p>
-<p>原本玩家所在牧場點 A、敵人牧場點 B，<br>如果兩者要鄰接交戰，要嘛 A 遷移到 B 旁邊，要嘛 B 遷移到 A 旁邊。</p>
-<p>但是後來發現，我沒辦法說服玩家「為什麼牧場可以瞬間移動？」<br>本來想說設計一種空間移動的魔法石什麼的，覺得太微妙而作罷。</p>
-<p>後來改成「建立移動車」之類的東西，遊戲中的術語稱為「Vessel」<br>玩家在過程中可以裝設容器與組織團隊，在各地移動。</p>
-<p>於是《羊與羊的牧場》就被更名為《羊與羊的草原》了。</p>
-<h1 id="開發紀錄"><a href="#開發紀錄" class="headerlink" title="開發紀錄"></a>開發紀錄</h1><p><img src="https://i.imgur.com/hg8R09t.png" alt="圖 1、Vessel 的設定畫面"></p>
-<p>目前 Vessel 設定已經完成，玩家可以拖曳道具欄中的物品裝置於 Vessel 中。</p>
 <div class="note info">
             <p>所有的設計都只是原型，實際情況可能還會改變。</p>
           </div>]]></content>
@@ -3450,6 +3450,115 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
 <h2 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h2><iframe scrolling="no" width="100%" height="540px" src="//jsfiddle.net/suws2m74/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
       <categories>
         <category>資料結構與演算法</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>邏輯回歸與感知器 Logistic Regression and Perceptron</title>
+    <url>/logistic-regression-and-perceptron/</url>
+    <content><![CDATA[<p>上一篇介紹的是線性回歸與梯度下降，這一篇將會討論「邏輯回歸與感知器」。<br><a id="more"></a></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在這邊先約定一件事情，就是對數函數的表示法：</p>
+<ul>
+<li>$log(x)$ 表示以 10 為底</li>
+<li>$lg(x)$ 表示以 2 為底</li>
+<li>$ln(x)$ 表示以 $e$ 為底</li>
+</ul>
+<p>因為第一種表示法很容易造成混淆，<br>所以這邊就事前說明，不要造成大家的困擾。</p>
+<div class="note info">
+            <p>這是 Chrome 瀏覽器搜尋的表示法；你可以在網址列輸入 log(10)、lg(2) 及 ln(e) 來觀察。</p>
+          </div>
+<div class="note success">
+            <p>這是 ANN 的系列文章<br>上一篇是 <a href="/linear-regression-and-gradient-descent/" title="線性回歸與梯度下降 Linear Regression and Gradient Descent">線性回歸與梯度下降 Linear Regression and Gradient Descent</a><br>下一篇是 <a href="/fully-connected-neural-network/" title="全連接神經網路 Fully-Connected Neural Network">全連接神經網路 Fully-Connected Neural Network</a></p>
+          </div>
+<div class="note success">
+            <p>筆者於大學專題時，曾向組員介紹過相關內容，如有需要可以參考 <a href="https://docs.google.com/presentation/d/1IfcViNOgnE3g2yj6tdWGsNnm2D1cb0nkB87crTMTFno/edit?usp=sharing" target="_blank" rel="noopener">Logistic Regression 簡報</a></p>
+          </div>
+<h1 id="邏輯回歸"><a href="#邏輯回歸" class="headerlink" title="邏輯回歸"></a>邏輯回歸</h1><p>邏輯回歸公式看起來還蠻複雜的，不過依舊有跡可循。<br>首先，我們回憶線性回歸的一些式子：</p>
+<p>$h_{\theta}(x) = \theta_{0} + \theta_{1}x$</p>
+<p>還記得這個做什麼的話就好辦了，首先我們有一堆 $x$ 跟 $y$ 的資料（訓練資料），<br>然後我們透過找 $\theta$ 來確定之後新資料的 $y$ 值，換言之 $h_{\theta}(x)$ 其實就是新資料要代入的函數。</p>
+<p>現在問題在於，如果我希望這個 $h_{\theta}(x)$ 介於 $[0, 1]$ 這個區間的話，<br>為什麼要做落在這個區間呢？因為這樣才能對應這樣的關係：</p>
+<ul>
+<li>$h_{\theta}(x) = 1 = True$</li>
+<li>$h_{\theta}(x) = 0 = False$</li>
+</ul>
+<p>這也是叫做邏輯回歸的原因了，也就是說我們要修該這個 $h_{\theta}(x)$ 函數。</p>
+<h1 id="預測函數"><a href="#預測函數" class="headerlink" title="預測函數"></a>預測函數</h1><p>修改函數其實有很多種方法，比方說：</p>
+<ul>
+<li>$ f(x) = \frac{1}{1 + e ^{-x}}$</li>
+<li>$ f(x) = \frac{1 + tanh(x)}{2}$</li>
+</ul>
+<p>其中第一個 $ f(x) = \frac{1}{1 + e ^{-x}}$<br>叫做 Sigmoid Function、或叫 Logistic Function（邏輯函數）</p>
+<p>這邊就以這個函數為準。<br>然後我們令 $h_{\theta}(x) ＝\frac{1}{1 + e ^{-(\theta_{0} + \theta_{1}x)}}$<br>也就是把函數套在原函數上面。</p>
+<p>可能會造成困惑的一點是，我們其實不知道 $\theta_{0} + \theta_{1}x$ 確切的值域，<br>用淺白一點的例子來說：如果我在線性回歸中預測的是房價，那麼這個函數的值應該會很大。</p>
+<p>但是這樣的猜測是不正確的，因為我們並沒有確定 $\theta$ 的值，<br>所以在A.I.學習的過程中，這個 $\theta$ 的值就會讓 $h_{\theta}(x)$ 貼近真實的情況。</p>
+<h1 id="成本函數"><a href="#成本函數" class="headerlink" title="成本函數"></a>成本函數</h1><p>接下來就是定義成本代價了。</p>
+<p>因為 $h_{\theta}(x)$ 這次只會在 $[0, 1]$ 中，<br>所以說，我們的成本函數也是差不多要這樣定義：  </p>
+
+$Cost(\theta) = \left\{\begin{array}{l} -ln(h_{\theta}(x)) && \text{if }y = 1 \\ -ln(1-h_{\theta}(x)) && \text{if }y = 0 \end{array}\right .$
+
+<ul>
+<li>如果 $h_{\theta}(x) = 0$ 且 $y = 0$ 則 $Cost(\theta) = 0$（預測正確，成本為零）</li>
+<li>如果 $h_{\theta}(x) = 0$ 且 $y = 1$ 則 $Cost(\theta) = \infty$（預測錯誤，成本無限大）</li>
+<li>如果 $h_{\theta}(x) = 1$ 且 $y = 0$ 則 $Cost(\theta) = \infty$（預測錯誤，成本無限大）</li>
+<li>如果 $h_{\theta}(x) = 1$ 且 $y = 1$ 則 $Cost(\theta) = 0$（預測正確，成本為零）</li>
+</ul>
+<p>而 $log(x)$ 有這這樣的性質：</p>
+<ul>
+<li>任何數的零次方等於一，也就是 $ln(1) = 0$</li>
+<li>有條貼近 $y$ 軸的漸近線，也就是 $\displaystyle{\lim_{x \to 0} ln(x) = -\infty}$</li>
+</ul>
+<p>也就是說，只要取 $-ln(x)$ 就能找到 $0$ 跟 $\infty$ 兩個重要的值，剩下的就只是調整。<br>從這裡也可以發現一件事，就是其他的對數函數也差不多（其實是可以用的意思）</p>
+<p>接下來整理成一條公式：</p>
+<p>$Cost(\theta) = \left[-yln(h_{\theta}(x))\right] + \left[-(1-y)ln(1-h_{\theta}(x))\right]$</p>
+<p>因為假設有 $m$ 筆資料的話：</p>
+<p>$Cost(\theta) = \frac{1}{m} \sum\limits_{i=1}^m \left[ -y_{i}ln(h_{\theta}(x_{i})) \right] + \left[ -(1-y_{i})ln(1-h_{\theta}(x_{i})) \right]$ </p>
+<h2 id="成本的梯度"><a href="#成本的梯度" class="headerlink" title="成本的梯度"></a>成本的梯度</h2><p>因為梯度下降要用到，接下來是微分成本函數：</p>
+<p>$Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}ln(h_{\theta}(x_{i})) \right] + \left[ (1-y_{i})ln(1-h_{\theta}(x_{i})) \right]$ </p>
+<p>在微分之前，對兩個 $ln(x)$ 函數做變化：</p>
+<p>$ln(h_{\theta}(x_{i})) = ln(\frac{1}{1 + e^{-\theta^{T}X}}) = ln(1) - ln(1 + e^{-\theta^{T}X}) = - ln(1 + e^{-\theta^{T}X})$</p>
+<p>$ln(1-h_{\theta}(x_{i})) = ln(1-\frac{1}{1 + e^{-\theta^{T}X}}) = ln(\frac{1 + e^{-\theta^{T}X}}{1 + e^{-\theta^{T}X}}-\frac{1}{1 + e^{-\theta^{T}X}})$</p>
+<p>$= ln(\frac{e^{-\theta^{T}X}}{1 + e^{-\theta^{T}X}}) = ln(e^{-\theta^{T}X}) - ln(1 + e^{-\theta^{T}X}) = -\theta^{T}X - ln(1 + e^{-\theta^{T}X})$</p>
+<p>然後代換，化簡。</p>
+<p>$Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}(- ln(1 + e^{-\theta^{T}X})) \right] + \left[ (1-y_{i})(-\theta^{T}X - ln(1 + e^{-\theta^{T}X})) \right] $</p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -y_{i}ln(1 + e^{-\theta^{T}X}) + (1-y_{i})(-\theta^{T}X - ln(1 + e^{-\theta^{T}X})) \right]$</p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -y_{i}ln(1 + e^{-\theta^{T}X}) + (-\theta^{T}X - ln(1 + e^{-\theta^{T}X})+y_{i}\theta^{T}X + y_{i}ln(1 + e^{-\theta^{T}X}) \right]$ </p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -\theta^{T}X - ln(1 + e^{-\theta^{T}X})+y_{i}\theta^{T}X \right]$ </p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -(ln(e^{\theta^{T}X}) + ln(1 + e^{-\theta^{T}X}))+y_{i}\theta^{T}X \right]$ </p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -ln(e^{\theta^{T}X}(1 + e^{-\theta^{T}X}))+y_{i}\theta^{T}X \right]$ </p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -ln(e^{\theta^{T}X} + 1)+y_{i}\theta^{T}X \right]$ </p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}\theta^{T}X - ln(e^{\theta^{T}X} + 1) \right]$ </p>
+<p>接著在處理微分。</p>
+<p>$\frac{\partial}{\partial\theta_{j}}Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ \frac{\partial}{\partial\theta_{j}}y_{i}\theta^{T}X - \frac{\partial}{\partial\theta_{j}}ln(e^{\theta^{T}X} + 1) \right]$ </p>
+<p>第一項的部份：</p>
+<p>$\frac{\partial}{\partial\theta_{j}}y_{i}\theta^{T}X = y_{i}x_{j}$</p>
+<p>第二項的部份：</p>
+<p>$\frac{\partial}{\partial\theta_{j}}ln(e^{\theta^{T}X} + 1) = \frac{\partial}{\partial(e^{\theta^{T}X} + 1)}ln(e^{\theta^{T}X} + 1)\frac{\partial}{\partial\theta_{j}}(e^{\theta^{T}X} + 1)$</p>
+<p>$= \frac{1}{e^{\theta^{T}X} + 1}(x_{j}e^{\theta^{T}X}) = \frac{x_{j}e^{\theta^{T}X}}{e^{\theta^{T}X} + 1} = \frac{x_{j}}{(e^{-\theta^{T}X})(e^{\theta^{T}X} + 1)}$</p>
+<p>$= \frac{x_{j}}{1 + e^{-\theta^{T}X}} = x_{j}h_{\theta}(x_{i})$</p>
+<p>所以：</p>
+<p>$\frac{\partial}{\partial\theta_{j}}Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ \frac{\partial}{\partial\theta_{j}}y_{i}\theta^{T}X - \frac{\partial}{\partial\theta_{j}}ln(e^{\theta^{T}X} + 1) \right]$</p>
+<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}x_{j} - x_{j}h_{\theta}(x_{i}) \right] = -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i} - h_{\theta}(x_{i}) \right] x_{j}$ </p>
+<p>$= \frac{1}{m} \sum\limits_{i=1}^m \left[ h_{\theta}(x_{i}) - y_{i} \right] x_{j}$ </p>
+<p>實際的使用上我們會：</p>
+<p>$\theta_{j} := \theta_{j} - \alpha\frac{1}{m}\sum\limits_{i=1}^m \left[ h_{\theta}(x_{i}) - y_{i} \right] x_{j}$ </p>
+<p>其中 $\alpha$ 學習率，太高的學習率跟線性回歸一樣會震盪，<br>換言之，容易導致結果發散，無法收斂至最佳解。</p>
+<div class="note warning">
+            <p>學習率 $\alpha$ 太高會造成發散，導致無法收斂到最佳解。</p>
+          </div>
+<h1 id="感知器"><a href="#感知器" class="headerlink" title="感知器"></a>感知器</h1><p><img src="http://i.imgur.com/Mi5EawQ.png" alt="圖 1、感知器"></p>
+<div class="note info">
+            <p>用於人工神經網路時，單個感知器（perceptron）又稱為神經元（neuron）。</p>
+          </div>
+<p>圖 1 應該算是蠻常見的吧？如果常在接觸這個領域的話。<br>這篇文章把這個放在這裡，是為了跟邏輯回歸做比較。</p>
+<p>圖中顯示的 $\sum$ 是指 $X$ 乘上 $\theta$ 權重取和；而 $f(x)$ 是指某種函數，可能是 sigmoid 或是其他函數。</p>
+<p>有沒有跟邏輯回歸很類似或者說接近呢？</p>
+<h2 id="線性不可分問題"><a href="#線性不可分問題" class="headerlink" title="線性不可分問題"></a>線性不可分問題</h2><p>下面這個段落引用自 Wikipedia 的文章，讓我們回顧一下歷史。</p>
+<blockquote><p>雖然最初被認為有著良好的發展潛能，但感知機最終被證明不能處理諸多的模式識別問題。1969年，Marvin Minsky和Seymour Papert在《Perceptrons》書中，仔細分析了以感知機為代表的單層神經網絡系統的功能及局限，證明感知機不能解決簡單的異或（XOR）等線性不可分問題，但Rosenblatt和Minsky及Papert等人在當時已經了解到多層神經網絡能夠解決線性不可分的問題。</p>
+<p>由於Rosenblatt等人沒能夠及時推廣感知機學習算法到多層神經網絡上，又由於《Perceptrons》在研究領域中的巨大影響，及人們對書中論點的誤解，造成了人工神經領域發展的長年停滯及低潮…  </p>
+<footer><strong>Wikipedia</strong><cite><a href="https://zh.wikipedia.org/wiki/%E6%84%9F%E7%9F%A5%E5%99%A8" target="_blank" rel="noopener">zh.wikipedia.org/wiki/%E6%84%9F%E7%9F%A5%E5%99%A8</a></cite></footer></blockquote>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>這個演示是邏輯回歸（單個神經元）學習邏輯運算的規則，<br>可以發現除了 XOR 外，其他邏輯都可以使紅、藍兩色分明。</p>
+<iframe scrolling="no" width="100%" height="550px" src="//jsfiddle.net/ht98xhej/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>人工智慧</category>
       </categories>
   </entry>
   <entry>
@@ -3788,115 +3897,6 @@ P_{i, j} = P_{i + 1, j - 1} && \text{if } S_{i} = S_{j}, |i - j| > 1 \\
 ]]></content>
       <categories>
         <category>資料結構與演算法</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>邏輯回歸與感知器 Logistic Regression and Perceptron</title>
-    <url>/logistic-regression-and-perceptron/</url>
-    <content><![CDATA[<p>上一篇介紹的是線性回歸與梯度下降，這一篇將會討論「邏輯回歸與感知器」。<br><a id="more"></a></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在這邊先約定一件事情，就是對數函數的表示法：</p>
-<ul>
-<li>$log(x)$ 表示以 10 為底</li>
-<li>$lg(x)$ 表示以 2 為底</li>
-<li>$ln(x)$ 表示以 $e$ 為底</li>
-</ul>
-<p>因為第一種表示法很容易造成混淆，<br>所以這邊就事前說明，不要造成大家的困擾。</p>
-<div class="note info">
-            <p>這是 Chrome 瀏覽器搜尋的表示法；你可以在網址列輸入 log(10)、lg(2) 及 ln(e) 來觀察。</p>
-          </div>
-<div class="note success">
-            <p>這是 ANN 的系列文章<br>上一篇是 <a href="/linear-regression-and-gradient-descent/" title="線性回歸與梯度下降 Linear Regression and Gradient Descent">線性回歸與梯度下降 Linear Regression and Gradient Descent</a><br>下一篇是 <a href="/fully-connected-neural-network/" title="全連接神經網路 Fully-Connected Neural Network">全連接神經網路 Fully-Connected Neural Network</a></p>
-          </div>
-<div class="note success">
-            <p>筆者於大學專題時，曾向組員介紹過相關內容，如有需要可以參考 <a href="https://docs.google.com/presentation/d/1IfcViNOgnE3g2yj6tdWGsNnm2D1cb0nkB87crTMTFno/edit?usp=sharing" target="_blank" rel="noopener">Logistic Regression 簡報</a></p>
-          </div>
-<h1 id="邏輯回歸"><a href="#邏輯回歸" class="headerlink" title="邏輯回歸"></a>邏輯回歸</h1><p>邏輯回歸公式看起來還蠻複雜的，不過依舊有跡可循。<br>首先，我們回憶線性回歸的一些式子：</p>
-<p>$h_{\theta}(x) = \theta_{0} + \theta_{1}x$</p>
-<p>還記得這個做什麼的話就好辦了，首先我們有一堆 $x$ 跟 $y$ 的資料（訓練資料），<br>然後我們透過找 $\theta$ 來確定之後新資料的 $y$ 值，換言之 $h_{\theta}(x)$ 其實就是新資料要代入的函數。</p>
-<p>現在問題在於，如果我希望這個 $h_{\theta}(x)$ 介於 $[0, 1]$ 這個區間的話，<br>為什麼要做落在這個區間呢？因為這樣才能對應這樣的關係：</p>
-<ul>
-<li>$h_{\theta}(x) = 1 = True$</li>
-<li>$h_{\theta}(x) = 0 = False$</li>
-</ul>
-<p>這也是叫做邏輯回歸的原因了，也就是說我們要修該這個 $h_{\theta}(x)$ 函數。</p>
-<h1 id="預測函數"><a href="#預測函數" class="headerlink" title="預測函數"></a>預測函數</h1><p>修改函數其實有很多種方法，比方說：</p>
-<ul>
-<li>$ f(x) = \frac{1}{1 + e ^{-x}}$</li>
-<li>$ f(x) = \frac{1 + tanh(x)}{2}$</li>
-</ul>
-<p>其中第一個 $ f(x) = \frac{1}{1 + e ^{-x}}$<br>叫做 Sigmoid Function、或叫 Logistic Function（邏輯函數）</p>
-<p>這邊就以這個函數為準。<br>然後我們令 $h_{\theta}(x) ＝\frac{1}{1 + e ^{-(\theta_{0} + \theta_{1}x)}}$<br>也就是把函數套在原函數上面。</p>
-<p>可能會造成困惑的一點是，我們其實不知道 $\theta_{0} + \theta_{1}x$ 確切的值域，<br>用淺白一點的例子來說：如果我在線性回歸中預測的是房價，那麼這個函數的值應該會很大。</p>
-<p>但是這樣的猜測是不正確的，因為我們並沒有確定 $\theta$ 的值，<br>所以在A.I.學習的過程中，這個 $\theta$ 的值就會讓 $h_{\theta}(x)$ 貼近真實的情況。</p>
-<h1 id="成本函數"><a href="#成本函數" class="headerlink" title="成本函數"></a>成本函數</h1><p>接下來就是定義成本代價了。</p>
-<p>因為 $h_{\theta}(x)$ 這次只會在 $[0, 1]$ 中，<br>所以說，我們的成本函數也是差不多要這樣定義：  </p>
-
-$Cost(\theta) = \left\{\begin{array}{l} -ln(h_{\theta}(x)) && \text{if }y = 1 \\ -ln(1-h_{\theta}(x)) && \text{if }y = 0 \end{array}\right .$
-
-<ul>
-<li>如果 $h_{\theta}(x) = 0$ 且 $y = 0$ 則 $Cost(\theta) = 0$（預測正確，成本為零）</li>
-<li>如果 $h_{\theta}(x) = 0$ 且 $y = 1$ 則 $Cost(\theta) = \infty$（預測錯誤，成本無限大）</li>
-<li>如果 $h_{\theta}(x) = 1$ 且 $y = 0$ 則 $Cost(\theta) = \infty$（預測錯誤，成本無限大）</li>
-<li>如果 $h_{\theta}(x) = 1$ 且 $y = 1$ 則 $Cost(\theta) = 0$（預測正確，成本為零）</li>
-</ul>
-<p>而 $log(x)$ 有這這樣的性質：</p>
-<ul>
-<li>任何數的零次方等於一，也就是 $ln(1) = 0$</li>
-<li>有條貼近 $y$ 軸的漸近線，也就是 $\displaystyle{\lim_{x \to 0} ln(x) = -\infty}$</li>
-</ul>
-<p>也就是說，只要取 $-ln(x)$ 就能找到 $0$ 跟 $\infty$ 兩個重要的值，剩下的就只是調整。<br>從這裡也可以發現一件事，就是其他的對數函數也差不多（其實是可以用的意思）</p>
-<p>接下來整理成一條公式：</p>
-<p>$Cost(\theta) = \left[-yln(h_{\theta}(x))\right] + \left[-(1-y)ln(1-h_{\theta}(x))\right]$</p>
-<p>因為假設有 $m$ 筆資料的話：</p>
-<p>$Cost(\theta) = \frac{1}{m} \sum\limits_{i=1}^m \left[ -y_{i}ln(h_{\theta}(x_{i})) \right] + \left[ -(1-y_{i})ln(1-h_{\theta}(x_{i})) \right]$ </p>
-<h2 id="成本的梯度"><a href="#成本的梯度" class="headerlink" title="成本的梯度"></a>成本的梯度</h2><p>因為梯度下降要用到，接下來是微分成本函數：</p>
-<p>$Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}ln(h_{\theta}(x_{i})) \right] + \left[ (1-y_{i})ln(1-h_{\theta}(x_{i})) \right]$ </p>
-<p>在微分之前，對兩個 $ln(x)$ 函數做變化：</p>
-<p>$ln(h_{\theta}(x_{i})) = ln(\frac{1}{1 + e^{-\theta^{T}X}}) = ln(1) - ln(1 + e^{-\theta^{T}X}) = - ln(1 + e^{-\theta^{T}X})$</p>
-<p>$ln(1-h_{\theta}(x_{i})) = ln(1-\frac{1}{1 + e^{-\theta^{T}X}}) = ln(\frac{1 + e^{-\theta^{T}X}}{1 + e^{-\theta^{T}X}}-\frac{1}{1 + e^{-\theta^{T}X}})$</p>
-<p>$= ln(\frac{e^{-\theta^{T}X}}{1 + e^{-\theta^{T}X}}) = ln(e^{-\theta^{T}X}) - ln(1 + e^{-\theta^{T}X}) = -\theta^{T}X - ln(1 + e^{-\theta^{T}X})$</p>
-<p>然後代換，化簡。</p>
-<p>$Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}(- ln(1 + e^{-\theta^{T}X})) \right] + \left[ (1-y_{i})(-\theta^{T}X - ln(1 + e^{-\theta^{T}X})) \right] $</p>
-<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -y_{i}ln(1 + e^{-\theta^{T}X}) + (1-y_{i})(-\theta^{T}X - ln(1 + e^{-\theta^{T}X})) \right]$</p>
-<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -y_{i}ln(1 + e^{-\theta^{T}X}) + (-\theta^{T}X - ln(1 + e^{-\theta^{T}X})+y_{i}\theta^{T}X + y_{i}ln(1 + e^{-\theta^{T}X}) \right]$ </p>
-<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -\theta^{T}X - ln(1 + e^{-\theta^{T}X})+y_{i}\theta^{T}X \right]$ </p>
-<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -(ln(e^{\theta^{T}X}) + ln(1 + e^{-\theta^{T}X}))+y_{i}\theta^{T}X \right]$ </p>
-<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -ln(e^{\theta^{T}X}(1 + e^{-\theta^{T}X}))+y_{i}\theta^{T}X \right]$ </p>
-<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ -ln(e^{\theta^{T}X} + 1)+y_{i}\theta^{T}X \right]$ </p>
-<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}\theta^{T}X - ln(e^{\theta^{T}X} + 1) \right]$ </p>
-<p>接著在處理微分。</p>
-<p>$\frac{\partial}{\partial\theta_{j}}Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ \frac{\partial}{\partial\theta_{j}}y_{i}\theta^{T}X - \frac{\partial}{\partial\theta_{j}}ln(e^{\theta^{T}X} + 1) \right]$ </p>
-<p>第一項的部份：</p>
-<p>$\frac{\partial}{\partial\theta_{j}}y_{i}\theta^{T}X = y_{i}x_{j}$</p>
-<p>第二項的部份：</p>
-<p>$\frac{\partial}{\partial\theta_{j}}ln(e^{\theta^{T}X} + 1) = \frac{\partial}{\partial(e^{\theta^{T}X} + 1)}ln(e^{\theta^{T}X} + 1)\frac{\partial}{\partial\theta_{j}}(e^{\theta^{T}X} + 1)$</p>
-<p>$= \frac{1}{e^{\theta^{T}X} + 1}(x_{j}e^{\theta^{T}X}) = \frac{x_{j}e^{\theta^{T}X}}{e^{\theta^{T}X} + 1} = \frac{x_{j}}{(e^{-\theta^{T}X})(e^{\theta^{T}X} + 1)}$</p>
-<p>$= \frac{x_{j}}{1 + e^{-\theta^{T}X}} = x_{j}h_{\theta}(x_{i})$</p>
-<p>所以：</p>
-<p>$\frac{\partial}{\partial\theta_{j}}Cost(\theta) = -\frac{1}{m} \sum\limits_{i=1}^m \left[ \frac{\partial}{\partial\theta_{j}}y_{i}\theta^{T}X - \frac{\partial}{\partial\theta_{j}}ln(e^{\theta^{T}X} + 1) \right]$</p>
-<p>$= -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i}x_{j} - x_{j}h_{\theta}(x_{i}) \right] = -\frac{1}{m} \sum\limits_{i=1}^m \left[ y_{i} - h_{\theta}(x_{i}) \right] x_{j}$ </p>
-<p>$= \frac{1}{m} \sum\limits_{i=1}^m \left[ h_{\theta}(x_{i}) - y_{i} \right] x_{j}$ </p>
-<p>實際的使用上我們會：</p>
-<p>$\theta_{j} := \theta_{j} - \alpha\frac{1}{m}\sum\limits_{i=1}^m \left[ h_{\theta}(x_{i}) - y_{i} \right] x_{j}$ </p>
-<p>其中 $\alpha$ 學習率，太高的學習率跟線性回歸一樣會震盪，<br>換言之，容易導致結果發散，無法收斂至最佳解。</p>
-<div class="note warning">
-            <p>學習率 $\alpha$ 太高會造成發散，導致無法收斂到最佳解。</p>
-          </div>
-<h1 id="感知器"><a href="#感知器" class="headerlink" title="感知器"></a>感知器</h1><p><img src="http://i.imgur.com/Mi5EawQ.png" alt="圖 1、感知器"></p>
-<div class="note info">
-            <p>用於人工神經網路時，單個感知器（perceptron）又稱為神經元（neuron）。</p>
-          </div>
-<p>圖 1 應該算是蠻常見的吧？如果常在接觸這個領域的話。<br>這篇文章把這個放在這裡，是為了跟邏輯回歸做比較。</p>
-<p>圖中顯示的 $\sum$ 是指 $X$ 乘上 $\theta$ 權重取和；而 $f(x)$ 是指某種函數，可能是 sigmoid 或是其他函數。</p>
-<p>有沒有跟邏輯回歸很類似或者說接近呢？</p>
-<h2 id="線性不可分問題"><a href="#線性不可分問題" class="headerlink" title="線性不可分問題"></a>線性不可分問題</h2><p>下面這個段落引用自 Wikipedia 的文章，讓我們回顧一下歷史。</p>
-<blockquote><p>雖然最初被認為有著良好的發展潛能，但感知機最終被證明不能處理諸多的模式識別問題。1969年，Marvin Minsky和Seymour Papert在《Perceptrons》書中，仔細分析了以感知機為代表的單層神經網絡系統的功能及局限，證明感知機不能解決簡單的異或（XOR）等線性不可分問題，但Rosenblatt和Minsky及Papert等人在當時已經了解到多層神經網絡能夠解決線性不可分的問題。</p>
-<p>由於Rosenblatt等人沒能夠及時推廣感知機學習算法到多層神經網絡上，又由於《Perceptrons》在研究領域中的巨大影響，及人們對書中論點的誤解，造成了人工神經領域發展的長年停滯及低潮…  </p>
-<footer><strong>Wikipedia</strong><cite><a href="https://zh.wikipedia.org/wiki/%E6%84%9F%E7%9F%A5%E5%99%A8" target="_blank" rel="noopener">zh.wikipedia.org/wiki/%E6%84%9F%E7%9F%A5%E5%99%A8</a></cite></footer></blockquote>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>這個演示是邏輯回歸（單個神經元）學習邏輯運算的規則，<br>可以發現除了 XOR 外，其他邏輯都可以使紅、藍兩色分明。</p>
-<iframe scrolling="no" width="100%" height="550px" src="//jsfiddle.net/ht98xhej/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
-      <categories>
-        <category>人工智慧</category>
       </categories>
   </entry>
   <entry>

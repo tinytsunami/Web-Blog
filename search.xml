@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hexo Next 的 Local Search 菜單位置</title>
+    <url>/hexo-next-local-search/</url>
+    <content><![CDATA[<p>由於要準備發新文章，開始重新考慮一些文章管理的事情，其中最重要的是「站內搜索」。<br>這篇文章只是記錄一個設定上的小問題而已……</p>
+<a id="more"></a>
+<h1 id="開啟-Local-Search-功能"><a href="#開啟-Local-Search-功能" class="headerlink" title="開啟 Local Search 功能"></a>開啟 Local Search 功能</h1><p>首先，在 Hexo 的 Next 主題開啟 Local Search 非常容易，<br>只要在 <code>themes\next\_config.yml</code> 中，找到：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="comment"># Dependencies: https://github.com/theme-next/hexo-generator-searchdb</span></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># If auto, trigger search by changing input.</span></span><br><span class="line">  <span class="comment"># If manual, trigger search by pressing enter key or search button.</span></span><br><span class="line"><span class="attr">  trigger:</span> <span class="string">auto</span></span><br><span class="line">  <span class="comment"># Show top n results per article, show all results by setting to -1</span></span><br><span class="line"><span class="attr">  top_n_per_article:</span> <span class="number">1</span></span><br><span class="line">  <span class="comment"># Unescape html strings to the readable one.</span></span><br><span class="line"><span class="attr">  unescape:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>將 <code>local_search</code> 的 <code>enable</code> 設為 <code>true</code> 即可。</p>
+<h1 id="調整-Local-Search-位置"><a href="#調整-Local-Search-位置" class="headerlink" title="調整 Local Search 位置"></a>調整 Local Search 位置</h1><p>預設 Local Search 在主選單的位置如圖 1 所示，會自動插入在最末處：</p>
+<p><img src="https://i.imgur.com/KHVtWAN.png" alt="圖 1、預設 Local Search 的菜單位置"></p>
+<p>基本上沒辦法直接從 <code>_config.yml</code> 設定位置，<br>如果要改到首頁的下方，則可以到 <code>themes\next\layout\_partials\header\menu.swig</code> 修改程式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;nav class=&quot;site-nav&quot;&gt;</span><br><span class="line">  &#123;% if theme.menu %&#125;</span><br><span class="line">    &lt;ul id=&quot;menu&quot; class=&quot;menu&quot;&gt;</span><br><span class="line">      &#123;% for name, path in theme.menu %&#125;</span><br><span class="line">        渲染每一行選單連結</span><br><span class="line">      &#123;%- endfor %&#125;</span><br><span class="line"></span><br><span class="line">      &#123;% set hasSearch = theme.swiftype_key || theme.algolia_search.enable || theme.local_search.enable %&#125;</span><br><span class="line">      &#123;% if hasSearch %&#125;</span><br><span class="line">        渲染 Local Search 功能連結</span><br><span class="line">      &#123;% endif %&#125;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">  &#123;% endif %&#125;</span><br><span class="line">  其他主題樣式的處理</span><br><span class="line">&lt;/nav&gt;</span><br></pre></td></tr></table></figure>
+<p>不難理解，假設我們需要把「搜索」的位置移動到「首頁」下方，<br>那只要把渲染 Local Search 功能，先插入到上方的 <code>for</code> 迴圈中，<br>然後加上一個條件 <code>name == &#39;home&#39;</code> 跟隨首頁進行渲染即可：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;nav class=&quot;site-nav&quot;&gt;</span><br><span class="line">  &#123;% if theme.menu %&#125;</span><br><span class="line">    &lt;ul id=&quot;menu&quot; class=&quot;menu&quot;&gt;</span><br><span class="line">      &#123;% for name, path in theme.menu %&#125;</span><br><span class="line">        渲染每一行選單連結</span><br><span class="line"></span><br><span class="line">        跟隨首頁進行渲染</span><br><span class="line">        &#123;% if name == &apos;home&apos; %&#125;</span><br><span class="line">          &#123;% set hasSearch = theme.swiftype_key || theme.algolia_search.enable || theme.local_search.enable %&#125;</span><br><span class="line">          &#123;% if hasSearch %&#125;</span><br><span class="line">            渲染 Local Search 功能連結</span><br><span class="line">          &#123;% endif %&#125;</span><br><span class="line">        &#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">      &#123;%- endfor %&#125;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">  &#123;% endif %&#125;</span><br><span class="line">  其他主題樣式的處理</span><br><span class="line">&lt;/nav&gt;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>需要注意的是，隨著需求不同，設下的條件（<code>name == &#39;home&#39;</code>）可能不一樣，<br>你應該檢查 <code>_config.yml</code> 的 <code>menu</code> 區域設定，來獲得正確的條件。</p>
+          </div>
+<div class="note info">
+            <p>關於渲染 swig 代碼塊，可以使用：</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% codeblock lang:swig %&#125;</span><br><span class="line">&#123;% raw %&#125;</span><br><span class="line">…</span><br><span class="line">&#123;% endraw %&#125;</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure>
+          </div>
+]]></content>
+      <categories>
+        <category>網頁設計</category>
+      </categories>
+  </entry>
+  <entry>
     <title>HTML5 Cordova Android APP 環境配置</title>
     <url>/HTML5-Cordova-Android-APP-1/</url>
     <content><![CDATA[<p>這篇是紀錄一個基於 HTML5 的 Android APP 開發流程。</p>
@@ -197,31 +222,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Hexo Next 的 Local Search 菜單位置</title>
-    <url>/hexo-next-local-search/</url>
-    <content><![CDATA[<p>由於要準備發新文章，開始重新考慮一些文章管理的事情，其中最重要的是「站內搜索」。<br>這篇文章只是記錄一個設定上的小問題而已……</p>
-<a id="more"></a>
-<h1 id="開啟-Local-Search-功能"><a href="#開啟-Local-Search-功能" class="headerlink" title="開啟 Local Search 功能"></a>開啟 Local Search 功能</h1><p>首先，在 Hexo 的 Next 主題開啟 Local Search 非常容易，<br>只要在 <code>themes\next\_config.yml</code> 中，找到：</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="comment"># Dependencies: https://github.com/theme-next/hexo-generator-searchdb</span></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># If auto, trigger search by changing input.</span></span><br><span class="line">  <span class="comment"># If manual, trigger search by pressing enter key or search button.</span></span><br><span class="line"><span class="attr">  trigger:</span> <span class="string">auto</span></span><br><span class="line">  <span class="comment"># Show top n results per article, show all results by setting to -1</span></span><br><span class="line"><span class="attr">  top_n_per_article:</span> <span class="number">1</span></span><br><span class="line">  <span class="comment"># Unescape html strings to the readable one.</span></span><br><span class="line"><span class="attr">  unescape:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-<p>將 <code>local_search</code> 的 <code>enable</code> 設為 <code>true</code> 即可。</p>
-<h1 id="調整-Local-Search-位置"><a href="#調整-Local-Search-位置" class="headerlink" title="調整 Local Search 位置"></a>調整 Local Search 位置</h1><p>預設 Local Search 在主選單的位置如圖 1 所示，會自動插入在最末處：</p>
-<p><img src="https://i.imgur.com/KHVtWAN.png" alt="圖 1、預設 Local Search 的菜單位置"></p>
-<p>基本上沒辦法直接從 <code>_config.yml</code> 設定位置，<br>如果要改到首頁的下方，則可以到 <code>themes\next\layout\_partials\header\menu.swig</code> 修改程式：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;nav class=&quot;site-nav&quot;&gt;</span><br><span class="line">  &#123;% if theme.menu %&#125;</span><br><span class="line">    &lt;ul id=&quot;menu&quot; class=&quot;menu&quot;&gt;</span><br><span class="line">      &#123;% for name, path in theme.menu %&#125;</span><br><span class="line">        渲染每一行選單連結</span><br><span class="line">      &#123;%- endfor %&#125;</span><br><span class="line"></span><br><span class="line">      &#123;% set hasSearch = theme.swiftype_key || theme.algolia_search.enable || theme.local_search.enable %&#125;</span><br><span class="line">      &#123;% if hasSearch %&#125;</span><br><span class="line">        渲染 Local Search 功能連結</span><br><span class="line">      &#123;% endif %&#125;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">  &#123;% endif %&#125;</span><br><span class="line">  其他主題樣式的處理</span><br><span class="line">&lt;/nav&gt;</span><br></pre></td></tr></table></figure>
-<p>不難理解，假設我們需要把「搜索」的位置移動到「首頁」下方，<br>那只要把渲染 Local Search 功能，先插入到上方的 <code>for</code> 迴圈中，<br>然後加上一個條件 <code>name == &#39;home&#39;</code> 跟隨首頁進行渲染即可：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;nav class=&quot;site-nav&quot;&gt;</span><br><span class="line">  &#123;% if theme.menu %&#125;</span><br><span class="line">    &lt;ul id=&quot;menu&quot; class=&quot;menu&quot;&gt;</span><br><span class="line">      &#123;% for name, path in theme.menu %&#125;</span><br><span class="line">        渲染每一行選單連結</span><br><span class="line"></span><br><span class="line">        跟隨首頁進行渲染</span><br><span class="line">        &#123;% if name == &apos;home&apos; %&#125;</span><br><span class="line">          &#123;% set hasSearch = theme.swiftype_key || theme.algolia_search.enable || theme.local_search.enable %&#125;</span><br><span class="line">          &#123;% if hasSearch %&#125;</span><br><span class="line">            渲染 Local Search 功能連結</span><br><span class="line">          &#123;% endif %&#125;</span><br><span class="line">        &#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">      &#123;%- endfor %&#125;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">  &#123;% endif %&#125;</span><br><span class="line">  其他主題樣式的處理</span><br><span class="line">&lt;/nav&gt;</span><br></pre></td></tr></table></figure>
-<div class="note info">
-            <p>需要注意的是，隨著需求不同，設下的條件（<code>name == &#39;home&#39;</code>）可能不一樣，<br>你應該檢查 <code>_config.yml</code> 的 <code>menu</code> 區域設定，來獲得正確的條件。</p>
-          </div>
-<div class="note info">
-            <p>關於渲染 swig 代碼塊，可以使用：</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% codeblock lang:swig %&#125;</span><br><span class="line">&#123;% raw %&#125;</span><br><span class="line">…</span><br><span class="line">&#123;% endraw %&#125;</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure>
-          </div>
-]]></content>
-      <categories>
-        <category>網頁設計</category>
-      </categories>
-  </entry>
-  <entry>
     <title>JavaScript 檔案處理</title>
     <url>/javascript-file-process/</url>
     <content><![CDATA[<p>這篇文章的起因是想到過去寫的 JS Demo 多數沒有保留，<br>好不容易，上次在學校弄人工智慧有保留一份帶有檔案處理的。</p>
@@ -329,6 +329,35 @@
 <h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="530px" src="//jsfiddle.net/kLyn0kut/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
       <categories>
         <category>資料結構與演算法</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux 螢幕解析度問題</title>
+    <url>/linux-screen-display-problem/</url>
+    <content><![CDATA[<p>我當初剛裝 Linux 時，被雙螢幕的問題搞了許久，<br>這篇主要是做個解決方案的筆記，以免之後又碰到相同的問題。</p>
+<p>本解決方案來自網路上的資料，我將把參考資料陳列於下方。<br><a id="more"></a></p>
+<div class="note info">
+            <p>本篇的 Linux 版本為 <a href="https://linuxmint.com/" target="_blank" rel="noopener">Linux Mint</a><br>如果你的不是 Linux Mint 的話，解決方案可能大同小異，請參考其他資料處理。</p>
+          </div>
+<h1 id="解析度問題"><a href="#解析度問題" class="headerlink" title="解析度問題"></a>解析度問題</h1><p>有時候安裝好 Linux 螢幕並不會自動抓到適當的解析度，<br>筆者的雙螢幕中，發生問題的螢幕是電視螢幕，具體參考圖 1。</p>
+<p>我的猜測是，螢幕本身不是電腦螢幕的話，可能發生機會會大得多。</p>
+<p><img src="https://i.imgur.com/w7Kga59.png" alt="圖 1、Linux Mint 螢幕設定畫面"></p>
+<p>如上圖所示，問題螢幕為 DVI-I 輸出，正常情況應為 1920x1080 解析度；<br>但由於某種原因，最高只到 1024x768 解析度。</p>
+<h1 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案"></a>解決方案</h1><p>我們會利用 cvt 及 xrandr 指令解決這個問題：</p>
+<ul>
+<li>利用 xrandr 找出問題螢幕的代號</li>
+<li>透過 cvt 生成 modeline</li>
+<li>透過 xrandr 以及 modeline 建立解析度</li>
+<li>透過 xrandr 增加解析度到螢幕代號</li>
+<li>設定螢幕為新解析度</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr</span><br><span class="line">Screen 0: minimum 320 x 200, current 2944 x 1080, maximum 16384 x 16384</span><br><span class="line">DVI-I-1 connected 1024x768+0+0 (normal left inverted right x axis y axis) 0mm x 0mm</span><br><span class="line">   1024x768      60.00* </span><br><span class="line">   800x600       60.32    56.25  </span><br><span class="line">   848x480       60.00  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">HDMI-1 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">VGA-1 connected primary 1920x1080+1024+0 (normal left inverted right x axis y axis) 477mm x 268mm</span><br><span class="line">   1920x1080     60.00*+</span><br><span class="line">   1680x1050     59.95  </span><br><span class="line">   1600x900      60.00  </span><br><span class="line">   1280x1024     60.02  </span><br><span class="line">   1280x800      59.81  </span><br><span class="line">   1280x720      60.00  </span><br><span class="line">   1024x768      60.00  </span><br><span class="line">   800x600       60.32  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ cvt 1920 1080 60</span><br><span class="line"><span class="meta">#</span> 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz</span><br><span class="line">Modeline "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --addmode DVI-I-1 "1920x1080_60.00"</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
+<p>這個方法是暫時的，完成這些步驟後，要做一些設定來保存這個配置，<br>我的方案是使用開機執行程式（.sh）開機時自動完成上面那些操作：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">xrandr --addmode DVI-I-1 1920x1080_60.00</span><br><span class="line">xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
+<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574" target="_blank" rel="noopener">https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574</a><br><a href="https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution" target="_blank" rel="noopener">https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -796,84 +825,6 @@
       </categories>
   </entry>
   <entry>
-    <title>串列 Linked List</title>
-    <url>/linked-list/</url>
-    <content><![CDATA[<p>串列是資料結構中，一種重要的資料表達方式，<br>這樣的表達方式可以透過指標來完成。</p>
-<a id="more"></a>
-<p>通常，從這個部分開始，<br>可以看出一個人對指標的熟練程度。</p>
-<h1 id="串列結構"><a href="#串列結構" class="headerlink" title="串列結構"></a>串列結構</h1><p>串列的典型做法是使用 struct 實作：</p>
-<div class="note info">
-            <p>為方便撰寫範例，這裡假設資料為整數。</p>
-          </div>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;   <span class="comment">// 資料</span></span><br><span class="line">    Node *next; <span class="comment">// 下個節點</span></span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line">Node *node_1 = <span class="keyword">new</span> Node; <span class="comment">// 第 1 個節點</span></span><br><span class="line">Node *node_2 = <span class="keyword">new</span> Node; <span class="comment">// 第 2 個節點</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// 把第 2 個節點接在第 1 個後面</span></span><br><span class="line">node_1-&gt;next = node_2;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<div class="note info">
-            <p>串列結構經過良好的封裝更便於使用。</p>
-          </div>
-<h1 id="創建節點"><a href="#創建節點" class="headerlink" title="創建節點"></a>創建節點</h1><p>可以透過一個函數取得節點，<br>動態建立節點後，記得回傳給主程式。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 給定資料建立一個節點</span></span><br><span class="line"><span class="function">Node* <span class="title">create</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = <span class="keyword">new</span> Node; <span class="comment">// 建立新節點</span></span><br><span class="line">    node-&gt;data = value;    <span class="comment">// 設定節點值</span></span><br><span class="line">    node-&gt;next = <span class="literal">nullptr</span>;  <span class="comment">// 初始化指標</span></span><br><span class="line">    <span class="keyword">return</span> node;           <span class="comment">// 回傳給主程序</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>接下來的插入節點就可以使用這個函數了。</p>
-<h1 id="搜索節點"><a href="#搜索節點" class="headerlink" title="搜索節點"></a>搜索節點</h1><p>我個人認為，搜索節點這件事情，<br>搜索當前節點的效益並不大，通常我們更需要「目標節點的前一個節點」。</p>
-<div class="note info">
-            <p>「搜索目標節點的前一個節點函數」下面簡稱為「搜前函數」。</p>
-          </div>
-<p>個人實作時，會先實作搜前函數，<br>搜索節點的函數則透過這個函數間接完成。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreachPrevious</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node* node = root;</span><br><span class="line">    <span class="keyword">while</span> (node-&gt;next != <span class="literal">nullptr</span>      <span class="comment">// 不是最後一個節點</span></span><br><span class="line">        &amp;&amp; node-&gt;next-&gt;data != value) <span class="comment">// 而且下個節點的值不是目標</span></span><br><span class="line">        node = node-&gt;next;            <span class="comment">// 繼續搜索</span></span><br><span class="line">    <span class="keyword">return</span> node;                      <span class="comment">// 回傳目標的上一節點或最後一個節點</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div class="note info">
-            <p>這裡的「root」是樹狀結構的名詞，但串列也可以視作一棵樹。</p>
-          </div>
-<p>透過搜前函數，可以實做出的搜索功能。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreach</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;data == value)</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    Node *node = sreachPrevious(root, value);</span><br><span class="line">    <span class="keyword">return</span> node-&gt;next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="插入節點"><a href="#插入節點" class="headerlink" title="插入節點"></a>插入節點</h1><p>插入節點不困難，這裡以插入到末端為例，<br>如果存在一個值不會出現在串列中的話，可以透過搜前函數實作。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 插入一個節點到串列的結尾</span></span><br><span class="line"><span class="function">Node* <span class="title">insert</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = create(value);       <span class="comment">// 新建節點</span></span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">nullptr</span>)              <span class="comment">// 如果串列尚不存在</span></span><br><span class="line">        <span class="keyword">return</span> node;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Node* tail = root;            <span class="comment">// 找尾巴節點</span></span><br><span class="line">        <span class="keyword">while</span> (tail-&gt;next != <span class="literal">nullptr</span>)</span><br><span class="line">            tail = tail-&gt;next;</span><br><span class="line">        tail-&gt;next = node;            <span class="comment">// 新增在尾巴</span></span><br><span class="line">        <span class="keyword">return</span> root;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div class="note info">
-            <p>插入到特定位置的功能，也可以利用搜前函數的實作。</p>
-          </div>
-<div class="note warning">
-            <p>如果不回傳指標給主程序，則建立串列時會出錯。</p>
-          </div>
-<h1 id="刪除節點"><a href="#刪除節點" class="headerlink" title="刪除節點"></a>刪除節點</h1><p>刪除節點可以直接透過搜前函數實作。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *previous = sreachPrevious(root, value);</span><br><span class="line">    Node *target = previous-&gt;next;</span><br><span class="line">    <span class="keyword">if</span> (target != <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        previous-&gt;next = target-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="遍歷節點"><a href="#遍歷節點" class="headerlink" title="遍歷節點"></a>遍歷節點</h1><p>對串列進行一堆操作後，檢查串列的正確性，<br>或是有時我們需要對整個串列做特定運算，都需要遍歷功能：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traversal</span><span class="params">(Node *root, <span class="keyword">void</span> (*callback)(Node *node))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Node *node = root; node != <span class="literal">nullptr</span>; node = node-&gt;next)</span><br><span class="line">        callback(node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>遍歷功能的第二個參數是函數的指標，<br>串列的每個節點，會被當成這個函數的傳入值操作。</p>
-<p>以印出節點來說，可以這樣調用：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(Node *node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; node-&gt;data &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">traversal(root, show);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>演示包含插入與刪除節點，<br>其中插入功能隱含創建節點功能，而刪除功能隱含著搜尋功能。</p>
-<iframe scrolling="no" width="100%" height="130px" src="//jsfiddle.net/ngkx992u/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
-      <categories>
-        <category>程式設計</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Linux 螢幕解析度問題</title>
-    <url>/linux-screen-display-problem/</url>
-    <content><![CDATA[<p>我當初剛裝 Linux 時，被雙螢幕的問題搞了許久，<br>這篇主要是做個解決方案的筆記，以免之後又碰到相同的問題。</p>
-<p>本解決方案來自網路上的資料，我將把參考資料陳列於下方。<br><a id="more"></a></p>
-<div class="note info">
-            <p>本篇的 Linux 版本為 <a href="https://linuxmint.com/" target="_blank" rel="noopener">Linux Mint</a><br>如果你的不是 Linux Mint 的話，解決方案可能大同小異，請參考其他資料處理。</p>
-          </div>
-<h1 id="解析度問題"><a href="#解析度問題" class="headerlink" title="解析度問題"></a>解析度問題</h1><p>有時候安裝好 Linux 螢幕並不會自動抓到適當的解析度，<br>筆者的雙螢幕中，發生問題的螢幕是電視螢幕，具體參考圖 1。</p>
-<p>我的猜測是，螢幕本身不是電腦螢幕的話，可能發生機會會大得多。</p>
-<p><img src="https://i.imgur.com/w7Kga59.png" alt="圖 1、Linux Mint 螢幕設定畫面"></p>
-<p>如上圖所示，問題螢幕為 DVI-I 輸出，正常情況應為 1920x1080 解析度；<br>但由於某種原因，最高只到 1024x768 解析度。</p>
-<h1 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案"></a>解決方案</h1><p>我們會利用 cvt 及 xrandr 指令解決這個問題：</p>
-<ul>
-<li>利用 xrandr 找出問題螢幕的代號</li>
-<li>透過 cvt 生成 modeline</li>
-<li>透過 xrandr 以及 modeline 建立解析度</li>
-<li>透過 xrandr 增加解析度到螢幕代號</li>
-<li>設定螢幕為新解析度</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr</span><br><span class="line">Screen 0: minimum 320 x 200, current 2944 x 1080, maximum 16384 x 16384</span><br><span class="line">DVI-I-1 connected 1024x768+0+0 (normal left inverted right x axis y axis) 0mm x 0mm</span><br><span class="line">   1024x768      60.00* </span><br><span class="line">   800x600       60.32    56.25  </span><br><span class="line">   848x480       60.00  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">HDMI-1 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">VGA-1 connected primary 1920x1080+1024+0 (normal left inverted right x axis y axis) 477mm x 268mm</span><br><span class="line">   1920x1080     60.00*+</span><br><span class="line">   1680x1050     59.95  </span><br><span class="line">   1600x900      60.00  </span><br><span class="line">   1280x1024     60.02  </span><br><span class="line">   1280x800      59.81  </span><br><span class="line">   1280x720      60.00  </span><br><span class="line">   1024x768      60.00  </span><br><span class="line">   800x600       60.32  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ cvt 1920 1080 60</span><br><span class="line"><span class="meta">#</span> 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz</span><br><span class="line">Modeline "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --addmode DVI-I-1 "1920x1080_60.00"</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
-<p>這個方法是暫時的，完成這些步驟後，要做一些設定來保存這個配置，<br>我的方案是使用開機執行程式（.sh）開機時自動完成上面那些操作：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">xrandr --addmode DVI-I-1 1920x1080_60.00</span><br><span class="line">xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
-<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574" target="_blank" rel="noopener">https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574</a><br><a href="https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution" target="_blank" rel="noopener">https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution</a></p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Thinking at night</title>
     <url>/thinking-at-night/</url>
     <content><![CDATA[<p>這是一個蒐集我編曲作品的音樂遊戲。</p>
@@ -1043,6 +994,132 @@
 ]]></content>
       <categories>
         <category>獨立遊戲製作</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>串列 Linked List</title>
+    <url>/linked-list/</url>
+    <content><![CDATA[<p>串列是資料結構中，一種重要的資料表達方式，<br>這樣的表達方式可以透過指標來完成。</p>
+<a id="more"></a>
+<p>通常，從這個部分開始，<br>可以看出一個人對指標的熟練程度。</p>
+<h1 id="串列結構"><a href="#串列結構" class="headerlink" title="串列結構"></a>串列結構</h1><p>串列的典型做法是使用 struct 實作：</p>
+<div class="note info">
+            <p>為方便撰寫範例，這裡假設資料為整數。</p>
+          </div>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;   <span class="comment">// 資料</span></span><br><span class="line">    Node *next; <span class="comment">// 下個節點</span></span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line">Node *node_1 = <span class="keyword">new</span> Node; <span class="comment">// 第 1 個節點</span></span><br><span class="line">Node *node_2 = <span class="keyword">new</span> Node; <span class="comment">// 第 2 個節點</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// 把第 2 個節點接在第 1 個後面</span></span><br><span class="line">node_1-&gt;next = node_2;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>串列結構經過良好的封裝更便於使用。</p>
+          </div>
+<h1 id="創建節點"><a href="#創建節點" class="headerlink" title="創建節點"></a>創建節點</h1><p>可以透過一個函數取得節點，<br>動態建立節點後，記得回傳給主程式。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 給定資料建立一個節點</span></span><br><span class="line"><span class="function">Node* <span class="title">create</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = <span class="keyword">new</span> Node; <span class="comment">// 建立新節點</span></span><br><span class="line">    node-&gt;data = value;    <span class="comment">// 設定節點值</span></span><br><span class="line">    node-&gt;next = <span class="literal">nullptr</span>;  <span class="comment">// 初始化指標</span></span><br><span class="line">    <span class="keyword">return</span> node;           <span class="comment">// 回傳給主程序</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下來的插入節點就可以使用這個函數了。</p>
+<h1 id="搜索節點"><a href="#搜索節點" class="headerlink" title="搜索節點"></a>搜索節點</h1><p>我個人認為，搜索節點這件事情，<br>搜索當前節點的效益並不大，通常我們更需要「目標節點的前一個節點」。</p>
+<div class="note info">
+            <p>「搜索目標節點的前一個節點函數」下面簡稱為「搜前函數」。</p>
+          </div>
+<p>個人實作時，會先實作搜前函數，<br>搜索節點的函數則透過這個函數間接完成。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreachPrevious</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node* node = root;</span><br><span class="line">    <span class="keyword">while</span> (node-&gt;next != <span class="literal">nullptr</span>      <span class="comment">// 不是最後一個節點</span></span><br><span class="line">        &amp;&amp; node-&gt;next-&gt;data != value) <span class="comment">// 而且下個節點的值不是目標</span></span><br><span class="line">        node = node-&gt;next;            <span class="comment">// 繼續搜索</span></span><br><span class="line">    <span class="keyword">return</span> node;                      <span class="comment">// 回傳目標的上一節點或最後一個節點</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>這裡的「root」是樹狀結構的名詞，但串列也可以視作一棵樹。</p>
+          </div>
+<p>透過搜前函數，可以實做出的搜索功能。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreach</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;data == value)</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    Node *node = sreachPrevious(root, value);</span><br><span class="line">    <span class="keyword">return</span> node-&gt;next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="插入節點"><a href="#插入節點" class="headerlink" title="插入節點"></a>插入節點</h1><p>插入節點不困難，這裡以插入到末端為例，<br>如果存在一個值不會出現在串列中的話，可以透過搜前函數實作。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 插入一個節點到串列的結尾</span></span><br><span class="line"><span class="function">Node* <span class="title">insert</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = create(value);       <span class="comment">// 新建節點</span></span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">nullptr</span>)              <span class="comment">// 如果串列尚不存在</span></span><br><span class="line">        <span class="keyword">return</span> node;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Node* tail = root;            <span class="comment">// 找尾巴節點</span></span><br><span class="line">        <span class="keyword">while</span> (tail-&gt;next != <span class="literal">nullptr</span>)</span><br><span class="line">            tail = tail-&gt;next;</span><br><span class="line">        tail-&gt;next = node;            <span class="comment">// 新增在尾巴</span></span><br><span class="line">        <span class="keyword">return</span> root;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>插入到特定位置的功能，也可以利用搜前函數的實作。</p>
+          </div>
+<div class="note warning">
+            <p>如果不回傳指標給主程序，則建立串列時會出錯。</p>
+          </div>
+<h1 id="刪除節點"><a href="#刪除節點" class="headerlink" title="刪除節點"></a>刪除節點</h1><p>刪除節點可以直接透過搜前函數實作。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *previous = sreachPrevious(root, value);</span><br><span class="line">    Node *target = previous-&gt;next;</span><br><span class="line">    <span class="keyword">if</span> (target != <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        previous-&gt;next = target-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="遍歷節點"><a href="#遍歷節點" class="headerlink" title="遍歷節點"></a>遍歷節點</h1><p>對串列進行一堆操作後，檢查串列的正確性，<br>或是有時我們需要對整個串列做特定運算，都需要遍歷功能：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traversal</span><span class="params">(Node *root, <span class="keyword">void</span> (*callback)(Node *node))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Node *node = root; node != <span class="literal">nullptr</span>; node = node-&gt;next)</span><br><span class="line">        callback(node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>遍歷功能的第二個參數是函數的指標，<br>串列的每個節點，會被當成這個函數的傳入值操作。</p>
+<p>以印出節點來說，可以這樣調用：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(Node *node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; node-&gt;data &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">traversal(root, show);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>演示包含插入與刪除節點，<br>其中插入功能隱含創建節點功能，而刪除功能隱含著搜尋功能。</p>
+<iframe scrolling="no" width="100%" height="130px" src="//jsfiddle.net/ngkx992u/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>程式設計</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>先驗算法 Apriori Algorithm</title>
+    <url>/apriori-algorithm/</url>
+    <content><![CDATA[<p>資料探勘的文章，多半是我大學資料探勘課程的筆記之類的東西，<br>因為覺得內容有點雜，不是很難，就是很多東西。</p>
+<p>所以想開個文章逐一紀錄。以後找資料也方便一點這樣。<br>不過課程吸收的感覺對這個領域把握不高，有錯誤還請見諒就是了。<br><a id="more"></a></p>
+<h1 id="關聯規則"><a href="#關聯規則" class="headerlink" title="關聯規則"></a>關聯規則</h1><p>關聯規則是類似這樣的一個問題：<br><div class="note info">
+            <p>如果我的客戶買了某個商品，那麼要再推薦什麼商品呢？</p>
+          </div></p>
+<p>想當然的，推薦的商品一定是那個「很有可能被加購的」商品。</p>
+<p>那麼，我要怎知道客戶有可能加購什麼呢？<br>事實上，我們大概可以猜到一些事情。  </p>
+<ul>
+<li>與「客戶的屬性」相關<ul>
+<li>客戶是學生，而他剛剛買了筆，是不是折扣的話會買更多？</li>
+<li>客戶是廚師的話呢？</li>
+</ul>
+</li>
+<li>與「外在的屬性」相關<ul>
+<li>天氣炎熱的話，買了午餐再買飲料的關聯，是不是會被加強？</li>
+<li>天氣涼爽的話呢？</li>
+</ul>
+</li>
+<li>與「先前購買的商品」相關  <ul>
+<li>買了鐵鎚，是不是會繼續選購釘子呢？</li>
+<li>推薦買了鐵鎚的人麵包如何？</li>
+</ul>
+</li>
+</ul>
+<p>而資料探勘當中，有一些方法，可以去得到這些關聯規則，</p>
+<p>對於商業行為來說，資料探勘的重點就是找到這些隱含在資料中的「商機」。<br>然而這三種可能，我們通常關注第三種，也就是「先前購買的商品」相關的部份。</p>
+<p>至於為什麼呢？看下面的例子，然後想想看：  </p>
+<ul>
+<li>某個男人在賣場中買了一個麵包，所以男人的職業是？</li>
+<li>早上天氣還很熱，下午開始轉涼了。</li>
+</ul>
+<h1 id="支持率與可信度"><a href="#支持率與可信度" class="headerlink" title="支持率與可信度"></a>支持率與可信度</h1><p>在開始進行算法之前，得先介紹一下：</p>
+<p>支持率（Support）以及可信度（Confidence）這兩個參數。  </p>
+<ul>
+<li>支持率：出現的概率。</li>
+<li>可信度：條件機率，當商品出現時，出現另一件商品的概率。</li>
+</ul>
+<p>下面做一些描述：  </p>
+<p>$Support(A) = P(A)$<br>$Confidence(A \Rightarrow B) = P(B \mid A)$  </p>
+<p>參數的作用，從這裡可以發現一些指標：</p>
+<div class="note info">
+            <p>支持率代表一條規則的重要程度。</p>
+          </div>
+<p>$Confidence(A \Rightarrow B) = 99%, Support({A, B}) = 1%$</p>
+<p>雖然買了 A 商品，幾乎也會買 B 商品，但出現這種買法相當罕見。<br>如果很少人會這樣買，是不是就沒有商機呢？</p>
+<div class="note info">
+            <p>可信度代表一條規則的準確程度</p>
+          </div>
+<div class="note info">
+            <p>想想看，有沒有可能出現可信度很高、但支持率很低的情況？</p>
+          </div>
+<p>$Confidence(A \Rightarrow B) = P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{Support({A, B})}{P(A)}$</p>
+<h1 id="先驗算法"><a href="#先驗算法" class="headerlink" title="先驗算法"></a>先驗算法</h1><p>先驗算法（Apriori Algorithm）是資料探勘中的一種基本方法，<br>讓我們可以從資料中取得這些關聯規則。</p>
+<p>實際操作的說明：  </p>
+<ul>
+<li>設定 $\text{minimum_support}$</li>
+<li>計算每種商品的 $\text{support}$</li>
+<li>刪去 $\text{support}$ 小於 $\text{minimum_support}$ 的商品</li>
+<li>組合剩下的商品</li>
+<li>重複 2 ～ 4 步，直到無法組合或滿足其他停止條件</li>
+<li>計算所有的 $\text{confidence}$</li>
+</ul>
+<p>公式化：  </p>
+<ul>
+<li>$\alpha = \text{Minimum Support}, X_{0} = \text{All Objects}$</li>
+<li>$X_{p+1} = { x_{i} \cup x_{j} : support(x_{i}) &gt; \alpha \land support(x_{j}) &gt; \alpha , x_{i} \neq x_{j}, \forall x_{i}, x_{j} \in X_{p} }$</li>
+<li>$\text{Repeat step.2, until } X_{n} = \varnothing$</li>
+</ul>
+<p>大致上就這個樣子，直到 $X$ 無法組合為止，而這時的最長規則，長度為 $n-1$ 單位，<br>很多時候，由於要人工篩選規則，所以所有出現過的 $X$ 都要考慮。</p>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="400px" src="//jsfiddle.net/okfyq5ub/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>資料結構與演算法</category>
       </categories>
   </entry>
   <entry>
@@ -1238,83 +1315,6 @@
 <iframe scrolling="no" width="100%" height="550px" src="//jsfiddle.net/xw8LuLvz/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
       <categories>
         <category>人工智慧</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>先驗算法 Apriori Algorithm</title>
-    <url>/apriori-algorithm/</url>
-    <content><![CDATA[<p>資料探勘的文章，多半是我大學資料探勘課程的筆記之類的東西，<br>因為覺得內容有點雜，不是很難，就是很多東西。</p>
-<p>所以想開個文章逐一紀錄。以後找資料也方便一點這樣。<br>不過課程吸收的感覺對這個領域把握不高，有錯誤還請見諒就是了。<br><a id="more"></a></p>
-<h1 id="關聯規則"><a href="#關聯規則" class="headerlink" title="關聯規則"></a>關聯規則</h1><p>關聯規則是類似這樣的一個問題：<br><div class="note info">
-            <p>如果我的客戶買了某個商品，那麼要再推薦什麼商品呢？</p>
-          </div></p>
-<p>想當然的，推薦的商品一定是那個「很有可能被加購的」商品。</p>
-<p>那麼，我要怎知道客戶有可能加購什麼呢？<br>事實上，我們大概可以猜到一些事情。  </p>
-<ul>
-<li>與「客戶的屬性」相關<ul>
-<li>客戶是學生，而他剛剛買了筆，是不是折扣的話會買更多？</li>
-<li>客戶是廚師的話呢？</li>
-</ul>
-</li>
-<li>與「外在的屬性」相關<ul>
-<li>天氣炎熱的話，買了午餐再買飲料的關聯，是不是會被加強？</li>
-<li>天氣涼爽的話呢？</li>
-</ul>
-</li>
-<li>與「先前購買的商品」相關  <ul>
-<li>買了鐵鎚，是不是會繼續選購釘子呢？</li>
-<li>推薦買了鐵鎚的人麵包如何？</li>
-</ul>
-</li>
-</ul>
-<p>而資料探勘當中，有一些方法，可以去得到這些關聯規則，</p>
-<p>對於商業行為來說，資料探勘的重點就是找到這些隱含在資料中的「商機」。<br>然而這三種可能，我們通常關注第三種，也就是「先前購買的商品」相關的部份。</p>
-<p>至於為什麼呢？看下面的例子，然後想想看：  </p>
-<ul>
-<li>某個男人在賣場中買了一個麵包，所以男人的職業是？</li>
-<li>早上天氣還很熱，下午開始轉涼了。</li>
-</ul>
-<h1 id="支持率與可信度"><a href="#支持率與可信度" class="headerlink" title="支持率與可信度"></a>支持率與可信度</h1><p>在開始進行算法之前，得先介紹一下：</p>
-<p>支持率（Support）以及可信度（Confidence）這兩個參數。  </p>
-<ul>
-<li>支持率：出現的概率。</li>
-<li>可信度：條件機率，當商品出現時，出現另一件商品的概率。</li>
-</ul>
-<p>下面做一些描述：  </p>
-<p>$Support(A) = P(A)$<br>$Confidence(A \Rightarrow B) = P(B \mid A)$  </p>
-<p>參數的作用，從這裡可以發現一些指標：</p>
-<div class="note info">
-            <p>支持率代表一條規則的重要程度。</p>
-          </div>
-<p>$Confidence(A \Rightarrow B) = 99%, Support({A, B}) = 1%$</p>
-<p>雖然買了 A 商品，幾乎也會買 B 商品，但出現這種買法相當罕見。<br>如果很少人會這樣買，是不是就沒有商機呢？</p>
-<div class="note info">
-            <p>可信度代表一條規則的準確程度</p>
-          </div>
-<div class="note info">
-            <p>想想看，有沒有可能出現可信度很高、但支持率很低的情況？</p>
-          </div>
-<p>$Confidence(A \Rightarrow B) = P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{Support({A, B})}{P(A)}$</p>
-<h1 id="先驗算法"><a href="#先驗算法" class="headerlink" title="先驗算法"></a>先驗算法</h1><p>先驗算法（Apriori Algorithm）是資料探勘中的一種基本方法，<br>讓我們可以從資料中取得這些關聯規則。</p>
-<p>實際操作的說明：  </p>
-<ul>
-<li>設定 $\text{minimum_support}$</li>
-<li>計算每種商品的 $\text{support}$</li>
-<li>刪去 $\text{support}$ 小於 $\text{minimum_support}$ 的商品</li>
-<li>組合剩下的商品</li>
-<li>重複 2 ～ 4 步，直到無法組合或滿足其他停止條件</li>
-<li>計算所有的 $\text{confidence}$</li>
-</ul>
-<p>公式化：  </p>
-<ul>
-<li>$\alpha = \text{Minimum Support}, X_{0} = \text{All Objects}$</li>
-<li>$X_{p+1} = { x_{i} \cup x_{j} : support(x_{i}) &gt; \alpha \land support(x_{j}) &gt; \alpha , x_{i} \neq x_{j}, \forall x_{i}, x_{j} \in X_{p} }$</li>
-<li>$\text{Repeat step.2, until } X_{n} = \varnothing$</li>
-</ul>
-<p>大致上就這個樣子，直到 $X$ 無法組合為止，而這時的最長規則，長度為 $n-1$ 單位，<br>很多時候，由於要人工篩選規則，所以所有出現過的 $X$ 都要考慮。</p>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="400px" src="//jsfiddle.net/okfyq5ub/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
-      <categories>
-        <category>資料結構與演算法</category>
       </categories>
   </entry>
   <entry>
@@ -1628,6 +1628,70 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
           </div>]]></content>
       <categories>
         <category>人工智慧</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>堆疊與佇列 Stack and Queue</title>
+    <url>/stack-and-queue/</url>
+    <content><![CDATA[<p>本文僅為資料結構的筆記。</p>
+<p>對於較高階的語言來說有許多現成的函式庫，<br>儘管如此，還是需要瞭解基本規則。<br><a id="more"></a></p>
+<h1 id="堆疊"><a href="#堆疊" class="headerlink" title="堆疊"></a>堆疊</h1><p>堆疊是一種基本結構，核心的思維是「先進後出」。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//create stack</span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">stack</span>[SIZE];</span><br><span class="line"><span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//stack push data</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">stack</span>[top++] = data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//stack pop data</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">stack</span>[--top];</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>這是 C/C++ 的作法，<br>對於更高階的語言（比方說 JavaScript）來說，<br>這些功能都已經內建了。</p>
+<div class="note info">
+            <p>實際上 C++ STL 有內建；另外雖然建立很簡單，但 C 語言方面也有函示庫可以使用。</p>
+          </div>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> stack = <span class="keyword">new</span> <span class="built_in">Array</span>(); <span class="comment">//create stack</span></span><br><span class="line">stack.push(..);          <span class="comment">//stack push data</span></span><br><span class="line">stack.pop(..);           <span class="comment">//stack pop data</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>接下來來看看基本堆疊的資料進出方式。</p>
+<iframe scrolling="no" width="100%" height="300px" src="//jsfiddle.net/6xb1L6my/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<h1 id="佇列"><a href="#佇列" class="headerlink" title="佇列"></a>佇列</h1><p>佇列是一種基本結構，核心的思維是「先進先出」。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//create queue</span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">queue</span>[SIZE];</span><br><span class="line"><span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//queue push data</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">queue</span>[top++] = data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//queue shift data</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shift</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> data = <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; top; i++)</span><br><span class="line">        <span class="built_in">queue</span>[i] = <span class="built_in">queue</span>[i + <span class="number">1</span>];</span><br><span class="line">    top--;</span><br><span class="line">    <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>這是C/C++的作法，<br>對於更高階的語言（比方說 JavaScript）來說，<br>這些功能都也已經內建了。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> queue = <span class="keyword">new</span> <span class="built_in">Array</span>(); <span class="comment">//create queue</span></span><br><span class="line">queue.push(..);          <span class="comment">//queue push data</span></span><br><span class="line">queue.shift(..);         <span class="comment">//queue shift data</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h2><p>接下來來看看基本佇列的資料進出方式。</p>
+<iframe scrolling="no" width="100%" height="300px" src="//jsfiddle.net/zfq3ucak/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>資料結構與演算法</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>我的大學作業整理</title>
+    <url>/ming-chuan-university-homework/</url>
+    <content><![CDATA[<p>隨著銘傳大學畢業後，攻讀研究所，一直很捨不得一些過去大學時期的作業；<br>這篇是整理大學時期的所有作業（當成是個人的小作品）放在這篇文章裡。</p>
+<a id="more"></a>
+<p>也許有人會說「作業有什麼好留的」，<br>但是因為筆者的心態是很極端的「要嘛認真做、要嘛擺爛」，<br>（既然一開始無心幹嘛浪費時間，不如去幹其他事。）</p>
+<p>又因為特別喜歡軟體課，變成軟體課的作業都很認真寫，<br>所以對於某些東西真的覺得未來找不到會很可惜。</p>
+<h1 id="資料結構與演算法"><a href="#資料結構與演算法" class="headerlink" title="資料結構與演算法"></a>資料結構與演算法</h1><p>因為老師有特別說過可以整理，所以這門課的作業特別整理過，<br>而且這個 Blog 的 <a href="/sort/" title="排序 Sort">排序 Sort</a> 最早就是出自 C++ 的排序作業（105上學期作業1）。</p>
+<p>後來 Blog 的 Code 有重寫過，因為初版某些排序寫太爛了。</p>
+<div class="note success">
+            <p>作業連結：<a href="https://github.com/tinytsunami/MCU-DSA" target="_blank" rel="noopener">GitHub: tinytsunami/MCU-DSA</a></p>
+          </div>
+<p>同時，從大概第一次修課的這個時候撰寫 Blog 至今，最早是當成課堂筆記用。</p>
+<h1 id="多媒體導論"><a href="#多媒體導論" class="headerlink" title="多媒體導論"></a>多媒體導論</h1><p>最主要的工作是 Python 的小精靈專案，因為那個是要參加私立大學軟體什麼東西的。<br>不過實際參展的時候，發現全部學校都是用期末專題，只有我們這邊是課程專案……</p>
+<p>當時的主要作品是多人連線版小精靈，但是連線 Server 的檔案（多人）丟失了，<br>純 Client 版本（單人）在 GitHub 可以找到。</p>
+<div class="note success">
+            <p>作業連結：<a href="https://github.com/tinytsunami/Python-Game" target="_blank" rel="noopener">GitHub: tinytsunami/Python-Game</a></p>
+          </div>
+<h1 id="影像處理課程"><a href="#影像處理課程" class="headerlink" title="影像處理課程"></a>影像處理課程</h1><p>影像處理課的作業是寫 C++ 程式，然後發布成果與心得到作業 Blog 上，<br>其實一直想轉寫所有的 Code 成 Javascript 版本到自己的 Blog，但之後再說。</p>
+<div class="note success">
+            <p>作業連結：<a href="http://hwshow-ipc.blogspot.com/search/label/04360783%20%E6%B2%88%E9%83%81%E7%BF%94" target="_blank" rel="noopener">影像處理作業 Blog</a></p>
+          </div>
+<p>題外話，這篇作業整理是因為找這個 Blog 找了老半天，<br>所以乾脆一次找好放在自己 Blog 裡。</p>
+<h1 id="互動遊戲製作"><a href="#互動遊戲製作" class="headerlink" title="互動遊戲製作"></a>互動遊戲製作</h1><p>這門課的先修課是影像處理，而互動遊戲製作的 C++ 專案是一個學期的，<br>目標是製作一個透過 webcam 可以與人或環境「互動」的遊戲。<br>（當時剛好碰到 PokemonGo 熱潮，大概就是那樣的東西。）</p>
+<p>我的專案很晚才做，是因為題目一直不確定，找靈感花了很多時間，<br>大部分時間都在 <a href="https://itch.io/" target="_blank" rel="noopener">itch.io</a> 尋找一些免費的獨立遊戲發掘靈感。</p>
+<p>當時最吸引我的是 <a href="https://gamesbyjens.itch.io/kinoko" target="_blank" rel="noopener">KINOKO</a><br>我的個人分類為「禪遊戲」（畫面漂亮、安靜愜意，而且沒有明確目標的遊戲。）</p>
+<p>最後是因為某個朋友圈剛好有養魚遊戲的訊息，加上某個朋友暱稱叫「魚」，<br>所以開始有一些想法，最後延伸成一些問題：<br>扭曲的畫面在程式上如何寫？把畫面當成魚缸如何？色調如何處理？景色如何搭配？</p>
+<p>解決這些問題，就變成我的最終專案「養魚遊戲」。<br>（似乎很適合放在 Blog 當放置遊戲）</p>
+<div class="note success">
+            <p>作業連結：<a href="https://hwshow-vgc.blogspot.com/search/label/04360783%20%E6%B2%88%E9%83%81%E7%BF%94" target="_blank" rel="noopener">互動遊戲專案 Blog</a></p>
+          </div>
+<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>「躲怪遊戲」是我從大學入學前就不斷在製作的遊戲，只是現在已經棄坑了，<br>一開始世界觀弄太大，雖然後來有做完，但是跟心目中的差太多就沒公開發布。</p>
+<p>而且某一次把家裡 PC 的螢幕換成 1920*1080 以後，<br>才發現 RMVX 的視窗太小了，連我 Debug 盯著畫面都很痛苦。</p>
+<p>意外翻到遊戲最後 Ending 的圖片，最後就放上這張圖片，<br>作為我大學時代的人生里程碑，正式劃下句點。</p>
+<p><img src="https://i.imgur.com/FEDSAAz.jpg" alt="圖 1、躲怪遊戲完結圖之一"></p>
+]]></content>
+      <categories>
+        <category>羊羽手札</category>
       </categories>
   </entry>
   <entry>
@@ -1960,157 +2024,6 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
       </categories>
   </entry>
   <entry>
-    <title>堆疊與佇列 Stack and Queue</title>
-    <url>/stack-and-queue/</url>
-    <content><![CDATA[<p>本文僅為資料結構的筆記。</p>
-<p>對於較高階的語言來說有許多現成的函式庫，<br>儘管如此，還是需要瞭解基本規則。<br><a id="more"></a></p>
-<h1 id="堆疊"><a href="#堆疊" class="headerlink" title="堆疊"></a>堆疊</h1><p>堆疊是一種基本結構，核心的思維是「先進後出」。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//create stack</span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">stack</span>[SIZE];</span><br><span class="line"><span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//stack push data</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">stack</span>[top++] = data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//stack pop data</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">stack</span>[--top];</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>這是 C/C++ 的作法，<br>對於更高階的語言（比方說 JavaScript）來說，<br>這些功能都已經內建了。</p>
-<div class="note info">
-            <p>實際上 C++ STL 有內建；另外雖然建立很簡單，但 C 語言方面也有函示庫可以使用。</p>
-          </div>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> stack = <span class="keyword">new</span> <span class="built_in">Array</span>(); <span class="comment">//create stack</span></span><br><span class="line">stack.push(..);          <span class="comment">//stack push data</span></span><br><span class="line">stack.pop(..);           <span class="comment">//stack pop data</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>接下來來看看基本堆疊的資料進出方式。</p>
-<iframe scrolling="no" width="100%" height="300px" src="//jsfiddle.net/6xb1L6my/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
-<h1 id="佇列"><a href="#佇列" class="headerlink" title="佇列"></a>佇列</h1><p>佇列是一種基本結構，核心的思維是「先進先出」。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">//create queue</span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">queue</span>[SIZE];</span><br><span class="line"><span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//queue push data</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">queue</span>[top++] = data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//queue shift data</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shift</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> data = <span class="built_in">queue</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; top; i++)</span><br><span class="line">        <span class="built_in">queue</span>[i] = <span class="built_in">queue</span>[i + <span class="number">1</span>];</span><br><span class="line">    top--;</span><br><span class="line">    <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>這是C/C++的作法，<br>對於更高階的語言（比方說 JavaScript）來說，<br>這些功能都也已經內建了。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> queue = <span class="keyword">new</span> <span class="built_in">Array</span>(); <span class="comment">//create queue</span></span><br><span class="line">queue.push(..);          <span class="comment">//queue push data</span></span><br><span class="line">queue.shift(..);         <span class="comment">//queue shift data</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h2 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h2><p>接下來來看看基本佇列的資料進出方式。</p>
-<iframe scrolling="no" width="100%" height="300px" src="//jsfiddle.net/zfq3ucak/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
-      <categories>
-        <category>資料結構與演算法</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>我的大學作業整理</title>
-    <url>/ming-chuan-university-homework/</url>
-    <content><![CDATA[<p>隨著銘傳大學畢業後，攻讀研究所，一直很捨不得一些過去大學時期的作業；<br>這篇是整理大學時期的所有作業（當成是個人的小作品）放在這篇文章裡。</p>
-<a id="more"></a>
-<p>也許有人會說「作業有什麼好留的」，<br>但是因為筆者的心態是很極端的「要嘛認真做、要嘛擺爛」，<br>（既然一開始無心幹嘛浪費時間，不如去幹其他事。）</p>
-<p>又因為特別喜歡軟體課，變成軟體課的作業都很認真寫，<br>所以對於某些東西真的覺得未來找不到會很可惜。</p>
-<h1 id="資料結構與演算法"><a href="#資料結構與演算法" class="headerlink" title="資料結構與演算法"></a>資料結構與演算法</h1><p>因為老師有特別說過可以整理，所以這門課的作業特別整理過，<br>而且這個 Blog 的 <a href="/sort/" title="排序 Sort">排序 Sort</a> 最早就是出自 C++ 的排序作業（105上學期作業1）。</p>
-<p>後來 Blog 的 Code 有重寫過，因為初版某些排序寫太爛了。</p>
-<div class="note success">
-            <p>作業連結：<a href="https://github.com/tinytsunami/MCU-DSA" target="_blank" rel="noopener">GitHub: tinytsunami/MCU-DSA</a></p>
-          </div>
-<p>同時，從大概第一次修課的這個時候撰寫 Blog 至今，最早是當成課堂筆記用。</p>
-<h1 id="多媒體導論"><a href="#多媒體導論" class="headerlink" title="多媒體導論"></a>多媒體導論</h1><p>最主要的工作是 Python 的小精靈專案，因為那個是要參加私立大學軟體什麼東西的。<br>不過實際參展的時候，發現全部學校都是用期末專題，只有我們這邊是課程專案……</p>
-<p>當時的主要作品是多人連線版小精靈，但是連線 Server 的檔案（多人）丟失了，<br>純 Client 版本（單人）在 GitHub 可以找到。</p>
-<div class="note success">
-            <p>作業連結：<a href="https://github.com/tinytsunami/Python-Game" target="_blank" rel="noopener">GitHub: tinytsunami/Python-Game</a></p>
-          </div>
-<h1 id="影像處理課程"><a href="#影像處理課程" class="headerlink" title="影像處理課程"></a>影像處理課程</h1><p>影像處理課的作業是寫 C++ 程式，然後發布成果與心得到作業 Blog 上，<br>其實一直想轉寫所有的 Code 成 Javascript 版本到自己的 Blog，但之後再說。</p>
-<div class="note success">
-            <p>作業連結：<a href="http://hwshow-ipc.blogspot.com/search/label/04360783%20%E6%B2%88%E9%83%81%E7%BF%94" target="_blank" rel="noopener">影像處理作業 Blog</a></p>
-          </div>
-<p>題外話，這篇作業整理是因為找這個 Blog 找了老半天，<br>所以乾脆一次找好放在自己 Blog 裡。</p>
-<h1 id="互動遊戲製作"><a href="#互動遊戲製作" class="headerlink" title="互動遊戲製作"></a>互動遊戲製作</h1><p>這門課的先修課是影像處理，而互動遊戲製作的 C++ 專案是一個學期的，<br>目標是製作一個透過 webcam 可以與人或環境「互動」的遊戲。<br>（當時剛好碰到 PokemonGo 熱潮，大概就是那樣的東西。）</p>
-<p>我的專案很晚才做，是因為題目一直不確定，找靈感花了很多時間，<br>大部分時間都在 <a href="https://itch.io/" target="_blank" rel="noopener">itch.io</a> 尋找一些免費的獨立遊戲發掘靈感。</p>
-<p>當時最吸引我的是 <a href="https://gamesbyjens.itch.io/kinoko" target="_blank" rel="noopener">KINOKO</a><br>我的個人分類為「禪遊戲」（畫面漂亮、安靜愜意，而且沒有明確目標的遊戲。）</p>
-<p>最後是因為某個朋友圈剛好有養魚遊戲的訊息，加上某個朋友暱稱叫「魚」，<br>所以開始有一些想法，最後延伸成一些問題：<br>扭曲的畫面在程式上如何寫？把畫面當成魚缸如何？色調如何處理？景色如何搭配？</p>
-<p>解決這些問題，就變成我的最終專案「養魚遊戲」。<br>（似乎很適合放在 Blog 當放置遊戲）</p>
-<div class="note success">
-            <p>作業連結：<a href="https://hwshow-vgc.blogspot.com/search/label/04360783%20%E6%B2%88%E9%83%81%E7%BF%94" target="_blank" rel="noopener">互動遊戲專案 Blog</a></p>
-          </div>
-<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>「躲怪遊戲」是我從大學入學前就不斷在製作的遊戲，只是現在已經棄坑了，<br>一開始世界觀弄太大，雖然後來有做完，但是跟心目中的差太多就沒公開發布。</p>
-<p>而且某一次把家裡 PC 的螢幕換成 1920*1080 以後，<br>才發現 RMVX 的視窗太小了，連我 Debug 盯著畫面都很痛苦。</p>
-<p>意外翻到遊戲最後 Ending 的圖片，最後就放上這張圖片，<br>作為我大學時代的人生里程碑，正式劃下句點。</p>
-<p><img src="https://i.imgur.com/FEDSAAz.jpg" alt="圖 1、躲怪遊戲完結圖之一"></p>
-]]></content>
-      <categories>
-        <category>羊羽手札</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>平均值與有效值證明</title>
-    <url>/proof-mean-and-rms/</url>
-    <content><![CDATA[<p>本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。<br>但是後來想了想，作為私人筆記留下來了。<br><a id="more"></a></p>
-<h1 id="交流電表示式"><a href="#交流電表示式" class="headerlink" title="交流電表示式"></a>交流電表示式</h1><p>在開始之前要先知道這個，<br>技職學校的話，大概是基本電學下半章的最後。</p>
-<p>正弦波的情況：  </p>
-<p>$v(t) = V_{m}sin(&omega;t+&theta;)$</p>
-<p>其中 $V_{m}$ 為峰值（最大值）也就是 $V_{peak}$ 的意思，<br>除此之外，在 $sin$ 函數內的 $&omega;$ 是角頻率（$&omega; = \frac{2&pi;}{T}$）。<br>最後 $&theta;$ 是相位差。</p>
-<h1 id="平均值"><a href="#平均值" class="headerlink" title="平均值"></a>平均值</h1><p>先來看比較簡易的平均值，平均值簡單的說就是取平均。<br>雖然聽起來像是廢話，畢竟正弦曲線誰沒看過？積分取個平均不就寫個 $0$ 而已嗎？<br>別忘了，正弦波在整流之後，它只剩下半波、或是全波。<br>也就是說，我們考慮的平均值，只要考量半波整流、或全波整流之後的就好。</p>
-<h2 id="半波整流"><a href="#半波整流" class="headerlink" title="半波整流"></a>半波整流</h2><p>對於半波整流，由於截去 $sin$ 函數的負半周。<br>我們直接算它正半周（函數週期的一半）有多少面積、再除以它的週期 $T$ 就好。</p>
-<p>$(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T$</p>
-<p>正弦波全部的週期 $T = 2&pi;$ </p>
-<p>$V_{av} = (\int_{0}^{&pi;} V_{m}sin(&omega;t+&theta;) \mathrm{d}t) / 2&pi;$</p>
-<p>角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$</p>
-<p>$V_{av} = (\int_{0}^{&pi;} V_{m}sin(t) \mathrm{d}t) / 2&pi;$</p>
-<p>積分中常數 $V_{m}$ 提到外面</p>
-<p>$V_{av} = (V_{m} \int_{0}^{&pi;} sin(t) \mathrm{d}t) / 2&pi;$</p>
-<p>對 $sin(t)$ 取反導數，準備結束這個積分</p>
-<p>$V_{av} = (V_{m} (-cos(t))\mid_{0}^{&pi;}) / 2&pi;$</p>
-<p>$V_{av} = (V_{m} (-cos(&pi;) + cos(0))) / 2&pi;$</p>
-<p>$V_{av} = (V_{m} (-(-1) + 1)) / 2&pi;$</p>
-<p>$V_{av} = (V_{m} (1 + 1)) / 2&pi;$</p>
-<p>$V_{av} = 2V_{m} / 2&pi;$</p>
-<p>$V_{av} = V_{m} / &pi;$</p>
-<p>得證半波整流的正弦波平均值為 $V_{m} / &pi;$</p>
-<h2 id="全波整流"><a href="#全波整流" class="headerlink" title="全波整流"></a>全波整流</h2><p>全波整流跟半波整流很像，基本上換湯不換藥。<br>直接算它正半周（函數週期的一半）有多少面積，並予以雙倍（負半週被轉正），<br>再除以它的週期 $T$ 就好。</p>
-<p>$2(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T$</p>
-<p>正弦波全部的週期 $T = 2&pi;$ </p>
-<p>$V_{av} = 2(\int_{0}^{&pi;} V_{m}sin(&omega;t+&theta;) \mathrm{d}t) / 2&pi;$</p>
-<p>角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$</p>
-<p>$V_{av} = 2(\int_{0}^{&pi;} V_{m}sin(t) \mathrm{d}t) / 2&pi;$</p>
-<p>常數 $V_{m}$ 提到外面，順便把 $2$ 常數約掉</p>
-<p>$V_{av} = (V_{m} \int_{0}^{&pi;} sin(t) \mathrm{d}t) / &pi;$</p>
-<p>$V_{av} = (V_{m} (-cos(t))\mid_{0}^{&pi;}) / &pi;$</p>
-<p>$V_{av} = (V_{m} (-cos(&pi;) + cos(0))) / &pi;$</p>
-<p>$V_{av} = (V_{m} (-(-1) + 1)) / &pi;$</p>
-<p>$V_{av} = (V_{m} (1 + 1)) / &pi;$</p>
-<p>$V_{av} = 2V_{m} / &pi;$</p>
-<p>$V_{av} = 2V_{m} / &pi;$</p>
-<p>得證全波整流的正弦波平均值為 $2V_{m} / &pi;$</p>
-<h1 id="有效值"><a href="#有效值" class="headerlink" title="有效值"></a>有效值</h1><p>有效值比較機車，不過也沒啥困難的，<br>唯一要注意的是，它會用到三角函數的半角公式。<br>有效值又名「均方根」值，顧名思義：先開方平均、再取根號。  </p>
-<p>對於連續函數 $f(x)$ 在區間 $[a, b]$ 來說：</p>
-<p>$ f(x) = \sqrt{\frac{1}{b - a}\int_{a}^{b} f(x)^2  \mathrm{d}x} $</p>
-<p>寫成我們交流電的形式（區間在 $[0, 2&pi;]$）：<br>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{2&pi;} v(t)^2  \mathrm{d}t} $</p>
-<p>我們來考慮半波、跟全波整流後的情況。</p>
-<h2 id="半波整流-1"><a href="#半波整流-1" class="headerlink" title="半波整流"></a>半波整流</h2><p>半波整流中，負半週整個被刪去。<br>所以說，我們積分的區間要改成 $[0, &pi;]$ 才正確。</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} v(t)^2  \mathrm{d}t} $</p>
-<p>把 $v(t)$ 代換掉，另外角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$。</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} (V_{m}sin(&omega;t+&theta;))^2  \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} (V_{m}sin(t))^2  \mathrm{d}t} $</p>
-<p>把積分那邊的平方移進去，常數 $V_{m}^{2}$ 移出積分。</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} sin(t)^2  \mathrm{d}t} $</p>
-<p>接下來很關鍵，半角公式登場 $sin^{2}(x) = \frac{1}{2}(1 - cos(2x))$  </p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} $</p>
-<p>常數通通丟出去。</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;}\int_{0}^{&pi;} 1 - cos(2x) \mathrm{d}t} $</p>
-<p>取 $1 - cos(2x)$ 的反導數準備結束積分。</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (x - \frac{1}{2}sin(2x))\mid_{0}^{&pi;}} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - \frac{1}{2}sin(0))} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - 0)} $</p>
-<p>當中 $sin(2&pi;) = 0$ 直接拿掉</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - 0)}$</p>
-<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)(&pi;)}{4&pi;}}$</p>
-<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)}{4}}$</p>
-<p>$ V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{4}}$</p>
-<p>$ V_{rms} = \frac{V_{m}}{2} $</p>
-<p>半波整流的有效值，是最大值（峰值）的一半。</p>
-<h2 id="全波整流-1"><a href="#全波整流-1" class="headerlink" title="全波整流"></a>全波整流</h2><p>在積分那邊，取個雙倍而已。</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;} 2\int_{0}^{&pi;} v(t)^2  \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{&pi;}\int_{0}^{&pi;} (V_{m}sin(&omega;t+&theta;))^2  \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{1}{&pi;}\int_{0}^{&pi;} (V_{m}sin(t))^2  \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{&pi;}\int_{0}^{&pi;} sin(t)^2  \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{&pi;}\int_{0}^{&pi;} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} 1 - cos(2x) \mathrm{d}t} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (x - \frac{1}{2}sin(2x))\mid_{0}^{&pi;}} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - \frac{1}{2}sin(0))} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - 0)} $</p>
-<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - 0)} $</p>
-<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)(&pi;)}{2&pi;}} $</p>
-<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)}{2}} $</p>
-<p>$ V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{2}} $</p>
-<p>$ V_{rms} = \frac{V_{m}}{\sqrt{2}} $</p>
-]]></content>
-      <categories>
-        <category>基本電學與電子學</category>
-      </categories>
-  </entry>
-  <entry>
     <title>影像濾波 Image Filter</title>
     <url>/Image-Filter/</url>
     <content><![CDATA[<p>這次的主題是影像濾波（image filter）。</p>
@@ -2233,6 +2146,190 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
 <li><a href="https://en.wikipedia.org/wiki/Salt-and-pepper_noise" target="_blank" rel="noopener">Wikipedia: Salt-and-pepper noise</a>
 </li>
 </ul>
+]]></content>
+      <categories>
+        <category>資料結構與演算法</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>平均值與有效值證明</title>
+    <url>/proof-mean-and-rms/</url>
+    <content><![CDATA[<p>本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。<br>但是後來想了想，作為私人筆記留下來了。<br><a id="more"></a></p>
+<h1 id="交流電表示式"><a href="#交流電表示式" class="headerlink" title="交流電表示式"></a>交流電表示式</h1><p>在開始之前要先知道這個，<br>技職學校的話，大概是基本電學下半章的最後。</p>
+<p>正弦波的情況：  </p>
+<p>$v(t) = V_{m}sin(&omega;t+&theta;)$</p>
+<p>其中 $V_{m}$ 為峰值（最大值）也就是 $V_{peak}$ 的意思，<br>除此之外，在 $sin$ 函數內的 $&omega;$ 是角頻率（$&omega; = \frac{2&pi;}{T}$）。<br>最後 $&theta;$ 是相位差。</p>
+<h1 id="平均值"><a href="#平均值" class="headerlink" title="平均值"></a>平均值</h1><p>先來看比較簡易的平均值，平均值簡單的說就是取平均。<br>雖然聽起來像是廢話，畢竟正弦曲線誰沒看過？積分取個平均不就寫個 $0$ 而已嗎？<br>別忘了，正弦波在整流之後，它只剩下半波、或是全波。<br>也就是說，我們考慮的平均值，只要考量半波整流、或全波整流之後的就好。</p>
+<h2 id="半波整流"><a href="#半波整流" class="headerlink" title="半波整流"></a>半波整流</h2><p>對於半波整流，由於截去 $sin$ 函數的負半周。<br>我們直接算它正半周（函數週期的一半）有多少面積、再除以它的週期 $T$ 就好。</p>
+<p>$(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T$</p>
+<p>正弦波全部的週期 $T = 2&pi;$ </p>
+<p>$V_{av} = (\int_{0}^{&pi;} V_{m}sin(&omega;t+&theta;) \mathrm{d}t) / 2&pi;$</p>
+<p>角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$</p>
+<p>$V_{av} = (\int_{0}^{&pi;} V_{m}sin(t) \mathrm{d}t) / 2&pi;$</p>
+<p>積分中常數 $V_{m}$ 提到外面</p>
+<p>$V_{av} = (V_{m} \int_{0}^{&pi;} sin(t) \mathrm{d}t) / 2&pi;$</p>
+<p>對 $sin(t)$ 取反導數，準備結束這個積分</p>
+<p>$V_{av} = (V_{m} (-cos(t))\mid_{0}^{&pi;}) / 2&pi;$</p>
+<p>$V_{av} = (V_{m} (-cos(&pi;) + cos(0))) / 2&pi;$</p>
+<p>$V_{av} = (V_{m} (-(-1) + 1)) / 2&pi;$</p>
+<p>$V_{av} = (V_{m} (1 + 1)) / 2&pi;$</p>
+<p>$V_{av} = 2V_{m} / 2&pi;$</p>
+<p>$V_{av} = V_{m} / &pi;$</p>
+<p>得證半波整流的正弦波平均值為 $V_{m} / &pi;$</p>
+<h2 id="全波整流"><a href="#全波整流" class="headerlink" title="全波整流"></a>全波整流</h2><p>全波整流跟半波整流很像，基本上換湯不換藥。<br>直接算它正半周（函數週期的一半）有多少面積，並予以雙倍（負半週被轉正），<br>再除以它的週期 $T$ 就好。</p>
+<p>$2(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T$</p>
+<p>正弦波全部的週期 $T = 2&pi;$ </p>
+<p>$V_{av} = 2(\int_{0}^{&pi;} V_{m}sin(&omega;t+&theta;) \mathrm{d}t) / 2&pi;$</p>
+<p>角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$</p>
+<p>$V_{av} = 2(\int_{0}^{&pi;} V_{m}sin(t) \mathrm{d}t) / 2&pi;$</p>
+<p>常數 $V_{m}$ 提到外面，順便把 $2$ 常數約掉</p>
+<p>$V_{av} = (V_{m} \int_{0}^{&pi;} sin(t) \mathrm{d}t) / &pi;$</p>
+<p>$V_{av} = (V_{m} (-cos(t))\mid_{0}^{&pi;}) / &pi;$</p>
+<p>$V_{av} = (V_{m} (-cos(&pi;) + cos(0))) / &pi;$</p>
+<p>$V_{av} = (V_{m} (-(-1) + 1)) / &pi;$</p>
+<p>$V_{av} = (V_{m} (1 + 1)) / &pi;$</p>
+<p>$V_{av} = 2V_{m} / &pi;$</p>
+<p>$V_{av} = 2V_{m} / &pi;$</p>
+<p>得證全波整流的正弦波平均值為 $2V_{m} / &pi;$</p>
+<h1 id="有效值"><a href="#有效值" class="headerlink" title="有效值"></a>有效值</h1><p>有效值比較機車，不過也沒啥困難的，<br>唯一要注意的是，它會用到三角函數的半角公式。<br>有效值又名「均方根」值，顧名思義：先開方平均、再取根號。  </p>
+<p>對於連續函數 $f(x)$ 在區間 $[a, b]$ 來說：</p>
+<p>$ f(x) = \sqrt{\frac{1}{b - a}\int_{a}^{b} f(x)^2  \mathrm{d}x} $</p>
+<p>寫成我們交流電的形式（區間在 $[0, 2&pi;]$）：<br>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{2&pi;} v(t)^2  \mathrm{d}t} $</p>
+<p>我們來考慮半波、跟全波整流後的情況。</p>
+<h2 id="半波整流-1"><a href="#半波整流-1" class="headerlink" title="半波整流"></a>半波整流</h2><p>半波整流中，負半週整個被刪去。<br>所以說，我們積分的區間要改成 $[0, &pi;]$ 才正確。</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} v(t)^2  \mathrm{d}t} $</p>
+<p>把 $v(t)$ 代換掉，另外角頻率 $&omega; = \frac{2&pi;}{T} = \frac{2&pi;}{2&pi;} = 1$、相位差 $&theta; = 0$。</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} (V_{m}sin(&omega;t+&theta;))^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;}\int_{0}^{&pi;} (V_{m}sin(t))^2  \mathrm{d}t} $</p>
+<p>把積分那邊的平方移進去，常數 $V_{m}^{2}$ 移出積分。</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} sin(t)^2  \mathrm{d}t} $</p>
+<p>接下來很關鍵，半角公式登場 $sin^{2}(x) = \frac{1}{2}(1 - cos(2x))$  </p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} $</p>
+<p>常數通通丟出去。</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;}\int_{0}^{&pi;} 1 - cos(2x) \mathrm{d}t} $</p>
+<p>取 $1 - cos(2x)$ 的反導數準備結束積分。</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (x - \frac{1}{2}sin(2x))\mid_{0}^{&pi;}} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - \frac{1}{2}sin(0))} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - 0)} $</p>
+<p>當中 $sin(2&pi;) = 0$ 直接拿掉</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{4&pi;} (&pi; - 0)}$</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)(&pi;)}{4&pi;}}$</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)}{4}}$</p>
+<p>$ V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{4}}$</p>
+<p>$ V_{rms} = \frac{V_{m}}{2} $</p>
+<p>半波整流的有效值，是最大值（峰值）的一半。</p>
+<h2 id="全波整流-1"><a href="#全波整流-1" class="headerlink" title="全波整流"></a>全波整流</h2><p>在積分那邊，取個雙倍而已。</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{2&pi;} 2\int_{0}^{&pi;} v(t)^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{&pi;}\int_{0}^{&pi;} (V_{m}sin(&omega;t+&theta;))^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{1}{&pi;}\int_{0}^{&pi;} (V_{m}sin(t))^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{&pi;}\int_{0}^{&pi;} sin(t)^2  \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{&pi;}\int_{0}^{&pi;} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;}\int_{0}^{&pi;} 1 - cos(2x) \mathrm{d}t} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (x - \frac{1}{2}sin(2x))\mid_{0}^{&pi;}} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - \frac{1}{2}sin(0))} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - \frac{1}{2}sin(2&pi;)) - (0 - 0)} $</p>
+<p>$ V_{rms} = \sqrt{\frac{V_{m}^2}{2&pi;} (&pi; - 0)} $</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)(&pi;)}{2&pi;}} $</p>
+<p>$ V_{rms} = \sqrt{\frac{(V_{m}^2)}{2}} $</p>
+<p>$ V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{2}} $</p>
+<p>$ V_{rms} = \frac{V_{m}}{\sqrt{2}} $</p>
+]]></content>
+      <categories>
+        <category>基本電學與電子學</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>拉格朗日插值 Lagrange polynomial interpolation</title>
+    <url>/lagrange-polynomial-interpolation/</url>
+    <content><![CDATA[<p>第一次認識拉格朗日插值，源自於名叫 Paint.NET 的繪圖軟體，<br>這個軟體陪我走過 RPG Maker VX 的許多歲月。</p>
+<a id="more"></a>
+<p>當初在尋找適合製作 Pixel art 的軟體時，筆者當時選擇軟體的條件是「既不能太複雜、也不能太陽春」。<br>因緣際會遇到了 Paint.NET，它的功能足夠，操作也很簡單，所以我很快就喜歡上了。</p>
+<p><img src="https://i.imgur.com/WCnpBLH.jpg" alt="圖 1、個人製作的遊戲畫面圖（素材皆為 Paint.NET 繪製）"></p>
+<p>當時除了用它製作基本的 Pixel 素材之外，也會用它做一些遊戲的特殊效果（像光影）之類的，<br>它其中一個重要的功能是「設定各個顏色的曲線」：</p>
+<p><img src="https://i.imgur.com/fw0N6s6.jpg" alt="圖 2、Paint.NET 的曲線功能"></p>
+<p>當時就在想，要怎麼實作這個功能呢？網路上一查，就碰到「拉格朗日（Lagrange）插值」了！</p>
+<h1 id="插值"><a href="#插值" class="headerlink" title="插值"></a>插值</h1><p>插值，意思就是手上有一些資料點：</p>
+<p>$\{(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})\}$</p>
+<p>找一個函數，去「穿過」這些點：</p>
+<p>$f(x_i) = y_i, \quad i = 0, 1, …, n-1$</p>
+<p>而這邊接下來討論的是「多項式插值」，<br>也就是說，我們預期 $f(x)$ 是一個多項式，我們表示成 $P(x)$</p>
+<div class="note success">
+            <p>建議閱讀 <a href="/linear-regression-and-gradient-descent/" title="線性回歸與梯度下降 Linear Regression and Gradient Descent">線性回歸與梯度下降 Linear Regression and Gradient Descent</a><br>比較「插值（interpolation）」跟「擬合（fitting）」的差別。</p>
+          </div>
+<div class="note info">
+            <p>插值可以細分為內插（interpolation）與外插（extrapolation）；<br>一般說插值是指內插，而如果預測的點出現在資料點的最大區間之外，則稱為外插。</p>
+          </div>
+<h1 id="拉格朗日插值"><a href="#拉格朗日插值" class="headerlink" title="拉格朗日插值"></a>拉格朗日插值</h1><p>拉格朗日插值多項式：</p>
+<p>$$<br>P(x) = \sum\limits_{i=0}^{n-1} y_i \ell_i(x)<br>$$</p>
+<p>其中 $\ell_i(x)$ 為插值基函數：</p>
+<p>$$<br>\ell_i(x) = \prod\limits_{j=0, j \neq i}^{n-1} \frac{(x - x_i)}{(x_i - x_j)}<br>$$</p>
+<p>因為有特性：<br>$$<br>\ell_i(x_j) = \delta_{ij} =<br>\begin{cases}<br>    1, \qquad\text{if } i = j \\<br>    0, \qquad\text{if } i \neq j \\<br>\end{cases}<br>$$</p>
+<div class="note info">
+            <p>式中的 $\delta_{ij}$ 是指 <a href="https://en.wikipedia.org/wiki/Kronecker_delta" target="_blank" rel="noopener">克羅內克 delta 函數 (Kronecker delta function)</a></p>
+          </div>
+<p>導致任意點對 $(x_k, y_k)$ 帶入後都有：</p>
+<p>$$<br>y_k \ell_k(x_k) = y_k<br>$$</p>
+<p>所以 $P(x)$ 必可穿過 $0, 1, …, n-1$ 所有的點對。</p>
+<h1 id="多項式的點值表示"><a href="#多項式的點值表示" class="headerlink" title="多項式的點值表示"></a>多項式的點值表示</h1><p>插值在最初我看到時，是用在影像處理編輯圖片的操作上；<br>直到有次在《算法導論》中看到插值結果的唯一性證明，發現它也可以用多項式的點值表示，<br>更進一步可以用在計算快速傅立葉轉換上。</p>
+<p>原本我們是有點對：<br>$\{(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})\}$</p>
+<p>透過這些點對找多項式函數，也就是多項式函數的係數，滿足：</p>
+<p>$$<br>P(x_k) = a_0 + a_1x_k + a_2x_k^2 + \dots + a_{n-1}x_k^{n-1} = y_k, \quad k = 0, 1, \dots, n-1<br>$$</p>
+<p>通常我們都將 $x$ 當成函數輸入，即 $Ax = y$；<br>但現在我們改以 $a$ 當成函數輸入，並將 $k$ 展開，表示成矩陣有：</p>
+<p>$$<br>Xa = y<br>$$</p>
+<p>$$<br>\left[ \begin{matrix}<br>1 &amp; x_{0} &amp; x_{0}^{2} &amp; \dots &amp; x_{0}^{n-1} \\<br>1 &amp; x_{1} &amp; x_{1}^{2} &amp; \dots &amp; x_{1}^{n-1} \\<br>\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>1 &amp; x_{n-1} &amp; x_{n-1}^{2} &amp; \dots  &amp; x_{n-1}^{n-1}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>a_{0} \\<br>a_{1} \\<br>\vdots \\<br>a_{n-1}<br>\end{matrix} \right]<br>=<br>\left[ \begin{matrix}<br>y_{0} \\<br>y_{1} \\<br>\vdots \\<br>y_{n-1}<br>\end{matrix} \right]<br>$$</p>
+<p>其中 $X$ 為 <a href="https://zh.wikipedia.org/wiki/%E8%8C%83%E5%BE%B7%E8%92%99%E7%9F%A9%E9%99%A3" target="_blank" rel="noopener">Vandermonde 矩陣</a><br>當 $i \neq j$ 時，有 $x_i \neq x_j$，則行列式 $det(X) \neq 0$<br>$X$ 可逆，代表唯一存在一組 $a$ 是唯一解，滿足 $Xa = y$</p>
+<p>既然係數 $a$ 是唯一的，那多項式函數 $P(x)$ 也是唯一的，<br>代表了，表示多項式時，我有兩種選擇方法：</p>
+<ol>
+<li>直接儲存 $a_0, a_1, \dots, a_n$ 共 $n$ 個係數</li>
+<li>儲存 $(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})$ 共 $n$ 組點對</li>
+</ol>
+<p>而第二種儲存點對的方式，被稱為多項式的「點值表示」。</p>
+<div class="note info">
+            <p>點值表示有一些很有趣的性質，<br>比方說兩個多項式相乘的複雜度，在係數表示時是 $\Theta(n^2)$，但在點值表示僅需 $\Theta(n)$。</p>
+          </div>
+<p>至於用點值表示做其他事情，就超出本文的範圍了。</p>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>這個演示可以上傳一張照片，用插值曲線調整顏色。</p>
+<iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/hyjb39e7/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+]]></content>
+      <categories>
+        <category>資料結構與演算法</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>直方圖均化 Histogram Equalization</title>
+    <url>/histogram-equalization/</url>
+    <content><![CDATA[<p>之前影像處理課有寫過直方圖均化（Histogram Equalization）的程式，<br>這篇是重新紀錄做法，以及提供 Web 的演示。</p>
+<a id="more"></a>
+<p>因為最近稍微小忙，為了保持每月更新的步調，<br>所以挑了一個比較簡單的主題先寫這樣 XD”</p>
+<div class="note success">
+            <p>請參閱 <a href="/ming-chuan-university-homework/" title="我的大學作業整理">我的大學作業整理</a> 的「影像處理課程」部分。</p>
+          </div>
+<h1 id="色階與直方圖"><a href="#色階與直方圖" class="headerlink" title="色階與直方圖"></a>色階與直方圖</h1><p>圖片的「色階」（level）是統計圖片像素的灰階亮度或各顏色分量，<br>然後依照其值與像素的數量，畫成一張直方圖（histogram）如圖 1 所示：</p>
+<p><img src="https://i.imgur.com/Ms1N4xX.png" alt="圖 1、Paint.net 中的色階"></p>
+<div class="note info">
+            <p>嚴格說，色階是顏色亮度的強弱，但直方圖是表示色階的一種圖表；<br>表示色階未必要用直方圖，而且直方圖的 X 與 Y 軸也不見得是亮度與數量。</p>
+          </div>
+<h1 id="直方圖均化"><a href="#直方圖均化" class="headerlink" title="直方圖均化"></a>直方圖均化</h1><p>直觀地說，直方圖均化（histogram equalization）做法是紀錄圖像中，每個像素（pixel）的亮度（brightness），<br>然後根據「每個像素亮度的數量」重新分配亮度的過程，具體作法如下：</p>
+<ol>
+<li>初始化直方圖 $h(c, v) = 0 \ \forall c, v$ 其中 $c \in \{0, 1, 2\}$ 為顏色分量，而 $v = [0, 255] \in N$ 為統計數量</li>
+<li>遍歷所有像素，計算出直方圖 $h(c, v)$</li>
+<li>根據直方圖 $h$ 算出累積分布函數（Cumulative Distribution Function, CDF）<br>其定義為 $CDF(c, v) = \sum_{i = 0}^{v} h(c, i)$</li>
+<li>按 $CDF$ 比例，重新分配像素 $p(c)$ 顏色 $c$ 的亮度值，定義為：</li>
+</ol>
+<p>$$<br>p_{new}(c) = round\left(\text{color_range} \cdot \frac{p_{old}(c) - CDF_{min}(c)}{\text{image_size} - CDF_{min}(c)}\right) \ \forall c<br>$$</p>
+<p>其中，根據累積分布函數的定義，有 $CDF_{min}(c) = CDF(c, 0)$ 的關係，<br>而 $\text{color_range}$ 是該顏色 $c$ 的最大值、$\text{image_size}$ 的圖片像素總數（寬、高相乘），<br>另外就是 $round$ 函數實際上可以根據需要調整（常見的候選為 $floor(x)$ 及 $ceil(x)$ 函數）。</p>
+<p>具體的程式如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 直方圖初始化 */</span></span><br><span class="line"><span class="keyword">let</span> histogram = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, () =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">256</span>&#125;, () =&gt; <span class="number">0</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 遍歷所有像素 */</span></span><br><span class="line"><span class="keyword">let</span> pixels = imgData.data;                              <span class="comment">// 讀取的圖片值，存在 ImageData 中</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = pixels.length; i &lt; l; i += <span class="number">4</span>) &#123;     <span class="comment">// 每個像素都有紅, 綠, 藍及透明度，共 4 個值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                      <span class="comment">// 紀錄 3 種顏色的數量</span></span><br><span class="line">    histogram[c][pixels[i + c]] += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 累積分布函數初始化 */</span></span><br><span class="line"><span class="keyword">let</span> cdf = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, () =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">256</span>&#125;, () =&gt; <span class="number">0</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 計算累積分布函數 */</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                        <span class="comment">// 遍歷所有顏色</span></span><br><span class="line">  cdf[c][<span class="number">0</span>] = histogram[c][<span class="number">0</span>];                          <span class="comment">// 紀錄第一個數量值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; <span class="number">256</span>; i += <span class="number">1</span>) &#123;</span><br><span class="line">    cdf[c][i] = cdf[c][i - <span class="number">1</span>] + histogram[c][i];        <span class="comment">// 累計後面所有數量的值</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 定義一些變數 */</span></span><br><span class="line"><span class="keyword">let</span> w = imgData.width;                                  <span class="comment">// 舊圖片的寬度</span></span><br><span class="line"><span class="keyword">let</span> h = imgData.height;                                 <span class="comment">// 舊圖片的高度</span></span><br><span class="line"><span class="keyword">let</span> max = w * h;                                        <span class="comment">// 圖片的像素總數（image_size = width*height）</span></span><br><span class="line"><span class="keyword">let</span> newData = imageContext.createImageData(w, h);       <span class="comment">// 宣告新圖片</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 開始直方圖均化 */</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                        <span class="comment">// 遍歷所有顏色</span></span><br><span class="line">  <span class="keyword">let</span> min = cdf[c][<span class="number">0</span>];                                  <span class="comment">// 取的該顏色最小 CDF 值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = pixels.length; i &lt; l; i += <span class="number">4</span>) &#123;   <span class="comment">// 遍歷所有像素</span></span><br><span class="line">    <span class="keyword">let</span> v = cdf[c][pixels[i + c]];                      <span class="comment">// 取得 CDF 值</span></span><br><span class="line">    <span class="keyword">let</span> r = (v - min) / (max - min);                    <span class="comment">// 計算該 CDF 值的比例</span></span><br><span class="line">    newData.data[i + c] = <span class="built_in">Math</span>.round(<span class="number">255</span> * r);          <span class="comment">// 設定新圖片的像素顏色（color_range = 255）</span></span><br><span class="line">    newData.data[i + <span class="number">3</span>] = <span class="number">255</span>;                          <span class="comment">// 設定新圖片的像素透明度</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note success">
+            <p>關於讀取、顯示圖片，請參考 <a href="/javascript-file-process/" title="JavaScript 檔案處理">JavaScript 檔案處理</a> 及 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData" target="_blank" rel="noopener">MDN ImageData</a> 相關文章。</p>
+          </div>
+<div class="note info">
+            <p>在 Paint.net 軟體中的「自動色階」功能，就是「直方圖均化」。</p>
+          </div>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/9v4xg21t/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<div class="note info">
+            <p>重複執行多次直方圖均化時，由於浮點數經過 $round(x)$ 函數，<br>會導致直方圖有時候會有稍微差異（約 1 個亮度值），但是對於圖片來說，並不會造成視覺上的改變。</p>
+          </div>
 ]]></content>
       <categories>
         <category>資料結構與演算法</category>
@@ -2542,63 +2639,6 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
       </categories>
   </entry>
   <entry>
-    <title>拉格朗日插值 Lagrange polynomial interpolation</title>
-    <url>/lagrange-polynomial-interpolation/</url>
-    <content><![CDATA[<p>第一次認識拉格朗日插值，源自於名叫 Paint.NET 的繪圖軟體，<br>這個軟體陪我走過 RPG Maker VX 的許多歲月。</p>
-<a id="more"></a>
-<p>當初在尋找適合製作 Pixel art 的軟體時，筆者當時選擇軟體的條件是「既不能太複雜、也不能太陽春」。<br>因緣際會遇到了 Paint.NET，它的功能足夠，操作也很簡單，所以我很快就喜歡上了。</p>
-<p><img src="https://i.imgur.com/WCnpBLH.jpg" alt="圖 1、個人製作的遊戲畫面圖（素材皆為 Paint.NET 繪製）"></p>
-<p>當時除了用它製作基本的 Pixel 素材之外，也會用它做一些遊戲的特殊效果（像光影）之類的，<br>它其中一個重要的功能是「設定各個顏色的曲線」：</p>
-<p><img src="https://i.imgur.com/fw0N6s6.jpg" alt="圖 2、Paint.NET 的曲線功能"></p>
-<p>當時就在想，要怎麼實作這個功能呢？網路上一查，就碰到「拉格朗日（Lagrange）插值」了！</p>
-<h1 id="插值"><a href="#插值" class="headerlink" title="插值"></a>插值</h1><p>插值，意思就是手上有一些資料點：</p>
-<p>$\{(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})\}$</p>
-<p>找一個函數，去「穿過」這些點：</p>
-<p>$f(x_i) = y_i, \quad i = 0, 1, …, n-1$</p>
-<p>而這邊接下來討論的是「多項式插值」，<br>也就是說，我們預期 $f(x)$ 是一個多項式，我們表示成 $P(x)$</p>
-<div class="note success">
-            <p>建議閱讀 <a href="/linear-regression-and-gradient-descent/" title="線性回歸與梯度下降 Linear Regression and Gradient Descent">線性回歸與梯度下降 Linear Regression and Gradient Descent</a><br>比較「插值（interpolation）」跟「擬合（fitting）」的差別。</p>
-          </div>
-<div class="note info">
-            <p>插值可以細分為內插（interpolation）與外插（extrapolation）；<br>一般說插值是指內插，而如果預測的點出現在資料點的最大區間之外，則稱為外插。</p>
-          </div>
-<h1 id="拉格朗日插值"><a href="#拉格朗日插值" class="headerlink" title="拉格朗日插值"></a>拉格朗日插值</h1><p>拉格朗日插值多項式：</p>
-<p>$$<br>P(x) = \sum\limits_{i=0}^{n-1} y_i \ell_i(x)<br>$$</p>
-<p>其中 $\ell_i(x)$ 為插值基函數：</p>
-<p>$$<br>\ell_i(x) = \prod\limits_{j=0, j \neq i}^{n-1} \frac{(x - x_i)}{(x_i - x_j)}<br>$$</p>
-<p>因為有特性：<br>$$<br>\ell_i(x_j) = \delta_{ij} =<br>\begin{cases}<br>    1, \qquad\text{if } i = j \\<br>    0, \qquad\text{if } i \neq j \\<br>\end{cases}<br>$$</p>
-<div class="note info">
-            <p>式中的 $\delta_{ij}$ 是指 <a href="https://en.wikipedia.org/wiki/Kronecker_delta" target="_blank" rel="noopener">克羅內克 delta 函數 (Kronecker delta function)</a></p>
-          </div>
-<p>導致任意點對 $(x_k, y_k)$ 帶入後都有：</p>
-<p>$$<br>y_k \ell_k(x_k) = y_k<br>$$</p>
-<p>所以 $P(x)$ 必可穿過 $0, 1, …, n-1$ 所有的點對。</p>
-<h1 id="多項式的點值表示"><a href="#多項式的點值表示" class="headerlink" title="多項式的點值表示"></a>多項式的點值表示</h1><p>插值在最初我看到時，是用在影像處理編輯圖片的操作上；<br>直到有次在《算法導論》中看到插值結果的唯一性證明，發現它也可以用多項式的點值表示，<br>更進一步可以用在計算快速傅立葉轉換上。</p>
-<p>原本我們是有點對：<br>$\{(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})\}$</p>
-<p>透過這些點對找多項式函數，也就是多項式函數的係數，滿足：</p>
-<p>$$<br>P(x_k) = a_0 + a_1x_k + a_2x_k^2 + \dots + a_{n-1}x_k^{n-1} = y_k, \quad k = 0, 1, \dots, n-1<br>$$</p>
-<p>通常我們都將 $x$ 當成函數輸入，即 $Ax = y$；<br>但現在我們改以 $a$ 當成函數輸入，並將 $k$ 展開，表示成矩陣有：</p>
-<p>$$<br>Xa = y<br>$$</p>
-<p>$$<br>\left[ \begin{matrix}<br>1 &amp; x_{0} &amp; x_{0}^{2} &amp; \dots &amp; x_{0}^{n-1} \\<br>1 &amp; x_{1} &amp; x_{1}^{2} &amp; \dots &amp; x_{1}^{n-1} \\<br>\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>1 &amp; x_{n-1} &amp; x_{n-1}^{2} &amp; \dots  &amp; x_{n-1}^{n-1}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>a_{0} \\<br>a_{1} \\<br>\vdots \\<br>a_{n-1}<br>\end{matrix} \right]<br>=<br>\left[ \begin{matrix}<br>y_{0} \\<br>y_{1} \\<br>\vdots \\<br>y_{n-1}<br>\end{matrix} \right]<br>$$</p>
-<p>其中 $X$ 為 <a href="https://zh.wikipedia.org/wiki/%E8%8C%83%E5%BE%B7%E8%92%99%E7%9F%A9%E9%99%A3" target="_blank" rel="noopener">Vandermonde 矩陣</a><br>當 $i \neq j$ 時，有 $x_i \neq x_j$，則行列式 $det(X) \neq 0$<br>$X$ 可逆，代表唯一存在一組 $a$ 是唯一解，滿足 $Xa = y$</p>
-<p>既然係數 $a$ 是唯一的，那多項式函數 $P(x)$ 也是唯一的，<br>代表了，表示多項式時，我有兩種選擇方法：</p>
-<ol>
-<li>直接儲存 $a_0, a_1, \dots, a_n$ 共 $n$ 個係數</li>
-<li>儲存 $(x_0, y_0), (x_1, y_1), (x_2, y_2) …, (x_{n-1}, y_{n-1})$ 共 $n$ 組點對</li>
-</ol>
-<p>而第二種儲存點對的方式，被稱為多項式的「點值表示」。</p>
-<div class="note info">
-            <p>點值表示有一些很有趣的性質，<br>比方說兩個多項式相乘的複雜度，在係數表示時是 $\Theta(n^2)$，但在點值表示僅需 $\Theta(n)$。</p>
-          </div>
-<p>至於用點值表示做其他事情，就超出本文的範圍了。</p>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>這個演示可以上傳一張照片，用插值曲線調整顏色。</p>
-<iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/hyjb39e7/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
-]]></content>
-      <categories>
-        <category>資料結構與演算法</category>
-      </categories>
-  </entry>
-  <entry>
     <title>推盤遊戲  n-puzzle</title>
     <url>/n-puzzle/</url>
     <content><![CDATA[<p>這是人工智慧課程的教學筆記。<br>同時也是學期初上課的內容，因為不太好寫演示所以拖到暑假來完成。<br><a id="more"></a></p>
@@ -2761,46 +2801,6 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
           </div>]]></content>
       <categories>
         <category>人工智慧</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>直方圖均化 Histogram Equalization</title>
-    <url>/histogram-equalization/</url>
-    <content><![CDATA[<p>之前影像處理課有寫過直方圖均化（Histogram Equalization）的程式，<br>這篇是重新紀錄做法，以及提供 Web 的演示。</p>
-<a id="more"></a>
-<p>因為最近稍微小忙，為了保持每月更新的步調，<br>所以挑了一個比較簡單的主題先寫這樣 XD”</p>
-<div class="note success">
-            <p>請參閱 <a href="/ming-chuan-university-homework/" title="我的大學作業整理">我的大學作業整理</a> 的「影像處理課程」部分。</p>
-          </div>
-<h1 id="色階與直方圖"><a href="#色階與直方圖" class="headerlink" title="色階與直方圖"></a>色階與直方圖</h1><p>圖片的「色階」（level）是統計圖片像素的灰階亮度或各顏色分量，<br>然後依照其值與像素的數量，畫成一張直方圖（histogram）如圖 1 所示：</p>
-<p><img src="https://i.imgur.com/Ms1N4xX.png" alt="圖 1、Paint.net 中的色階"></p>
-<div class="note info">
-            <p>嚴格說，色階是顏色亮度的強弱，但直方圖是表示色階的一種圖表；<br>表示色階未必要用直方圖，而且直方圖的 X 與 Y 軸也不見得是亮度與數量。</p>
-          </div>
-<h1 id="直方圖均化"><a href="#直方圖均化" class="headerlink" title="直方圖均化"></a>直方圖均化</h1><p>直觀地說，直方圖均化（histogram equalization）做法是紀錄圖像中，每個像素（pixel）的亮度（brightness），<br>然後根據「每個像素亮度的數量」重新分配亮度的過程，具體作法如下：</p>
-<ol>
-<li>初始化直方圖 $h(c, v) = 0 \ \forall c, v$ 其中 $c \in \{0, 1, 2\}$ 為顏色分量，而 $v = [0, 255] \in N$ 為統計數量</li>
-<li>遍歷所有像素，計算出直方圖 $h(c, v)$</li>
-<li>根據直方圖 $h$ 算出累積分布函數（Cumulative Distribution Function, CDF）<br>其定義為 $CDF(c, v) = \sum_{i = 0}^{v} h(c, i)$</li>
-<li>按 $CDF$ 比例，重新分配像素 $p(c)$ 顏色 $c$ 的亮度值，定義為：</li>
-</ol>
-<p>$$<br>p_{new}(c) = round\left(\text{color_range} \cdot \frac{p_{old}(c) - CDF_{min}(c)}{\text{image_size} - CDF_{min}(c)}\right) \ \forall c<br>$$</p>
-<p>其中，根據累積分布函數的定義，有 $CDF_{min}(c) = CDF(c, 0)$ 的關係，<br>而 $\text{color_range}$ 是該顏色 $c$ 的最大值、$\text{image_size}$ 的圖片像素總數（寬、高相乘），<br>另外就是 $round$ 函數實際上可以根據需要調整（常見的候選為 $floor(x)$ 及 $ceil(x)$ 函數）。</p>
-<p>具體的程式如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 直方圖初始化 */</span></span><br><span class="line"><span class="keyword">let</span> histogram = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, () =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">256</span>&#125;, () =&gt; <span class="number">0</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 遍歷所有像素 */</span></span><br><span class="line"><span class="keyword">let</span> pixels = imgData.data;                              <span class="comment">// 讀取的圖片值，存在 ImageData 中</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = pixels.length; i &lt; l; i += <span class="number">4</span>) &#123;     <span class="comment">// 每個像素都有紅, 綠, 藍及透明度，共 4 個值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                      <span class="comment">// 紀錄 3 種顏色的數量</span></span><br><span class="line">    histogram[c][pixels[i + c]] += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 累積分布函數初始化 */</span></span><br><span class="line"><span class="keyword">let</span> cdf = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, () =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">256</span>&#125;, () =&gt; <span class="number">0</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 計算累積分布函數 */</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                        <span class="comment">// 遍歷所有顏色</span></span><br><span class="line">  cdf[c][<span class="number">0</span>] = histogram[c][<span class="number">0</span>];                          <span class="comment">// 紀錄第一個數量值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; <span class="number">256</span>; i += <span class="number">1</span>) &#123;</span><br><span class="line">    cdf[c][i] = cdf[c][i - <span class="number">1</span>] + histogram[c][i];        <span class="comment">// 累計後面所有數量的值</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 定義一些變數 */</span></span><br><span class="line"><span class="keyword">let</span> w = imgData.width;                                  <span class="comment">// 舊圖片的寬度</span></span><br><span class="line"><span class="keyword">let</span> h = imgData.height;                                 <span class="comment">// 舊圖片的高度</span></span><br><span class="line"><span class="keyword">let</span> max = w * h;                                        <span class="comment">// 圖片的像素總數（image_size = width*height）</span></span><br><span class="line"><span class="keyword">let</span> newData = imageContext.createImageData(w, h);       <span class="comment">// 宣告新圖片</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 開始直方圖均化 */</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                        <span class="comment">// 遍歷所有顏色</span></span><br><span class="line">  <span class="keyword">let</span> min = cdf[c][<span class="number">0</span>];                                  <span class="comment">// 取的該顏色最小 CDF 值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = pixels.length; i &lt; l; i += <span class="number">4</span>) &#123;   <span class="comment">// 遍歷所有像素</span></span><br><span class="line">    <span class="keyword">let</span> v = cdf[c][pixels[i + c]];                      <span class="comment">// 取得 CDF 值</span></span><br><span class="line">    <span class="keyword">let</span> r = (v - min) / (max - min);                    <span class="comment">// 計算該 CDF 值的比例</span></span><br><span class="line">    newData.data[i + c] = <span class="built_in">Math</span>.round(<span class="number">255</span> * r);          <span class="comment">// 設定新圖片的像素顏色（color_range = 255）</span></span><br><span class="line">    newData.data[i + <span class="number">3</span>] = <span class="number">255</span>;                          <span class="comment">// 設定新圖片的像素透明度</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div class="note success">
-            <p>關於讀取、顯示圖片，請參考 <a href="/javascript-file-process/" title="JavaScript 檔案處理">JavaScript 檔案處理</a> 及 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData" target="_blank" rel="noopener">MDN ImageData</a> 相關文章。</p>
-          </div>
-<div class="note info">
-            <p>在 Paint.net 軟體中的「自動色階」功能，就是「直方圖均化」。</p>
-          </div>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/9v4xg21t/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
-<div class="note info">
-            <p>重複執行多次直方圖均化時，由於浮點數經過 $round(x)$ 函數，<br>會導致直方圖有時候會有稍微差異（約 1 個亮度值），但是對於圖片來說，並不會造成視覺上的改變。</p>
-          </div>
-]]></content>
-      <categories>
-        <category>資料結構與演算法</category>
       </categories>
   </entry>
   <entry>
@@ -3054,26 +3054,6 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
       </categories>
   </entry>
   <entry>
-    <title>羊羽手札更新歷程 01</title>
-    <url>/tinytsunami-update-01/</url>
-    <content><![CDATA[<p>將網站更新成 Hexo 框架。<br>最主要的原因是舊的 Blog 系統當初寫得太急促，而且往往為了嘗試新東西而直接邊學邊做，導致系統問題有點多。<br>在重複考慮之下，決定改成目前的模式。這篇文章接下來寫的，是「羊羽手札」建立到目前為止的雜事以及更新狀況。<br><a id="more"></a></p>
-<h1 id="更新歷程"><a href="#更新歷程" class="headerlink" title="更新歷程"></a>更新歷程</h1><ul>
-<li>2016.10.24 羊羽手札v1（PHP）</li>
-<li>2017.12.18 羊羽手札v2（Vue.js+Express）</li>
-<li>2017.02.25 羊羽手札v3（Hexo）</li>
-</ul>
-<h1 id="雜記"><a href="#雜記" class="headerlink" title="雜記"></a>雜記</h1><p>到目前為止，羊羽手札的特徵是文章頁面中有 JS 演示的部分，先談談之前的做法。<br>最早的 PHP 頁面想要時做這個部份時，想到的做法是將 HTML 直接寫到資料庫，然後 CSS 採用行內樣式，比方說：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"demo_01"</span> <span class="attr">style</span>=<span class="string">"..."</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">...</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">...</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>因為透過編輯器寫入，需要跳脫過濾一些 HTML（像是 script 標籤）以及 JS 語法。<br>所以 JS 是另外上傳單個檔案，採用外鏈式加載：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> root = <span class="built_in">document</span>.getElementById(<span class="string">"demo_01"</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
-<p>這個的主要問題在於，每次更新系統時，<br>需要檢查 JS 檔案是否還在（有時會改動檔案上傳的部分、或遷移主機商平台等等）<br>也因為這件事，我有遺失幾個文章內的 JS 演示腳本。</p>
-<p>經過考慮後，第 3 版的羊羽手札，屆時將會改成 HTML、CSS、JS 遊樂場（JSbin、JSfiddle 或 Codepen）來嵌入演示。</p>
-]]></content>
-      <categories>
-        <category>羊羽手札</category>
-      </categories>
-  </entry>
-  <entry>
     <title>線性回歸與梯度下降 Linear Regression and Gradient Descent</title>
     <url>/linear-regression-and-gradient-descent/</url>
     <content><![CDATA[<p>這篇是 Coursera 中 Machine Learning 的筆記。<br><a id="more"></a></p>
@@ -3177,6 +3157,26 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
       </categories>
   </entry>
   <entry>
+    <title>羊羽手札更新歷程 01</title>
+    <url>/tinytsunami-update-01/</url>
+    <content><![CDATA[<p>將網站更新成 Hexo 框架。<br>最主要的原因是舊的 Blog 系統當初寫得太急促，而且往往為了嘗試新東西而直接邊學邊做，導致系統問題有點多。<br>在重複考慮之下，決定改成目前的模式。這篇文章接下來寫的，是「羊羽手札」建立到目前為止的雜事以及更新狀況。<br><a id="more"></a></p>
+<h1 id="更新歷程"><a href="#更新歷程" class="headerlink" title="更新歷程"></a>更新歷程</h1><ul>
+<li>2016.10.24 羊羽手札v1（PHP）</li>
+<li>2017.12.18 羊羽手札v2（Vue.js+Express）</li>
+<li>2017.02.25 羊羽手札v3（Hexo）</li>
+</ul>
+<h1 id="雜記"><a href="#雜記" class="headerlink" title="雜記"></a>雜記</h1><p>到目前為止，羊羽手札的特徵是文章頁面中有 JS 演示的部分，先談談之前的做法。<br>最早的 PHP 頁面想要時做這個部份時，想到的做法是將 HTML 直接寫到資料庫，然後 CSS 採用行內樣式，比方說：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"demo_01"</span> <span class="attr">style</span>=<span class="string">"..."</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">...</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">...</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>因為透過編輯器寫入，需要跳脫過濾一些 HTML（像是 script 標籤）以及 JS 語法。<br>所以 JS 是另外上傳單個檔案，採用外鏈式加載：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> root = <span class="built_in">document</span>.getElementById(<span class="string">"demo_01"</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p>這個的主要問題在於，每次更新系統時，<br>需要檢查 JS 檔案是否還在（有時會改動檔案上傳的部分、或遷移主機商平台等等）<br>也因為這件事，我有遺失幾個文章內的 JS 演示腳本。</p>
+<p>經過考慮後，第 3 版的羊羽手札，屆時將會改成 HTML、CSS、JS 遊樂場（JSbin、JSfiddle 或 Codepen）來嵌入演示。</p>
+]]></content>
+      <categories>
+        <category>羊羽手札</category>
+      </categories>
+  </entry>
+  <entry>
     <title>羊羽手札更新歷程 02</title>
     <url>/tinytsunami-update-02/</url>
     <content><![CDATA[<p>這學期一開始還好，期中之後就很忙，<br>這個部落格也就在後半學期暫緩一下子了。</p>
@@ -3253,29 +3253,6 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
       </categories>
   </entry>
   <entry>
-    <title>羊與羊的牧場 01</title>
-    <url>/sheeps-01/</url>
-    <content><![CDATA[<p>這篇是我的獨立遊戲《羊與羊的牧場》開發的紀錄。<br><a id="more"></a></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>原本都是發消息到 FB，但是後來覺得 FB 的文章之後好像找不到……<br>所以決定從版本 v0.2 開始，把開發的紀錄整理到 Blog。</p>
-<h1 id="羊與羊的牧場故事"><a href="#羊與羊的牧場故事" class="headerlink" title="羊與羊的牧場故事"></a>羊與羊的牧場故事</h1><p>《羊與羊的牧場》是具經營成分的 RPG 遊戲。</p>
-<p>很久以前，羊神從天降下傳說的肥料澆灌大地，<br>荒蕪的大地從此長出了黃金的牧草，羊群們稱這種肥料為「金肥（Gold fertilizer）」<br>使用金肥種出的黃金牧草被當作重要的資產在大陸上流通著……<br>現在，金肥資源已經接近枯竭，羊群陷入一片混亂之中。</p>
-<p>玩家扮演著羊，經營拆遷式牧場，在羊之大陸上尋找金肥。</p>
-<h1 id="開發紀錄"><a href="#開發紀錄" class="headerlink" title="開發紀錄"></a>開發紀錄</h1><div class="video-container"><iframe src="//www.youtube.com/embed/WQ8pBReNaOE" frameborder="0" allowfullscreen></iframe></div>
-<p>這個版本完成了：</p>
-<ul>
-<li>紙娃娃系統</li>
-<li>地圖及部分物件的設定</li>
-</ul>
-<p>雖然圖像還有可能再更動，不過暫時多少有遊戲原型的樣子了。</p>
-<p><img src="https://i.imgur.com/C134U4E.gif" alt="圖 1、羊群們"></p>
-<div class="note info">
-            <p>所有的設計都只是原型，實際情況可能還會改變。</p>
-          </div>]]></content>
-      <categories>
-        <category>獨立遊戲製作</category>
-      </categories>
-  </entry>
-  <entry>
     <title>羊羽手札更新歷程 05</title>
     <url>/tinytsunami-update-05/</url>
     <content><![CDATA[<p>總之雖然有點遲到，預祝 2020 諸事順遂；<br>然後接下來應該會準備發新文章了。</p>
@@ -3300,20 +3277,21 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
       </categories>
   </entry>
   <entry>
-    <title>羊與羊的草原 02</title>
-    <url>/sheeps-02/</url>
-    <content><![CDATA[<p>這篇是我的獨立遊戲《羊與羊的草原》開發的紀錄；<br>《羊與羊的牧場》已被更名為《羊與羊的草原》。</p>
-<a id="more"></a>
-<div class="note info">
-            <p>本文為 v0.3 版《羊與羊的草原》的開發紀錄。</p>
-          </div>
-<h1 id="系統改動"><a href="#系統改動" class="headerlink" title="系統改動"></a>系統改動</h1><p>原本想說用牧場為單位可以對戰，中間有極少許的劇情過渡。</p>
-<p>原本玩家所在牧場點 A、敵人牧場點 B，<br>如果兩者要鄰接交戰，要嘛 A 遷移到 B 旁邊，要嘛 B 遷移到 A 旁邊。</p>
-<p>但是後來發現，我沒辦法說服玩家「為什麼牧場可以瞬間移動？」<br>本來想說設計一種空間移動的魔法石什麼的，覺得太微妙而作罷。</p>
-<p>後來改成「建立移動車」之類的東西，遊戲中的術語稱為「Vessel」<br>玩家在過程中可以裝設容器與組織團隊，在各地移動。</p>
-<p>於是《羊與羊的牧場》就被更名為《羊與羊的草原》了。</p>
-<h1 id="開發紀錄"><a href="#開發紀錄" class="headerlink" title="開發紀錄"></a>開發紀錄</h1><p><img src="https://i.imgur.com/hg8R09t.png" alt="圖 1、Vessel 的設定畫面"></p>
-<p>目前 Vessel 設定已經完成，玩家可以拖曳道具欄中的物品裝置於 Vessel 中。</p>
+    <title>羊與羊的牧場 01</title>
+    <url>/sheeps-01/</url>
+    <content><![CDATA[<p>這篇是我的獨立遊戲《羊與羊的牧場》開發的紀錄。<br><a id="more"></a></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>原本都是發消息到 FB，但是後來覺得 FB 的文章之後好像找不到……<br>所以決定從版本 v0.2 開始，把開發的紀錄整理到 Blog。</p>
+<h1 id="羊與羊的牧場故事"><a href="#羊與羊的牧場故事" class="headerlink" title="羊與羊的牧場故事"></a>羊與羊的牧場故事</h1><p>《羊與羊的牧場》是具經營成分的 RPG 遊戲。</p>
+<p>很久以前，羊神從天降下傳說的肥料澆灌大地，<br>荒蕪的大地從此長出了黃金的牧草，羊群們稱這種肥料為「金肥（Gold fertilizer）」<br>使用金肥種出的黃金牧草被當作重要的資產在大陸上流通著……<br>現在，金肥資源已經接近枯竭，羊群陷入一片混亂之中。</p>
+<p>玩家扮演著羊，經營拆遷式牧場，在羊之大陸上尋找金肥。</p>
+<h1 id="開發紀錄"><a href="#開發紀錄" class="headerlink" title="開發紀錄"></a>開發紀錄</h1><div class="video-container"><iframe src="//www.youtube.com/embed/WQ8pBReNaOE" frameborder="0" allowfullscreen></iframe></div>
+<p>這個版本完成了：</p>
+<ul>
+<li>紙娃娃系統</li>
+<li>地圖及部分物件的設定</li>
+</ul>
+<p>雖然圖像還有可能再更動，不過暫時多少有遊戲原型的樣子了。</p>
+<p><img src="https://i.imgur.com/C134U4E.gif" alt="圖 1、羊群們"></p>
 <div class="note info">
             <p>所有的設計都只是原型，實際情況可能還會改變。</p>
           </div>]]></content>
@@ -3348,6 +3326,28 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
 <p>拋射物的最大特點是可以越過 Vessel 的牆壁，攻擊內部的物品，<br>同時也是可以對 Vessel 地板造成攻擊的投擲物品，<br>當地版損毀時，上方的置物會全部損毀，對於戰局會造成很重要的結果。</p>
 <p>儘管如此，拋射物依然得面對命中率的問題，拋射物體的高度會造成風力影響加劇，<br>射出的高度跟距離相關度非常高，這代表發射前需要蓄力不少時間。</p>
 <p><img src="https://i.imgur.com/jg8BfE2.gif" alt="圖 2、拋射物：素材石頭"></p>
+<div class="note info">
+            <p>所有的設計都只是原型，實際情況可能還會改變。</p>
+          </div>]]></content>
+      <categories>
+        <category>獨立遊戲製作</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>羊與羊的草原 02</title>
+    <url>/sheeps-02/</url>
+    <content><![CDATA[<p>這篇是我的獨立遊戲《羊與羊的草原》開發的紀錄；<br>《羊與羊的牧場》已被更名為《羊與羊的草原》。</p>
+<a id="more"></a>
+<div class="note info">
+            <p>本文為 v0.3 版《羊與羊的草原》的開發紀錄。</p>
+          </div>
+<h1 id="系統改動"><a href="#系統改動" class="headerlink" title="系統改動"></a>系統改動</h1><p>原本想說用牧場為單位可以對戰，中間有極少許的劇情過渡。</p>
+<p>原本玩家所在牧場點 A、敵人牧場點 B，<br>如果兩者要鄰接交戰，要嘛 A 遷移到 B 旁邊，要嘛 B 遷移到 A 旁邊。</p>
+<p>但是後來發現，我沒辦法說服玩家「為什麼牧場可以瞬間移動？」<br>本來想說設計一種空間移動的魔法石什麼的，覺得太微妙而作罷。</p>
+<p>後來改成「建立移動車」之類的東西，遊戲中的術語稱為「Vessel」<br>玩家在過程中可以裝設容器與組織團隊，在各地移動。</p>
+<p>於是《羊與羊的牧場》就被更名為《羊與羊的草原》了。</p>
+<h1 id="開發紀錄"><a href="#開發紀錄" class="headerlink" title="開發紀錄"></a>開發紀錄</h1><p><img src="https://i.imgur.com/hg8R09t.png" alt="圖 1、Vessel 的設定畫面"></p>
+<p>目前 Vessel 設定已經完成，玩家可以拖曳道具欄中的物品裝置於 Vessel 中。</p>
 <div class="note info">
             <p>所有的設計都只是原型，實際情況可能還會改變。</p>
           </div>]]></content>
@@ -3900,6 +3900,65 @@ P_{i, j} = P_{i + 1, j - 1} && \text{if } S_{i} = S_{j}, |i - j| > 1 \\
       </categories>
   </entry>
   <entry>
+    <title>高斯喬登消去法 Gauss-Jordan Elimination</title>
+    <url>/Gauss-Jordan-elimination/</url>
+    <content><![CDATA[<p>這篇文章是某同學跟我說消去法不好寫，所以才出現的，<br>原本當初在上線性代數時，其實也有這樣的感覺，覺得消去法的細節有點多。</p>
+<p>想清楚之後就覺得消去法本身不會很困難，精度的維持才是最艱難之處。<br><a id="more"></a></p>
+<h1 id="矩陣運算"><a href="#矩陣運算" class="headerlink" title="矩陣運算"></a>矩陣運算</h1><p>消去法有一些基本運算，包含：</p>
+<ol>
+<li>交換 A、B 兩個列</li>
+<li>將一列 A 加到另一列 B</li>
+<li>將一列 A 乘上一個倍數 c</li>
+</ol>
+<p>此外，建立「增廣矩陣」也要處理。</p>
+<div class="note warning">
+            <p>注意這裡使用「直行橫列」意即列（Row）與行（Column）</p>
+          </div>
+<h2 id="增廣矩陣"><a href="#增廣矩陣" class="headerlink" title="增廣矩陣"></a>增廣矩陣</h2><p>輸入係數矩陣 M 與列向量 b 建立增廣矩陣 A。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 取得增廣矩陣</span></span><br><span class="line"><span class="comment"> * 輸入係數矩陣 M 及列向量 b 組合</span></span><br><span class="line"><span class="comment"> * 回傳增廣矩陣 A</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> augmented = <span class="function"><span class="keyword">function</span>(<span class="params">M, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> A = <span class="built_in">Array</span>.from(M, <span class="function"><span class="keyword">function</span>(<span class="params">v, k</span>) </span>&#123;  <span class="comment">// 建立增廣矩陣 A</span></span><br><span class="line">    <span class="keyword">return</span> v.concat(b[k]);                <span class="comment">// 將 M 的每一列都加上 b 的列</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> A;                               <span class="comment">// 回傳增廣矩陣 A</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>為了某些時候需要，<br>也可以撰寫將增廣矩陣 A 分解成係數矩陣 M 與列向量 b 的函數。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 分解增廣矩陣</span></span><br><span class="line"><span class="comment"> * 輸入增廣矩陣 A 分解</span></span><br><span class="line"><span class="comment"> * 回傳為包含係數矩陣 M 及列向量 b 的物件</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> unaugmented = <span class="function"><span class="keyword">function</span>(<span class="params">A</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;                                <span class="comment">// 回傳包含 M 及 b 的物件</span></span><br><span class="line">    M: <span class="built_in">Array</span>.from(A, <span class="function"><span class="keyword">function</span>(<span class="params">r</span>) </span>&#123;        <span class="comment">// 從增廣矩陣 A 建立</span></span><br><span class="line">      <span class="keyword">return</span> r.filter(<span class="function"><span class="keyword">function</span>(<span class="params">v, i</span>) </span>&#123;    <span class="comment">// 過濾掉 A 每一列的最後一個元素則為係數矩陣 M</span></span><br><span class="line">        <span class="keyword">return</span> i != (r.length - <span class="number">1</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;),</span><br><span class="line">    b: <span class="built_in">Array</span>.from(A, <span class="function"><span class="keyword">function</span>(<span class="params">r</span>) </span>&#123;        <span class="comment">// 從增廣矩陣 A 建立</span></span><br><span class="line">      <span class="keyword">return</span> r.filter(<span class="function"><span class="keyword">function</span>(<span class="params">v, i</span>) </span>&#123;    <span class="comment">// 過濾掉非 A 每一列的最後一個元素則為列向量 b</span></span><br><span class="line">        <span class="keyword">return</span> i == (r.length - <span class="number">1</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="兩列交換"><a href="#兩列交換" class="headerlink" title="兩列交換"></a>兩列交換</h2><p>交換兩個列，多用於軸（pivot）為零的情況。</p>
+<div class="note info">
+            <p>「樞」為 pivot 而「軸」為 axis；<br>不過這裡的軸是指 pivot 才對，鑒於溝通上不太使用「樞」故此用「軸」稱呼。</p>
+          </div>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 兩列交換</span></span><br><span class="line"><span class="comment"> * 輸入矩陣 A 交換 a 及 b 兩列</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> exchange = <span class="function"><span class="keyword">function</span>(<span class="params">A, a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> T = <span class="built_in">Array</span>.from(A[a]);               <span class="comment">// 複製第 a 列</span></span><br><span class="line">  A[a] = A[b];                            <span class="comment">// 令第 a 列為第 b 列</span></span><br><span class="line">  A[b] = T;                               <span class="comment">// 令第 b 列為複製的 a 列</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="兩列加法"><a href="#兩列加法" class="headerlink" title="兩列加法"></a>兩列加法</h2><p>將一列乘上一個倍數加到另一列上。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 兩列加法</span></span><br><span class="line"><span class="comment"> * 輸入矩陣 A 將第 a 列乘 scalar 加到第 b 列</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> addition = <span class="function"><span class="keyword">function</span>(<span class="params">A, a, b, scalar</span>) </span>&#123;</span><br><span class="line">  A[b] = A[b].map(<span class="function"><span class="keyword">function</span>(<span class="params">v, k</span>) </span>&#123;        <span class="comment">// 使第 b 列變化</span></span><br><span class="line">    <span class="keyword">return</span> v + A[a][k] * scalar;          <span class="comment">// 將第 a 列乘 scalar 加上</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="單列縮放"><a href="#單列縮放" class="headerlink" title="單列縮放"></a>單列縮放</h2><p>將一列乘上一個常數。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 單列縮放</span></span><br><span class="line"><span class="comment"> * 輸入矩陣 A 將第 a 列乘上 scalar</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> scalar = <span class="function"><span class="keyword">function</span>(<span class="params">A, a, scalar</span>) </span>&#123;</span><br><span class="line">  A[a] = A[a].map(<span class="function"><span class="keyword">function</span>(<span class="params">v, k</span>) </span>&#123;        <span class="comment">// 將第 a 列變化</span></span><br><span class="line">    <span class="keyword">return</span> v * scalar;                    <span class="comment">// 將元素乘上 scalar</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="消去法"><a href="#消去法" class="headerlink" title="消去法"></a>消去法</h1><p>通過剛剛寫的副程式，可以使消去法變得更容易完成，<br>但考慮到一些情形，必須要在撰寫一些函數。</p>
+<h2 id="取得軸"><a href="#取得軸" class="headerlink" title="取得軸"></a>取得軸</h2><p>取得矩陣 A 的從第 k 列開始的軸。<br>考慮到如果當前軸那個位置的元素為零，這個函數可以幫我們找到可以交換的列。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 取得軸</span></span><br><span class="line"><span class="comment"> * 輸入矩陣 A 及第 k 列</span></span><br><span class="line"><span class="comment"> * 建立一個 row(A) - k 長度的陣列</span></span><br><span class="line"><span class="comment"> * 陣列元素值 e 為第 k 列開始第 e 行元素不為零</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> findPivots = <span class="function"><span class="keyword">function</span>(<span class="params">A, k</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;</span><br><span class="line">    length: (A.length - k)                        <span class="comment">// 建立長度為 row(A) - k 的陣列</span></span><br><span class="line">  &#125;, <span class="function"><span class="keyword">function</span>(<span class="params">e, i</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; A[k + i].length; j++) &#123;   <span class="comment">// 遍歷 A 第 k + i 列的每個元素</span></span><br><span class="line">      <span class="keyword">if</span> (A[k + i][j] != <span class="number">0</span>) &#123;                     <span class="comment">// 如果 A 第 k + i 列的第 j 個元素不為零</span></span><br><span class="line">        <span class="keyword">return</span> j;                                 <span class="comment">// 返回 j</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> A[<span class="number">0</span>].length;                           <span class="comment">// 第 k + i 列的所有元素都為零返回行的數量</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>這個函數是之後消去法的關鍵，也是最難理解的部分。<br>為幫助理解可以看一個例子：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> A = [[ <span class="number">0</span>, <span class="number">-2</span>,  <span class="number">4</span>,  <span class="number">7</span>],</span><br><span class="line">         [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">5</span>,  <span class="number">8</span>],</span><br><span class="line">         [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>],</span><br><span class="line">         [ <span class="number">3</span>, <span class="number">-3</span>,  <span class="number">6</span>,  <span class="number">9</span>]]</span><br><span class="line"></span><br><span class="line">findPivots(A, <span class="number">0</span>);   <span class="comment">// [1, 2, 4, 0]</span></span><br><span class="line">findPivots(A, <span class="number">1</span>);   <span class="comment">// [4, 2, 0]</span></span><br><span class="line">findPivots(A, <span class="number">2</span>);   <span class="comment">// [4, 0]</span></span><br><span class="line">findPivots(A, <span class="number">3</span>);   <span class="comment">// [0]</span></span><br></pre></td></tr></table></figure>
+<p>之所以有這個函數，考慮如果第 k 列的軸為零，<br>只要透過這個函數取得從第 k 列開始的軸，找到陣列中最小值交換就好。</p>
+<p>考慮剛才的例子：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">0</span>, <span class="number">-2</span>,  <span class="number">4</span>,  <span class="number">7</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">5</span>,  <span class="number">8</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>],</span><br><span class="line"> [ <span class="number">3</span>, <span class="number">-3</span>,  <span class="number">6</span>,  <span class="number">9</span>]]</span><br></pre></td></tr></table></figure>
+<p>其中第 0 列的軸位置為零，故計算第 0 列開始的軸位置為 [1, 2, 4, 0]<br>最小值為 0 註標為 3 則交換第 0 列與第 3 列。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">3</span>, <span class="number">-3</span>,  <span class="number">6</span>,  <span class="number">9</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">5</span>,  <span class="number">8</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>],</span><br><span class="line"> [ <span class="number">0</span>, <span class="number">-2</span>,  <span class="number">4</span>,  <span class="number">7</span>]]</span><br></pre></td></tr></table></figure>
+<p>同樣的，再換一次為：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">3</span>, <span class="number">-3</span>,  <span class="number">6</span>,  <span class="number">9</span>],</span><br><span class="line"> [ <span class="number">0</span>, <span class="number">-2</span>,  <span class="number">4</span>,  <span class="number">7</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">5</span>,  <span class="number">8</span>]]</span><br></pre></td></tr></table></figure>
+<h2 id="最小值註標"><a href="#最小值註標" class="headerlink" title="最小值註標"></a>最小值註標</h2><p>取得最小值註標是個簡單的功能。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 取得陣列最小值的註標</span></span><br><span class="line"><span class="comment"> * 輸入陣列 arr 最小值為 arr[i] 回傳 i</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> minIndex = <span class="function"><span class="keyword">function</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> index = <span class="number">0</span>;                          <span class="comment">// 假設最小值註標為 0</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;   <span class="comment">// 遍歷陣列</span></span><br><span class="line">    <span class="keyword">if</span>(arr[i] &lt; arr[index]) &#123;             <span class="comment">// 如果值更小</span></span><br><span class="line">      index = i;                          <span class="comment">// 改變最小值註標</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> index;                           <span class="comment">// 回傳最小值註標</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="高斯部分"><a href="#高斯部分" class="headerlink" title="高斯部分"></a>高斯部分</h2><p>消去法的這個部分主要是將下三角的元素變為零，<br>即使矩陣 A 變成上三角矩陣。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 高斯消去法</span></span><br><span class="line"><span class="comment"> * 輸入增廣矩陣 A 使之變成上三角矩陣</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> Gauss = <span class="function"><span class="keyword">function</span>(<span class="params">A</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> m = A.length;                               <span class="comment">// A 有 m 個列</span></span><br><span class="line">  <span class="keyword">let</span> n = A[<span class="number">0</span>].length;                            <span class="comment">// A 有 n 個行</span></span><br><span class="line">  <span class="keyword">let</span> r = <span class="built_in">Math</span>.min(m, n);                         <span class="comment">// A 最大會有 r 個軸</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;                   <span class="comment">// 對第 i 個列操作</span></span><br><span class="line">    <span class="keyword">let</span> pivots = findPivots(A, i);                <span class="comment">// 計算從第 i 列開始的軸位置</span></span><br><span class="line">    <span class="keyword">let</span> p = &#123;                                     <span class="comment">// 建立目前軸 p 的位置</span></span><br><span class="line">      i: <span class="number">0</span>,</span><br><span class="line">      j: <span class="number">0</span></span><br><span class="line">    &#125;;</span><br><span class="line">    p.i = minIndex(pivots);                       <span class="comment">// 取得最小軸位置的列</span></span><br><span class="line">    p.j = pivots[p.i];                            <span class="comment">// 取得最小軸位置</span></span><br><span class="line">    <span class="keyword">if</span> (p.j == n) &#123;                               <span class="comment">// p.j 為 n 即整列是零</span></span><br><span class="line">      <span class="keyword">return</span>;                                     <span class="comment">// 已經不能再做下去了</span></span><br><span class="line">    &#125;</span><br><span class="line">    exchange(A, i, i + p.i);                      <span class="comment">// 交換最小軸位置的列到本列</span></span><br><span class="line">    scalar(A, i, <span class="number">1</span> / A[i][p.j]);                  <span class="comment">// 縮放本列的大小使軸為 1</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>; j &lt; m; j++) &#123;             <span class="comment">// 遍歷軸下面的列</span></span><br><span class="line">      addition(A, i, j, -A[j][p.j] / A[i][p.j]);  <span class="comment">// 將其變為 0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="喬登部分"><a href="#喬登部分" class="headerlink" title="喬登部分"></a>喬登部分</h2><p>消去法的這個部分是透過代入法，<br>使矩陣 A 只有對角線上的元素有值（且為 1）。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 代入法</span></span><br><span class="line"><span class="comment"> * 重複代入使軸上方元素為零</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> Jordan = <span class="function"><span class="keyword">function</span>(<span class="params">A</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> m = A.length;                               <span class="comment">// A 有 m 個列</span></span><br><span class="line">  <span class="keyword">let</span> n = A[<span class="number">0</span>].length;                            <span class="comment">// A 有 n 個行</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = m - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;              <span class="comment">// 對第 i 個列操作</span></span><br><span class="line">    <span class="keyword">let</span> pivots = findPivots(A, i);                <span class="comment">// 計算從第 i 列開始的軸位置</span></span><br><span class="line">    <span class="keyword">let</span> p = &#123;                                     <span class="comment">// 建立目前軸 p 的位置</span></span><br><span class="line">      i: <span class="literal">null</span>,</span><br><span class="line">      j: pivots[<span class="number">0</span>]</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">if</span>(p.j == n) &#123;                                <span class="comment">// p.j 為 n 即整列是零</span></span><br><span class="line">      <span class="keyword">continue</span>;                                   <span class="comment">// 跳過這個列</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--) &#123;            <span class="comment">// 遍歷軸上面的列</span></span><br><span class="line">      addition(A, i, j, -A[j][p.j] / A[i][p.j]);  <span class="comment">// 將其變為 0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="除錯技巧"><a href="#除錯技巧" class="headerlink" title="除錯技巧"></a>除錯技巧</h1><p>這裡整理一些除錯的技巧。</p>
+<h2 id="自動測資"><a href="#自動測資" class="headerlink" title="自動測資"></a>自動測資</h2><p>人工設定測資可能也可以完成，<br>但如果能自動生成測資的話，就可以做比較大量的測試。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 產生測資矩陣</span></span><br><span class="line"><span class="comment"> * 建立大小為 (m, n) 的矩陣 M 及大小為 (m, 1) 的列向量 b</span></span><br><span class="line"><span class="comment"> * 組合出元素值 [a, b] 整數的增廣矩陣 A</span></span><br><span class="line"><span class="comment"> * 其中 m 與 n 為 [4, 7]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> generateMatrix = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> v = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;                                <span class="comment">// 取得述職的函數</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (b - a)) + a;   <span class="comment">// 數值為 [a, b]</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">let</span> m = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">3</span>) + <span class="number">4</span>;          <span class="comment">// 取得 m = [4, 7]</span></span><br><span class="line">  <span class="keyword">let</span> n = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">3</span>) + <span class="number">4</span>;          <span class="comment">// 取得 n = [4, 7]</span></span><br><span class="line">  <span class="keyword">let</span> M = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: m&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;        <span class="comment">// 建立矩陣 M</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: n&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> v();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">let</span> b = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: m&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;        <span class="comment">// 建立列向量 b</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">1</span>&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> v();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">  A = augmented(M, b);                                <span class="comment">// 組合出增廣矩陣 A</span></span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">Math</span>.random() &gt; <span class="number">0.5</span>) &#123;                           <span class="comment">// 是否建立空列</span></span><br><span class="line">    scalar(A, <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * m), <span class="number">0</span>);      <span class="comment">// 使隨機一列元素為 0</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">Math</span>.random() &gt; <span class="number">0.5</span>) &#123;                           <span class="comment">// 是否建立相同列</span></span><br><span class="line">    <span class="keyword">let</span> z = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * m);            <span class="comment">// 使隨機一列 z 等於另一列</span></span><br><span class="line">    scalar(A, z, <span class="number">0</span>);                                  <span class="comment">// 先使 z 列變成 0</span></span><br><span class="line">    addition(A, <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * m), z, <span class="number">1</span>); <span class="comment">// 隨機找一列加到 z 列</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> A;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="印出矩陣"><a href="#印出矩陣" class="headerlink" title="印出矩陣"></a>印出矩陣</h2><p>陣列在 JavaScript 中屬於參考的變數，<br>意思是，如果寫的方法為：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="built_in">console</span>.log(A);</span><br><span class="line"><span class="comment">/* 更改 A 矩陣（陣列） */</span></span><br><span class="line"><span class="built_in">console</span>.log(A);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>則兩個輸出會完全一樣。<br>為了正常印出矩陣，可以建立矩陣的副本：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="built_in">console</span>.log(A.slice());</span><br><span class="line"><span class="comment">/* 更改 A 矩陣（陣列） */</span></span><br><span class="line"><span class="built_in">console</span>.log(A.slice());</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="460px" src="//jsfiddle.net/6j4ru96n/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+]]></content>
+      <categories>
+        <category>線性代數</category>
+      </categories>
+  </entry>
+  <entry>
     <title>馬可爾夫決策過程 Markov Decision Process</title>
     <url>/markov-decision-process/</url>
     <content><![CDATA[<p>這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，<br>從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。<br><a id="more"></a></p>
@@ -4001,65 +4060,6 @@ $POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
 ]]></content>
       <categories>
         <category>人工智慧</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>高斯喬登消去法 Gauss-Jordan Elimination</title>
-    <url>/Gauss-Jordan-elimination/</url>
-    <content><![CDATA[<p>這篇文章是某同學跟我說消去法不好寫，所以才出現的，<br>原本當初在上線性代數時，其實也有這樣的感覺，覺得消去法的細節有點多。</p>
-<p>想清楚之後就覺得消去法本身不會很困難，精度的維持才是最艱難之處。<br><a id="more"></a></p>
-<h1 id="矩陣運算"><a href="#矩陣運算" class="headerlink" title="矩陣運算"></a>矩陣運算</h1><p>消去法有一些基本運算，包含：</p>
-<ol>
-<li>交換 A、B 兩個列</li>
-<li>將一列 A 加到另一列 B</li>
-<li>將一列 A 乘上一個倍數 c</li>
-</ol>
-<p>此外，建立「增廣矩陣」也要處理。</p>
-<div class="note warning">
-            <p>注意這裡使用「直行橫列」意即列（Row）與行（Column）</p>
-          </div>
-<h2 id="增廣矩陣"><a href="#增廣矩陣" class="headerlink" title="增廣矩陣"></a>增廣矩陣</h2><p>輸入係數矩陣 M 與列向量 b 建立增廣矩陣 A。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 取得增廣矩陣</span></span><br><span class="line"><span class="comment"> * 輸入係數矩陣 M 及列向量 b 組合</span></span><br><span class="line"><span class="comment"> * 回傳增廣矩陣 A</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> augmented = <span class="function"><span class="keyword">function</span>(<span class="params">M, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> A = <span class="built_in">Array</span>.from(M, <span class="function"><span class="keyword">function</span>(<span class="params">v, k</span>) </span>&#123;  <span class="comment">// 建立增廣矩陣 A</span></span><br><span class="line">    <span class="keyword">return</span> v.concat(b[k]);                <span class="comment">// 將 M 的每一列都加上 b 的列</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> A;                               <span class="comment">// 回傳增廣矩陣 A</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>為了某些時候需要，<br>也可以撰寫將增廣矩陣 A 分解成係數矩陣 M 與列向量 b 的函數。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 分解增廣矩陣</span></span><br><span class="line"><span class="comment"> * 輸入增廣矩陣 A 分解</span></span><br><span class="line"><span class="comment"> * 回傳為包含係數矩陣 M 及列向量 b 的物件</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> unaugmented = <span class="function"><span class="keyword">function</span>(<span class="params">A</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;                                <span class="comment">// 回傳包含 M 及 b 的物件</span></span><br><span class="line">    M: <span class="built_in">Array</span>.from(A, <span class="function"><span class="keyword">function</span>(<span class="params">r</span>) </span>&#123;        <span class="comment">// 從增廣矩陣 A 建立</span></span><br><span class="line">      <span class="keyword">return</span> r.filter(<span class="function"><span class="keyword">function</span>(<span class="params">v, i</span>) </span>&#123;    <span class="comment">// 過濾掉 A 每一列的最後一個元素則為係數矩陣 M</span></span><br><span class="line">        <span class="keyword">return</span> i != (r.length - <span class="number">1</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;),</span><br><span class="line">    b: <span class="built_in">Array</span>.from(A, <span class="function"><span class="keyword">function</span>(<span class="params">r</span>) </span>&#123;        <span class="comment">// 從增廣矩陣 A 建立</span></span><br><span class="line">      <span class="keyword">return</span> r.filter(<span class="function"><span class="keyword">function</span>(<span class="params">v, i</span>) </span>&#123;    <span class="comment">// 過濾掉非 A 每一列的最後一個元素則為列向量 b</span></span><br><span class="line">        <span class="keyword">return</span> i == (r.length - <span class="number">1</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="兩列交換"><a href="#兩列交換" class="headerlink" title="兩列交換"></a>兩列交換</h2><p>交換兩個列，多用於軸（pivot）為零的情況。</p>
-<div class="note info">
-            <p>「樞」為 pivot 而「軸」為 axis；<br>不過這裡的軸是指 pivot 才對，鑒於溝通上不太使用「樞」故此用「軸」稱呼。</p>
-          </div>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 兩列交換</span></span><br><span class="line"><span class="comment"> * 輸入矩陣 A 交換 a 及 b 兩列</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> exchange = <span class="function"><span class="keyword">function</span>(<span class="params">A, a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> T = <span class="built_in">Array</span>.from(A[a]);               <span class="comment">// 複製第 a 列</span></span><br><span class="line">  A[a] = A[b];                            <span class="comment">// 令第 a 列為第 b 列</span></span><br><span class="line">  A[b] = T;                               <span class="comment">// 令第 b 列為複製的 a 列</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="兩列加法"><a href="#兩列加法" class="headerlink" title="兩列加法"></a>兩列加法</h2><p>將一列乘上一個倍數加到另一列上。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 兩列加法</span></span><br><span class="line"><span class="comment"> * 輸入矩陣 A 將第 a 列乘 scalar 加到第 b 列</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> addition = <span class="function"><span class="keyword">function</span>(<span class="params">A, a, b, scalar</span>) </span>&#123;</span><br><span class="line">  A[b] = A[b].map(<span class="function"><span class="keyword">function</span>(<span class="params">v, k</span>) </span>&#123;        <span class="comment">// 使第 b 列變化</span></span><br><span class="line">    <span class="keyword">return</span> v + A[a][k] * scalar;          <span class="comment">// 將第 a 列乘 scalar 加上</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="單列縮放"><a href="#單列縮放" class="headerlink" title="單列縮放"></a>單列縮放</h2><p>將一列乘上一個常數。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 單列縮放</span></span><br><span class="line"><span class="comment"> * 輸入矩陣 A 將第 a 列乘上 scalar</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> scalar = <span class="function"><span class="keyword">function</span>(<span class="params">A, a, scalar</span>) </span>&#123;</span><br><span class="line">  A[a] = A[a].map(<span class="function"><span class="keyword">function</span>(<span class="params">v, k</span>) </span>&#123;        <span class="comment">// 將第 a 列變化</span></span><br><span class="line">    <span class="keyword">return</span> v * scalar;                    <span class="comment">// 將元素乘上 scalar</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="消去法"><a href="#消去法" class="headerlink" title="消去法"></a>消去法</h1><p>通過剛剛寫的副程式，可以使消去法變得更容易完成，<br>但考慮到一些情形，必須要在撰寫一些函數。</p>
-<h2 id="取得軸"><a href="#取得軸" class="headerlink" title="取得軸"></a>取得軸</h2><p>取得矩陣 A 的從第 k 列開始的軸。<br>考慮到如果當前軸那個位置的元素為零，這個函數可以幫我們找到可以交換的列。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 取得軸</span></span><br><span class="line"><span class="comment"> * 輸入矩陣 A 及第 k 列</span></span><br><span class="line"><span class="comment"> * 建立一個 row(A) - k 長度的陣列</span></span><br><span class="line"><span class="comment"> * 陣列元素值 e 為第 k 列開始第 e 行元素不為零</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> findPivots = <span class="function"><span class="keyword">function</span>(<span class="params">A, k</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;</span><br><span class="line">    length: (A.length - k)                        <span class="comment">// 建立長度為 row(A) - k 的陣列</span></span><br><span class="line">  &#125;, <span class="function"><span class="keyword">function</span>(<span class="params">e, i</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; A[k + i].length; j++) &#123;   <span class="comment">// 遍歷 A 第 k + i 列的每個元素</span></span><br><span class="line">      <span class="keyword">if</span> (A[k + i][j] != <span class="number">0</span>) &#123;                     <span class="comment">// 如果 A 第 k + i 列的第 j 個元素不為零</span></span><br><span class="line">        <span class="keyword">return</span> j;                                 <span class="comment">// 返回 j</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> A[<span class="number">0</span>].length;                           <span class="comment">// 第 k + i 列的所有元素都為零返回行的數量</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>這個函數是之後消去法的關鍵，也是最難理解的部分。<br>為幫助理解可以看一個例子：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> A = [[ <span class="number">0</span>, <span class="number">-2</span>,  <span class="number">4</span>,  <span class="number">7</span>],</span><br><span class="line">         [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">5</span>,  <span class="number">8</span>],</span><br><span class="line">         [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>],</span><br><span class="line">         [ <span class="number">3</span>, <span class="number">-3</span>,  <span class="number">6</span>,  <span class="number">9</span>]]</span><br><span class="line"></span><br><span class="line">findPivots(A, <span class="number">0</span>);   <span class="comment">// [1, 2, 4, 0]</span></span><br><span class="line">findPivots(A, <span class="number">1</span>);   <span class="comment">// [4, 2, 0]</span></span><br><span class="line">findPivots(A, <span class="number">2</span>);   <span class="comment">// [4, 0]</span></span><br><span class="line">findPivots(A, <span class="number">3</span>);   <span class="comment">// [0]</span></span><br></pre></td></tr></table></figure>
-<p>之所以有這個函數，考慮如果第 k 列的軸為零，<br>只要透過這個函數取得從第 k 列開始的軸，找到陣列中最小值交換就好。</p>
-<p>考慮剛才的例子：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">0</span>, <span class="number">-2</span>,  <span class="number">4</span>,  <span class="number">7</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">5</span>,  <span class="number">8</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>],</span><br><span class="line"> [ <span class="number">3</span>, <span class="number">-3</span>,  <span class="number">6</span>,  <span class="number">9</span>]]</span><br></pre></td></tr></table></figure>
-<p>其中第 0 列的軸位置為零，故計算第 0 列開始的軸位置為 [1, 2, 4, 0]<br>最小值為 0 註標為 3 則交換第 0 列與第 3 列。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">3</span>, <span class="number">-3</span>,  <span class="number">6</span>,  <span class="number">9</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">5</span>,  <span class="number">8</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>],</span><br><span class="line"> [ <span class="number">0</span>, <span class="number">-2</span>,  <span class="number">4</span>,  <span class="number">7</span>]]</span><br></pre></td></tr></table></figure>
-<p>同樣的，再換一次為：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[[ <span class="number">3</span>, <span class="number">-3</span>,  <span class="number">6</span>,  <span class="number">9</span>],</span><br><span class="line"> [ <span class="number">0</span>, <span class="number">-2</span>,  <span class="number">4</span>,  <span class="number">7</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>],</span><br><span class="line"> [ <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">5</span>,  <span class="number">8</span>]]</span><br></pre></td></tr></table></figure>
-<h2 id="最小值註標"><a href="#最小值註標" class="headerlink" title="最小值註標"></a>最小值註標</h2><p>取得最小值註標是個簡單的功能。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 取得陣列最小值的註標</span></span><br><span class="line"><span class="comment"> * 輸入陣列 arr 最小值為 arr[i] 回傳 i</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> minIndex = <span class="function"><span class="keyword">function</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> index = <span class="number">0</span>;                          <span class="comment">// 假設最小值註標為 0</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;   <span class="comment">// 遍歷陣列</span></span><br><span class="line">    <span class="keyword">if</span>(arr[i] &lt; arr[index]) &#123;             <span class="comment">// 如果值更小</span></span><br><span class="line">      index = i;                          <span class="comment">// 改變最小值註標</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> index;                           <span class="comment">// 回傳最小值註標</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="高斯部分"><a href="#高斯部分" class="headerlink" title="高斯部分"></a>高斯部分</h2><p>消去法的這個部分主要是將下三角的元素變為零，<br>即使矩陣 A 變成上三角矩陣。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 高斯消去法</span></span><br><span class="line"><span class="comment"> * 輸入增廣矩陣 A 使之變成上三角矩陣</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> Gauss = <span class="function"><span class="keyword">function</span>(<span class="params">A</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> m = A.length;                               <span class="comment">// A 有 m 個列</span></span><br><span class="line">  <span class="keyword">let</span> n = A[<span class="number">0</span>].length;                            <span class="comment">// A 有 n 個行</span></span><br><span class="line">  <span class="keyword">let</span> r = <span class="built_in">Math</span>.min(m, n);                         <span class="comment">// A 最大會有 r 個軸</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;                   <span class="comment">// 對第 i 個列操作</span></span><br><span class="line">    <span class="keyword">let</span> pivots = findPivots(A, i);                <span class="comment">// 計算從第 i 列開始的軸位置</span></span><br><span class="line">    <span class="keyword">let</span> p = &#123;                                     <span class="comment">// 建立目前軸 p 的位置</span></span><br><span class="line">      i: <span class="number">0</span>,</span><br><span class="line">      j: <span class="number">0</span></span><br><span class="line">    &#125;;</span><br><span class="line">    p.i = minIndex(pivots);                       <span class="comment">// 取得最小軸位置的列</span></span><br><span class="line">    p.j = pivots[p.i];                            <span class="comment">// 取得最小軸位置</span></span><br><span class="line">    <span class="keyword">if</span> (p.j == n) &#123;                               <span class="comment">// p.j 為 n 即整列是零</span></span><br><span class="line">      <span class="keyword">return</span>;                                     <span class="comment">// 已經不能再做下去了</span></span><br><span class="line">    &#125;</span><br><span class="line">    exchange(A, i, i + p.i);                      <span class="comment">// 交換最小軸位置的列到本列</span></span><br><span class="line">    scalar(A, i, <span class="number">1</span> / A[i][p.j]);                  <span class="comment">// 縮放本列的大小使軸為 1</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>; j &lt; m; j++) &#123;             <span class="comment">// 遍歷軸下面的列</span></span><br><span class="line">      addition(A, i, j, -A[j][p.j] / A[i][p.j]);  <span class="comment">// 將其變為 0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="喬登部分"><a href="#喬登部分" class="headerlink" title="喬登部分"></a>喬登部分</h2><p>消去法的這個部分是透過代入法，<br>使矩陣 A 只有對角線上的元素有值（且為 1）。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 代入法</span></span><br><span class="line"><span class="comment"> * 重複代入使軸上方元素為零</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> Jordan = <span class="function"><span class="keyword">function</span>(<span class="params">A</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> m = A.length;                               <span class="comment">// A 有 m 個列</span></span><br><span class="line">  <span class="keyword">let</span> n = A[<span class="number">0</span>].length;                            <span class="comment">// A 有 n 個行</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = m - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;              <span class="comment">// 對第 i 個列操作</span></span><br><span class="line">    <span class="keyword">let</span> pivots = findPivots(A, i);                <span class="comment">// 計算從第 i 列開始的軸位置</span></span><br><span class="line">    <span class="keyword">let</span> p = &#123;                                     <span class="comment">// 建立目前軸 p 的位置</span></span><br><span class="line">      i: <span class="literal">null</span>,</span><br><span class="line">      j: pivots[<span class="number">0</span>]</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">if</span>(p.j == n) &#123;                                <span class="comment">// p.j 為 n 即整列是零</span></span><br><span class="line">      <span class="keyword">continue</span>;                                   <span class="comment">// 跳過這個列</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--) &#123;            <span class="comment">// 遍歷軸上面的列</span></span><br><span class="line">      addition(A, i, j, -A[j][p.j] / A[i][p.j]);  <span class="comment">// 將其變為 0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="除錯技巧"><a href="#除錯技巧" class="headerlink" title="除錯技巧"></a>除錯技巧</h1><p>這裡整理一些除錯的技巧。</p>
-<h2 id="自動測資"><a href="#自動測資" class="headerlink" title="自動測資"></a>自動測資</h2><p>人工設定測資可能也可以完成，<br>但如果能自動生成測資的話，就可以做比較大量的測試。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 產生測資矩陣</span></span><br><span class="line"><span class="comment"> * 建立大小為 (m, n) 的矩陣 M 及大小為 (m, 1) 的列向量 b</span></span><br><span class="line"><span class="comment"> * 組合出元素值 [a, b] 整數的增廣矩陣 A</span></span><br><span class="line"><span class="comment"> * 其中 m 與 n 為 [4, 7]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> generateMatrix = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> v = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;                                <span class="comment">// 取得述職的函數</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (b - a)) + a;   <span class="comment">// 數值為 [a, b]</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">let</span> m = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">3</span>) + <span class="number">4</span>;          <span class="comment">// 取得 m = [4, 7]</span></span><br><span class="line">  <span class="keyword">let</span> n = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">3</span>) + <span class="number">4</span>;          <span class="comment">// 取得 n = [4, 7]</span></span><br><span class="line">  <span class="keyword">let</span> M = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: m&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;        <span class="comment">// 建立矩陣 M</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: n&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> v();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">let</span> b = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: m&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;        <span class="comment">// 建立列向量 b</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">1</span>&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> v();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">  A = augmented(M, b);                                <span class="comment">// 組合出增廣矩陣 A</span></span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">Math</span>.random() &gt; <span class="number">0.5</span>) &#123;                           <span class="comment">// 是否建立空列</span></span><br><span class="line">    scalar(A, <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * m), <span class="number">0</span>);      <span class="comment">// 使隨機一列元素為 0</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">Math</span>.random() &gt; <span class="number">0.5</span>) &#123;                           <span class="comment">// 是否建立相同列</span></span><br><span class="line">    <span class="keyword">let</span> z = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * m);            <span class="comment">// 使隨機一列 z 等於另一列</span></span><br><span class="line">    scalar(A, z, <span class="number">0</span>);                                  <span class="comment">// 先使 z 列變成 0</span></span><br><span class="line">    addition(A, <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * m), z, <span class="number">1</span>); <span class="comment">// 隨機找一列加到 z 列</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> A;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="印出矩陣"><a href="#印出矩陣" class="headerlink" title="印出矩陣"></a>印出矩陣</h2><p>陣列在 JavaScript 中屬於參考的變數，<br>意思是，如果寫的方法為：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="built_in">console</span>.log(A);</span><br><span class="line"><span class="comment">/* 更改 A 矩陣（陣列） */</span></span><br><span class="line"><span class="built_in">console</span>.log(A);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>則兩個輸出會完全一樣。<br>為了正常印出矩陣，可以建立矩陣的副本：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="built_in">console</span>.log(A.slice());</span><br><span class="line"><span class="comment">/* 更改 A 矩陣（陣列） */</span></span><br><span class="line"><span class="built_in">console</span>.log(A.slice());</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="460px" src="//jsfiddle.net/6j4ru96n/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
-]]></content>
-      <categories>
-        <category>線性代數</category>
       </categories>
   </entry>
   <entry>

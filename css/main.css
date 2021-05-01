@@ -1208,7 +1208,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #827341;
+  background: #ff08ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1358,7 +1358,7 @@ pre .javascript .function {
   white-space: nowrap;
 }
 .post-toc .nav .nav-child {
-  display: none;
+  display: block;
 }
 .post-toc .nav .active > .nav-child {
   display: block;
@@ -2716,6 +2716,9 @@ mjx-container + br {
   }
 }
 code {
-  background: #577080;
-  color: #eee;
+  background: #c3dae8;
+  color: #222;
+}
+figure.highlight {
+  font-size: larger;
 }

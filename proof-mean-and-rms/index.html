@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="羊羽手札">
 <meta property="og:description" content="本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。但是後來想了想，作為私人筆記留下來了。">
 <meta property="og:locale" content="zh-TW">
-<meta property="og:updated_time" content="2021-05-01T04:23:22.147Z">
+<meta property="og:updated_time" content="2021-05-01T06:01:32.931Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="平均值與有效值證明">
 <meta name="twitter:description" content="本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。但是後來想了想，作為私人筆記留下來了。">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2021-05-01 04:23:22" itemprop="dateModified" datetime="2021-05-01T04:23:22Z">2021-05-01</time>
+                <time title="修改時間：2021-05-01 06:01:32" itemprop="dateModified" datetime="2021-05-01T06:01:32Z">2021-05-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -249,6 +249,9 @@
 <p>正弦波的情況：  </p>
 <p>$$<br>v(t) = V_{m}sin(\omega \cdot t+\theta)<br>$$</p>
 <p>其中 $V_{m}$ 為峰值（最大值）也就是 $V_{peak}$ 的意思，<br>除此之外，在 $sin$ 函數內的 $\omega$ 是角頻率（$\omega = \frac{2\pi}{T}$）。<br>最後 $\theta$ 是相位差。</p>
+<div class="note info">
+            <p>參考圖形：<a href="https://www.desmos.com/calculator/xjy2v7yge7" target="_blank" rel="noopener">https://www.desmos.com/calculator/xjy2v7yge7</a></p>
+          </div>
 <h1 id="平均值"><a href="#平均值" class="headerlink" title="平均值"></a>平均值</h1><p>先來看比較簡易的平均值，平均值簡單的說就是取平均。<br>雖然聽起來像是廢話，畢竟正弦曲線誰沒看過？積分取個平均不就寫個 $0$ 而已嗎？<br>別忘了，正弦波在整流之後，它只剩下半波、或是全波。<br>也就是說，我們考慮的平均值，只要考量半波整流、或全波整流之後的就好。</p>
 <h2 id="半波整流"><a href="#半波整流" class="headerlink" title="半波整流"></a>半波整流</h2><p>對於半波整流，由於截去 $sin$ 函數的負半周。<br>我們直接算它正半周（函數週期的一半）有多少面積、再除以它的週期 $T$ 就好。</p>
 <p>$$<br>(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T<br>$$</p>
@@ -261,6 +264,9 @@
 <p>對 $sin(t)$ 取反導數，準備結束這個積分</p>
 <p>$$<br>\begin{align}<br>&amp; V_{av} = (V_{m} (-cos(t))\mid_{0}^{\pi}) / 2\pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-cos(\pi) + cos(0))) / 2\pi \nonumber\\<br>&amp; V_{av} = (V_{m} (-(-1) + 1)) / 2\pi \nonumber\\<br>&amp; V_{av} = (V_{m} (1 + 1)) / 2\pi \nonumber\\<br>&amp; V_{av} = 2V_{m} / 2\pi \nonumber\\<br>&amp; V_{av} = V_{m} / \pi \nonumber\\<br>\end{align}<br>$$</p>
 <p>得證半波整流的正弦波平均值為 $V_{m} / \pi$</p>
+<div class="note info">
+            <p>參考圖形：<a href="https://www.desmos.com/calculator/je1ka7naxl" target="_blank" rel="noopener">https://www.desmos.com/calculator/je1ka7naxl</a></p>
+          </div>
 <h2 id="全波整流"><a href="#全波整流" class="headerlink" title="全波整流"></a>全波整流</h2><p>全波整流跟半波整流很像，基本上換湯不換藥。<br>直接算它正半周（函數週期的一半）有多少面積，並予以雙倍（負半週被轉正），<br>再除以它的週期 $T$ 就好。</p>
 <p>$$<br>2(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T<br>$$</p>
 <p>正弦波全部的週期 $T = 2\pi$ </p>
@@ -270,6 +276,9 @@
 <p>常數 $V_{m}$ 提到外面，順便把 $2$ 常數約掉</p>
 <p>$$<br>\begin{align}<br>&amp; V_{av} = (V_{m} \int_{0}^{\pi} sin(t) \mathrm{d}t) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-cos(t))\mid_{0}^{\pi}) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-cos(\pi) + cos(0))) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-(-1) + 1)) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (1 + 1)) / \pi \nonumber \\<br>&amp; V_{av} = 2V_{m} / \pi \nonumber \\<br>&amp; V_{av} = 2V_{m} / \pi \nonumber \\<br>\end{align}<br>$$</p>
 <p>得證全波整流的正弦波平均值為 $2V_{m} / \pi$</p>
+<div class="note info">
+            <p>參考圖形：<a href="https://www.desmos.com/calculator/fnaaqr3fom" target="_blank" rel="noopener">https://www.desmos.com/calculator/fnaaqr3fom</a></p>
+          </div>
 <h1 id="有效值"><a href="#有效值" class="headerlink" title="有效值"></a>有效值</h1><p>有效值比較機車，不過也沒啥困難的，<br>唯一要注意的是，它會用到三角函數的半角公式。<br>有效值又名「均方根」值，顧名思義：先開方平均、再取根號。  </p>
 <p>對於連續函數 $f(x)$ 在區間 $[a, b]$ 來說：</p>
 <p>$$<br>f(x) = \sqrt{\frac{1}{b - a}\int_{a}^{b} f(x)^2  \mathrm{d}x}<br>$$</p>
@@ -290,8 +299,14 @@
 <p>當中 $sin(2\pi) = 0$ 直接拿掉</p>
 <p>$$<br>\begin{align}<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi} (\pi - 0)} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)(\pi)}{4\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)}{4}} \nonumber \\<br>&amp; V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{4}} \nonumber \\<br>&amp; V_{rms} = \frac{V_{m}}{2}  \nonumber \\<br>\end{align}<br>$$</p>
 <p>半波整流的有效值，是最大值（峰值）的一半。</p>
+<div class="note info">
+            <p>參考圖形：<a href="https://www.desmos.com/calculator/qfo1snucty" target="_blank" rel="noopener">https://www.desmos.com/calculator/qfo1snucty</a></p>
+          </div>
 <h2 id="全波整流-1"><a href="#全波整流-1" class="headerlink" title="全波整流"></a>全波整流</h2><p>在積分那邊，取個雙倍而已。</p>
 <p>$$<br>\begin{align}<br>&amp; V_{rms} = \sqrt{\frac{1}{2\pi} 2\int_{0}^{\pi} v(t)^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{1}{\pi}\int_{0}^{\pi} (V_{m}sin(\omega \cdot t+\theta))^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{1}{\pi}\int_{0}^{\pi} (V_{m}sin(t))^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{\pi}\int_{0}^{\pi} sin(t)^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{\pi}\int_{0}^{\pi} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi}\int_{0}^{\pi} 1 - cos(2x) \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (x - \frac{1}{2}sin(2x))\mid_{0}^{\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (\pi - \frac{1}{2}sin(2\pi)) - (0 - \frac{1}{2}sin(0))} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (\pi - \frac{1}{2}sin(2\pi)) - (0 - 0)} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (\pi - 0)} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)(\pi)}{2\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)}{2}} \nonumber \\<br>&amp; V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{2}} \nonumber \\<br>&amp; V_{rms} = \frac{V_{m}}{\sqrt{2}} \nonumber \\<br>\end{align}<br>$$</p>
+<div class="note info">
+            <p>參考圖形：<a href="https://www.desmos.com/calculator/bmnutv8k7m" target="_blank" rel="noopener">https://www.desmos.com/calculator/bmnutv8k7m</a></p>
+          </div>
 
     </div>
 
@@ -307,12 +322,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/k-mean-algorithm/" rel="prev" title="K均值算法 K-mean Algorithm">
-      <i class="fa fa-chevron-left"></i> K均值算法 K-mean Algorithm
+    <a href="/pokemon-tdv-sorted-list/" rel="prev" title="寶可夢本傳：三防排名表">
+      <i class="fa fa-chevron-left"></i> 寶可夢本傳：三防排名表
     </a></div>
       <div class="post-nav-item">
-    <a href="/apriori-algorithm/" rel="next" title="先驗算法 Apriori Algorithm">
-      先驗算法 Apriori Algorithm <i class="fa fa-chevron-right"></i>
+    <a href="/k-mean-algorithm/" rel="next" title="K均值算法 K-mean Algorithm">
+      K均值算法 K-mean Algorithm <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

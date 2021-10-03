@@ -21,32 +21,33 @@
     var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="羊羽的個人部落格">
+  <meta name="description" content="這篇最早是 Evernote 的筆記，整理之後就放到部落格這裡來了；忘記最早是為了要做什麼，總之就是利用牛頓法計算開根號函數的作法。">
 <meta name="keywords" content="技術, 獨立遊戲">
-<meta property="og:type" content="website">
-<meta property="og:title" content="羊羽手札">
-<meta property="og:url" content="https://www.tinytsunami.info/page/5/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="牛頓法計算 sqrt 函數">
+<meta property="og:url" content="https://www.tinytsunami.info/newton-method-sqrt/index.html">
 <meta property="og:site_name" content="羊羽手札">
-<meta property="og:description" content="羊羽的個人部落格">
+<meta property="og:description" content="這篇最早是 Evernote 的筆記，整理之後就放到部落格這裡來了；忘記最早是為了要做什麼，總之就是利用牛頓法計算開根號函數的作法。">
 <meta property="og:locale" content="zh-TW">
+<meta property="og:updated_time" content="2021-10-03T06:06:27.636Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="羊羽手札">
-<meta name="twitter:description" content="羊羽的個人部落格">
+<meta name="twitter:title" content="牛頓法計算 sqrt 函數">
+<meta name="twitter:description" content="這篇最早是 Evernote 的筆記，整理之後就放到部落格這裡來了；忘記最早是為了要做什麼，總之就是利用牛頓法計算開根號函數的作法。">
 
-<link rel="canonical" href="https://www.tinytsunami.info/page/5/">
+<link rel="canonical" href="https://www.tinytsunami.info/newton-method-sqrt/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-TW'
   };
 </script>
 
-  <title>羊羽手札</title>
+  <title>牛頓法計算 sqrt 函數 | 羊羽手札</title>
   
 
 
@@ -183,13 +184,14 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/mouse-maze/">
+    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/newton-method-sqrt/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head.jpg">
@@ -201,10 +203,9 @@
       <meta itemprop="name" content="羊羽手札">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/mouse-maze/" class="post-title-link" itemprop="url">老鼠走迷宮 Mouse Maze</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          牛頓法計算 sqrt 函數
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -212,23 +213,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">發表於</span>
+              
 
-              <time title="創建時間：2016-11-13 00:00:00" itemprop="dateCreated datePublished" datetime="2016-11-13T00:00:00Z">2016-11-13</time>
+              <time title="創建時間：2021-10-03 00:00:00 / 修改時間：06:06:27" itemprop="dateCreated datePublished" datetime="2021-10-03T00:00:00Z">2021-10-03</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/資料結構與演算法/" itemprop="url" rel="index"><span itemprop="name">資料結構與演算法</span></a>
+                  <a href="/categories/程式設計/" itemprop="url" rel="index"><span itemprop="name">程式設計</span></a>
                 </span>
             </span>
 
@@ -243,202 +238,94 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>這是資料結構第三次作業。<br>本篇老鼠走迷宮會大致上分成：「生成迷宮」與「解出迷宮」兩個部分。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/mouse-maze/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <p>這篇最早是 Evernote 的筆記，整理之後就放到部落格這裡來了；<br>忘記最早是為了要做什麼，總之就是利用牛頓法計算開根號函數的作法。</p>
+<a id="more"></a>
+<h1 id="函數化"><a href="#函數化" class="headerlink" title="函數化"></a>函數化</h1><p>當要估計 $\text{sqrt}(a) = \sqrt{a}$ 時，<br>可以先令 $x_k$  為一近似解，即 $x_k \approx \sqrt{a}$。</p>
+<p>接著整理：</p>
+<p>$x^{2}_{k} \approx a$ </p>
+<p>$x^{2}_{k} - a \approx 0$</p>
+<p>將 $x^{2}_{k} - a$ 視為一函數 $f(p) = p^{2} - a$</p>
+<p>令 $p = x_{k}$ 就有 $f(x_{k}) = x_{k}^{2} - a \approx 0$</p>
+<p>則 $x_k$ 恰為函數近似解 $f(x_k) \approx 0$ 之值。</p>
+<h1 id="泰勒展開"><a href="#泰勒展開" class="headerlink" title="泰勒展開"></a>泰勒展開</h1><p>對函數 $f(p)$ 在 $x_{k}$ 處取泰勒展開（Taylor series）有：</p>
+<p>$f(p) = \frac{f(x_{k})}{0!}(p-x_{k})^0  + \frac{f’(x_{k})}{1!}(p-x_{k})^1 + R(p)$</p>
+<p>整理後得：</p>
+<p>$f(p) = f(x_{k}) + f’(x_{k})(p-x_{k}) + R(p)$</p>
+<p>其中 $R(p)$ 為餘項。</p>
+<h1 id="迭代關係"><a href="#迭代關係" class="headerlink" title="迭代關係"></a>迭代關係</h1><p>回憶最早的假設 $x_k \approx \sqrt{a}$；</p>
+<p>我們現在考慮迭代法，即 $x_{k+1}$ 比 $x_{k}$ 的答案更精準：</p>
+<p>$x_{k+1} \approx \sqrt{a}$</p>
+<p>取 $p = x_{k+1}$ 帶入泰勒展開：</p>
+<p>$f(x_{k+1}) = f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k}) + R(x_{k+1})$</p>
+<p>由於是近似解，故捨去餘項 $R(p)$ 有：</p>
+<p>$f(x_{k+1}) \approx f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k})$</p>
+<p>這兩者都可以視做原函數的近似，即 $f(x_k) \approx f(x_{k+1})$ 只是 $f(x_{k+1})$ 更精確。</p>
+<div class="note warning">
+            <p>注意對象目前是 $f(p) = p^{2} - a$ 而 $f(p) \neq \sqrt{p}$</p>
+          </div>
+<p>之前的函數 $f(p) = p^{2} - a$；</p>
+<p>我們現在帶入更精確的 $x_{k+1} \approx \sqrt{a}$ 於是：</p>
+<p>$f(x_{k+1}) = x_{k+1}^{2} - a \approx 0$</p>
+<p>同時，展開式：</p>
+<p>$f(x_{k+1}) \approx f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k})$</p>
+<p>兩式串接可得：</p>
+<p>$f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k}) \approx 0$</p>
+<p>$f’(x_{k})(x_{k+1}-x_{k}) \approx -f(x_{k})$</p>
+<p>$x_{k+1}-x_{k} \approx \frac{-f(x_{k})}{f’(x_{k})}$</p>
+<p>$x_{k+1} \approx \frac{-f(x_{k})}{f’(x_{k})} + x_{k}$</p>
+<p>$x_{k+1} \approx x_{k} - \frac{f(x_{k})}{f’(x_{k})}$</p>
+<p>我們現在找到近似關係了，一旦我們確定 $x_{k}$ 那就可以計算右項來推得 $x_{k+1}$。</p>
+<h1 id="程式解"><a href="#程式解" class="headerlink" title="程式解"></a>程式解</h1><p>函數 $f(x_{k}) = x_k^2 - a$</p>
+<p>一階微分函數 $f’(x_{k}) = 2 \cdot x_k$</p>
+<div class="note info">
+            <p>這裡的 $a$ 為一常數，也是確定的輸入參數值 $\text{sqrt}(a) = \sqrt{a}$</p>
+          </div>
+<p>整個合併整理：</p>
+<p>$x_{k+1} \approx x_{k} - \frac{\displaystyle x_k^2 - a}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle 2 x_{k}^2}{\displaystyle 2 x_k} - \frac{\displaystyle x_k^2 - a}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle 2 x_{k}^2 - (x_k^2 - a)}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle 2 x_{k}^2 - x_k^2 + a}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle x_{k}^2 + a}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle x_{k}^2}{\displaystyle 2} + \frac{\displaystyle a}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle 1}{\displaystyle 2} \left( \displaystyle x_{k}^2 + \frac{\displaystyle a}{\displaystyle x_k} \right)$</p>
+<p>所以說 $\text{sqrt}(a)$ 的值為 $x_{k+1} \approx \frac{1}{2} \left(x_{k}^2 + \frac{a}{x_k} \right)$</p>
+<p>只要先隨便令一個 $x_k$ 為任意值，就透過計算 $x_{k+1}$ 得到更精確地解：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sqrt</span>(<span class="params">a</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">let</span> epsilon = <span class="number">1e-6</span>;        <span class="comment">// 迭代到精準度 1e-6</span></span><br><span class="line">  <span class="keyword">let</span> x0;                    <span class="comment">// x[k]</span></span><br><span class="line">  <span class="keyword">let</span> x1;                    <span class="comment">// x[k+1]</span></span><br><span class="line">  x1 = a;                    <span class="comment">// 隨便猜一個數</span></span><br><span class="line">  <span class="keyword">do</span>&#123;</span><br><span class="line">    x0 = x1;                 <span class="comment">// 讓 k 遞增（x[k] 變成 x[k+1]）</span></span><br><span class="line">    x1 = (x0 + a/x0) / <span class="number">2</span>;    <span class="comment">// 公式 x[k+1] = (1/2)(x[k] + a/x[k])</span></span><br><span class="line">  &#125;<span class="keyword">while</span>(x0 - x1 &gt; epsilon); <span class="comment">// 不夠精準則繼續</span></span><br><span class="line">  <span class="keyword">return</span> x1;                 <span class="comment">// 答案在 x[k+1]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>程式上的一個細節是，初始猜的值跟終止條件有關。</p><p>若初始條件 $x_{k} &gt; \sqrt a$ 則收斂時 $x_{k+1}$ 會比 $x_{k}$ 更小；<br>反之，初始條件 $x_{k} &lt; \sqrt a$ 則收斂時 $x_{k+1}$ 會比 $x_{k}$ 更大。</p><p>考慮 $a \in N$ 則必有 $a \geq \sqrt a$，<br>則初始條件給 $x_{k} = a$ 則必向更小的方向收斂，終止條件就可以避免使用另外的判斷式。</p>
+          </div>
+
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/stack-and-queue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.jpg">
-      <meta itemprop="name" content="Tinytusnami">
-      <meta itemprop="description" content="羊羽的個人部落格">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="羊羽手札">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/stack-and-queue/" class="post-title-link" itemprop="url">堆疊與佇列 Stack and Queue</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2016-11-12 00:00:00" itemprop="dateCreated datePublished" datetime="2016-11-12T00:00:00Z">2016-11-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/資料結構與演算法/" itemprop="url" rel="index"><span itemprop="name">資料結構與演算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文僅為資料結構的筆記。</p>
-<p>對於較高階的語言來說有許多現成的函式庫，<br>儘管如此，還是需要瞭解基本規則。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/stack-and-queue/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://www.tinytsunami.info/magic-square/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.jpg">
-      <meta itemprop="name" content="Tinytusnami">
-      <meta itemprop="description" content="羊羽的個人部落格">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="羊羽手札">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/magic-square/" class="post-title-link" itemprop="url">魔方陣 Magic Square</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2016-10-22 00:00:00" itemprop="dateCreated datePublished" datetime="2016-10-22T00:00:00Z">2016-10-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/資料結構與演算法/" itemprop="url" rel="index"><span itemprop="name">資料結構與演算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>這個是我們資料結構（Data Structure）的第二次作業，<br>本文紀錄了<strong>奇數</strong>、<strong>雙偶數</strong>以及<strong>單偶數</strong>魔方陣（Magic Square）的做法。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/magic-square/#more" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/array/" rel="prev" title="陣列 Array">
+      <i class="fa fa-chevron-left"></i> 陣列 Array
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一頁"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
-  </nav>
 
 
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -485,6 +372,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#函數化"><span class="nav-number">1.</span> <span class="nav-text">函數化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泰勒展開"><span class="nav-number">2.</span> <span class="nav-text">泰勒展開</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#迭代關係"><span class="nav-number">3.</span> <span class="nav-text">迭代關係</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#程式解"><span class="nav-number">4.</span> <span class="nav-text">程式解</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -669,6 +557,25 @@
 
   
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '8b224f954e247f37ca81',
+      clientSecret: '36ffe64406d0cfaa8d1811ebf27c58638876fc8d',
+      repo        : 'tinytsunami.github.io',
+      owner       : 'tinytsunami',
+      admin       : ['tinytsunami'],
+      id          : '8891b03fa76a3e8f17a93720864a1d41',
+        language: 'zh-TW',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>

@@ -222,6 +222,50 @@
       </categories>
   </entry>
   <entry>
+    <title>K均值算法 K-mean Algorithm</title>
+    <url>/k-mean-algorithm/</url>
+    <content><![CDATA[<p>K均值算法（K-mean Algorithm）應該可以說是最簡單的無監督學習算法了，<br>因為很直觀的關係，所以這篇應該蠻短的。<br><a id="more"></a></p>
+<p>讓我們開始吧！</p>
+<h1 id="物以類聚"><a href="#物以類聚" class="headerlink" title="物以類聚"></a>物以類聚</h1><p>想像一下，如果「物以類聚」這件事情為真的話，<br>那麼一筆一筆的資料是不是也有這樣的特性呢？</p>
+<p>$X_{0} \approx X_{1}$</p>
+<p>兩筆資料由於特徵相近，所以映射在高維空間中的距離接近。<br>所以說，這些散布在空間中的點，<br>如果這堆點，每個都有所屬的類別的話。</p>
+<p>很顯然的，那就存在一個類別的中心，<br>而這個類別的中心，我們常稱作「聚類中心」。</p>
+<p>$\mu = \text{聚類中心}$</p>
+<p>越靠近這個聚類中心，代表它越屬於這個類別。</p>
+<h2 id="K個類別"><a href="#K個類別" class="headerlink" title="K個類別"></a>K個類別</h2><p>由於類別不只一個，<br>老實說，如果類別沒有兩個以上，那也不用去分了。<br>我們假定存在 $K$ 個類別的話，就有 $K$ 個聚類中心：</p>
+<p>$\mu_{0}, \mu_{1}, … , \mu_{K}$</p>
+<p>我們可以進一步去定義，<br>這些每個聚類都是集合，可以用來塞資料點：</p>
+<p>$S_{j} = \{ … \}$</p>
+<p>如此一來，聚類中心就有定義了：</p>
+<p>$\mu_{j} = \frac{1}{|S_{j}|}\sum\limits_{x_{i} \in S_{j}} x_{i}$</p>
+<p>聚類中心是「屬於聚類集合的點取平均」而來。</p>
+<h1 id="演算法"><a href="#演算法" class="headerlink" title="演算法"></a>演算法</h1><p>接下來，是演算法的實際做法：</p>
+<ul>
+<li>隨機初始化聚類中心</li>
+<li>計算資料點較接近哪個聚類中心 </li>
+<li>把接近聚類中心的資料點塞進聚類集合</li>
+<li>計算新的聚類中心，代替掉舊的</li>
+<li>重複 2 ～ 5 步驟，直到不再更新為止</li>
+</ul>
+<p>公式的定義：</p>
+<p>$S_{j} = \{ x_{i} : \mid x_{i} - \mu_{j}\mid ^{2} \leq \mid x_{i} - \mu_{p}\mid ^{2} \forall p, 1 &lt; p &lt; K \}$</p>
+<p>具體的作法就是迭代上式。至於這條公式的解釋：</p>
+<p>第 j 個聚類集合，如果符合：<br>「第 i 筆資料與第 j 個聚類中心的距離」小於等於「第 i 筆資料與第 p 個聚類中心的距離」的話，<br>那麼第 i 筆資料就屬於第 j 個聚類集合（對於所有的 p 都要嘗試，至於 p 的範圍是 1 ～ K）</p>
+<p>這是白話文翻譯。不過為了裝得很厲害的樣子，還是寫符號吧..XD<br>換言之，這筆資料是不是屬於這個聚類，就要嘗試看看他跟這個聚類中心的距離是不是小於等於其他聚類中心，<br>如果是則將它擺到這個聚類集合中；反之，則忽略這筆，繼續看下一筆資料。</p>
+<p>值得一提的是，通常情況下一筆資料只會被分配到一個聚類集合。<br>依照這個定義的話，如果 $\mid x_{i} - \mu_{p}\mid ^{2} = |x_{i} - \mu_{q}\mid ^{2}$ 也就是距離一樣的話，<br>那麼資料點 $x_{i}$ 就會被分配到最後一個算的聚類中心。</p>
+<h2 id="形式化"><a href="#形式化" class="headerlink" title="形式化"></a>形式化</h2><ul>
+<li>$\mu_{j} = random$</li>
+<li>$S_{j} = \{ x_{i} : \mid x_{i} - \mu_{j}\mid ^{2} \leq \mid x_{i} - \mu_{p}\mid ^{2} \forall p, 1 &lt; p &lt; K \}$</li>
+<li>$\mu_{j} = \frac{1}{|S_{j}|}\sum\limits_{x_{i} \in S_{j}} x_{i}$</li>
+<li>$\text{Repeat 2~3}$</li>
+</ul>
+<p>以上，就是所有的內容了。來看演示吧！</p>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="530px" src="//jsfiddle.net/kLyn0kut/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>資料結構與演算法</category>
+      </categories>
+  </entry>
+  <entry>
     <title>JavaScript 檔案處理</title>
     <url>/javascript-file-process/</url>
     <content><![CDATA[<p>這篇文章的起因是想到過去寫的 JS Demo 多數沒有保留，<br>好不容易，上次在學校弄人工智慧有保留一份帶有檔案處理的。</p>
@@ -288,47 +332,88 @@
       </categories>
   </entry>
   <entry>
-    <title>K均值算法 K-mean Algorithm</title>
-    <url>/k-mean-algorithm/</url>
-    <content><![CDATA[<p>K均值算法（K-mean Algorithm）應該可以說是最簡單的無監督學習算法了，<br>因為很直觀的關係，所以這篇應該蠻短的。<br><a id="more"></a></p>
-<p>讓我們開始吧！</p>
-<h1 id="物以類聚"><a href="#物以類聚" class="headerlink" title="物以類聚"></a>物以類聚</h1><p>想像一下，如果「物以類聚」這件事情為真的話，<br>那麼一筆一筆的資料是不是也有這樣的特性呢？</p>
-<p>$X_{0} \approx X_{1}$</p>
-<p>兩筆資料由於特徵相近，所以映射在高維空間中的距離接近。<br>所以說，這些散布在空間中的點，<br>如果這堆點，每個都有所屬的類別的話。</p>
-<p>很顯然的，那就存在一個類別的中心，<br>而這個類別的中心，我們常稱作「聚類中心」。</p>
-<p>$\mu = \text{聚類中心}$</p>
-<p>越靠近這個聚類中心，代表它越屬於這個類別。</p>
-<h2 id="K個類別"><a href="#K個類別" class="headerlink" title="K個類別"></a>K個類別</h2><p>由於類別不只一個，<br>老實說，如果類別沒有兩個以上，那也不用去分了。<br>我們假定存在 $K$ 個類別的話，就有 $K$ 個聚類中心：</p>
-<p>$\mu_{0}, \mu_{1}, … , \mu_{K}$</p>
-<p>我們可以進一步去定義，<br>這些每個聚類都是集合，可以用來塞資料點：</p>
-<p>$S_{j} = \{ … \}$</p>
-<p>如此一來，聚類中心就有定義了：</p>
-<p>$\mu_{j} = \frac{1}{|S_{j}|}\sum\limits_{x_{i} \in S_{j}} x_{i}$</p>
-<p>聚類中心是「屬於聚類集合的點取平均」而來。</p>
-<h1 id="演算法"><a href="#演算法" class="headerlink" title="演算法"></a>演算法</h1><p>接下來，是演算法的實際做法：</p>
+    <title>Linux 螢幕解析度問題</title>
+    <url>/linux-screen-display-problem/</url>
+    <content><![CDATA[<p>我當初剛裝 Linux 時，被雙螢幕的問題搞了許久，<br>這篇主要是做個解決方案的筆記，以免之後又碰到相同的問題。</p>
+<p>本解決方案來自網路上的資料，我將把參考資料陳列於下方。<br><a id="more"></a></p>
+<div class="note info">
+            <p>本篇的 Linux 版本為 <a href="https://linuxmint.com/" target="_blank" rel="noopener">Linux Mint</a><br>如果你的不是 Linux Mint 的話，解決方案可能大同小異，請參考其他資料處理。</p>
+          </div>
+<h1 id="解析度問題"><a href="#解析度問題" class="headerlink" title="解析度問題"></a>解析度問題</h1><p>有時候安裝好 Linux 螢幕並不會自動抓到適當的解析度，<br>筆者的雙螢幕中，發生問題的螢幕是電視螢幕，具體參考圖 1。</p>
+<p>我的猜測是，螢幕本身不是電腦螢幕的話，可能發生機會會大得多。</p>
+<p><img src="https://i.imgur.com/w7Kga59.png" alt="圖 1、Linux Mint 螢幕設定畫面"></p>
+<p>如上圖所示，問題螢幕為 DVI-I 輸出，正常情況應為 1920x1080 解析度；<br>但由於某種原因，最高只到 1024x768 解析度。</p>
+<h1 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案"></a>解決方案</h1><p>我們會利用 cvt 及 xrandr 指令解決這個問題：</p>
 <ul>
-<li>隨機初始化聚類中心</li>
-<li>計算資料點較接近哪個聚類中心 </li>
-<li>把接近聚類中心的資料點塞進聚類集合</li>
-<li>計算新的聚類中心，代替掉舊的</li>
-<li>重複 2 ～ 5 步驟，直到不再更新為止</li>
+<li>利用 xrandr 找出問題螢幕的代號</li>
+<li>透過 cvt 生成 modeline</li>
+<li>透過 xrandr 以及 modeline 建立解析度</li>
+<li>透過 xrandr 增加解析度到螢幕代號</li>
+<li>設定螢幕為新解析度</li>
 </ul>
-<p>公式的定義：</p>
-<p>$S_{j} = \{ x_{i} : \mid x_{i} - \mu_{j}\mid ^{2} \leq \mid x_{i} - \mu_{p}\mid ^{2} \forall p, 1 &lt; p &lt; K \}$</p>
-<p>具體的作法就是迭代上式。至於這條公式的解釋：</p>
-<p>第 j 個聚類集合，如果符合：<br>「第 i 筆資料與第 j 個聚類中心的距離」小於等於「第 i 筆資料與第 p 個聚類中心的距離」的話，<br>那麼第 i 筆資料就屬於第 j 個聚類集合（對於所有的 p 都要嘗試，至於 p 的範圍是 1 ～ K）</p>
-<p>這是白話文翻譯。不過為了裝得很厲害的樣子，還是寫符號吧..XD<br>換言之，這筆資料是不是屬於這個聚類，就要嘗試看看他跟這個聚類中心的距離是不是小於等於其他聚類中心，<br>如果是則將它擺到這個聚類集合中；反之，則忽略這筆，繼續看下一筆資料。</p>
-<p>值得一提的是，通常情況下一筆資料只會被分配到一個聚類集合。<br>依照這個定義的話，如果 $\mid x_{i} - \mu_{p}\mid ^{2} = |x_{i} - \mu_{q}\mid ^{2}$ 也就是距離一樣的話，<br>那麼資料點 $x_{i}$ 就會被分配到最後一個算的聚類中心。</p>
-<h2 id="形式化"><a href="#形式化" class="headerlink" title="形式化"></a>形式化</h2><ul>
-<li>$\mu_{j} = random$</li>
-<li>$S_{j} = \{ x_{i} : \mid x_{i} - \mu_{j}\mid ^{2} \leq \mid x_{i} - \mu_{p}\mid ^{2} \forall p, 1 &lt; p &lt; K \}$</li>
-<li>$\mu_{j} = \frac{1}{|S_{j}|}\sum\limits_{x_{i} \in S_{j}} x_{i}$</li>
-<li>$\text{Repeat 2~3}$</li>
-</ul>
-<p>以上，就是所有的內容了。來看演示吧！</p>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="530px" src="//jsfiddle.net/kLyn0kut/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr</span><br><span class="line">Screen 0: minimum 320 x 200, current 2944 x 1080, maximum 16384 x 16384</span><br><span class="line">DVI-I-1 connected 1024x768+0+0 (normal left inverted right x axis y axis) 0mm x 0mm</span><br><span class="line">   1024x768      60.00* </span><br><span class="line">   800x600       60.32    56.25  </span><br><span class="line">   848x480       60.00  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">HDMI-1 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">VGA-1 connected primary 1920x1080+1024+0 (normal left inverted right x axis y axis) 477mm x 268mm</span><br><span class="line">   1920x1080     60.00*+</span><br><span class="line">   1680x1050     59.95  </span><br><span class="line">   1600x900      60.00  </span><br><span class="line">   1280x1024     60.02  </span><br><span class="line">   1280x800      59.81  </span><br><span class="line">   1280x720      60.00  </span><br><span class="line">   1024x768      60.00  </span><br><span class="line">   800x600       60.32  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ cvt 1920 1080 60</span><br><span class="line"><span class="comment"># 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz</span></span><br><span class="line">Modeline <span class="string">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --newmode <span class="string">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --addmode DVI-I-1 <span class="string">"1920x1080_60.00"</span></span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
+<p>這個方法是暫時的，完成這些步驟後，要做一些設定來保存這個配置，<br>我的方案是使用開機執行程式（.sh）開機時自動完成上面那些操作：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xrandr --newmode <span class="string">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">xrandr --addmode DVI-I-1 1920x1080_60.00</span><br><span class="line">xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
+<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574" target="_blank" rel="noopener">https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574</a><br><a href="https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution" target="_blank" rel="noopener">https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution</a></p>
+]]></content>
       <categories>
-        <category>資料結構與演算法</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>三角函數的微分</title>
+    <url>/differential-trigonometric-functions/</url>
+    <content><![CDATA[<p>總之一個因緣際會複習微積分，所以寫下這篇文章。<br>本篇文章部分要仰賴一些先備知識：<br><a id="more"></a></p>
+<p>$\displaystyle{ \lim_{\theta \to 0} \frac{sin(\theta)}{\theta} = 1 }$</p>
+<p>（證明可以參考：<a href="http://mathtrain.jp/sinc\" target="_blank" rel="noopener">sinx/xについて覚えておくべき２つのこと</a>）</p>
+<p>題外話，在 tutor 板上出現過為什麼不可以用羅必達法則（l’H&ocirc;pital’s Rule）證明的問題。<br>有興趣可以自己前去觀看：<a href="https://www.ptt.cc/man/tutor/DFC5/D338/D20E/M.1174228073.A.6B3.html" target="_blank" rel="noopener">[討論] limsinx/x＝1 when x&rarr;0</a></p>
+<p>另一個部分是：</p>
+<p>$\displaystyle{ \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} = 0 }$</p>
+<p>推倒如下。</p>
+<p>$\displaystyle{ \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} = \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} \cdot \frac{cos(\theta) + 1}{cos(\theta) + 1}}$</p>
+<p>$\displaystyle{ = \lim_{\theta&nbsp;\to 0} \frac{cos^{2}(\theta) - 1^{2}}{\theta [cos(\theta) + 1]} = \lim_{\theta&nbsp;\to 0} \frac{-sin^{2}(\theta)}{\theta [cos(\theta) + 1]}}$</p>
+<p>$\displaystyle{ = - \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{\theta}\frac{sin(\theta)}{cos(\theta) + 1} = - \{ \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{\theta} \cdot \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{cos(\theta) + 1} \} }$</p>
+<p>$\displaystyle{ = - \{ 1&nbsp;\cdot \frac{0}{1 + 1} \} = 0 }$&nbsp;</p>
+<h1 id="sin-x-正弦"><a href="#sin-x-正弦" class="headerlink" title="sin(x) 正弦"></a>sin(x) 正弦</h1><p>利用微分定義推導：</p>
+<p>$\displaystyle{ \frac{d}{dx} sin(x) = \lim_{h \to 0} \frac{sin(x + h) - sin(x)}{h} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)cos(h) + cos(x)sin(h) - sin(x)}{h} \text{（※ 正弦和角公式）} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)cos(h) - sin(x) + cos(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)&nbsp;[cos(h) - 1]}{h} + \lim_{h&nbsp;\to 0} \frac{cos(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ = sin(x) \cdot \lim_{h&nbsp;\to 0} \frac{cos(h) - 1}{h} + cos(x) \cdot&nbsp;\lim_{h&nbsp;\to 0} \frac{sin(h)}{h} }$</p>
+<p>$\displaystyle{ = sin(x) \cdot 0&nbsp;+ cos(x) \cdot 1 = cos(x) }$</p>
+<h1 id="cos-x-餘弦"><a href="#cos-x-餘弦" class="headerlink" title="cos(x) 餘弦"></a>cos(x) 餘弦</h1><p>利用微分定義推導：</p>
+<p>$\displaystyle{ \frac{d}{dx} cos(x) = \lim_{h \to 0} \frac{cos(x + h) - cos(x)}{h} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x)cos(h) - sin(x)sin(h) - cos(x)}{h} \text{（※ 餘弦和角公式）} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x)cos(h) -&nbsp;cos(x) -&nbsp;sin(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x) [cos(h) - 1]}{h} - \lim_{h&nbsp;\to 0}&nbsp;\frac{sin(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ = cos(x) \cdot \lim_{h&nbsp;\to 0} \frac{cos(h) - 1}{h} - sin(x) \cdot&nbsp;\lim_{h&nbsp;\to 0}&nbsp;\frac{sin(h)}{h} }$</p>
+<p>$\displaystyle{ = cos(x) \cdot 0&nbsp;- sin(x) \cdot 1 = - sin(x) }$</p>
+<h1 id="tan-x-正切"><a href="#tan-x-正切" class="headerlink" title="tan(x) 正切"></a>tan(x) 正切</h1><p>由 $tan(x) = \frac{sin(x)}{cos(x)}$ 開始：</p>
+<p>$\frac{d}{dx} tan(x) = \frac{d}{dx} \frac{sin(x)}{cos(x)}$</p>
+<p>$ = \frac{\frac{d}{dx}sin(x) \cdot&nbsp;cos(x) - sin(x) \cdot \frac{d}{dx}cos(x)}{cos^{2}(x)} \text{（※ 微分除法公式）}$</p>
+<p>$ = \frac{cos(x) \cdot&nbsp;cos(x) - sin(x) \cdot [-sin(x)]}{cos^{2}(x)} = \frac{cos^{2}(x) +&nbsp;sin^{2}(x)}{cos^{2}(x)}$</p>
+<p>$ = \frac{1}{cos^{2}(x)} = sec^{2}(x)$</p>
+<p>（※ 使用了 $sin^{2}(x) + cos^{2}(x) = 1$ 這條式子，證明請參考：<a href="https://www.youtube.com/watch?v=91Jxfu4FntM" target="_blank" rel="noopener">sin^2+cos^2=1</a>）</p>
+<h1 id="csc-x-餘割"><a href="#csc-x-餘割" class="headerlink" title="csc(x) 餘割"></a>csc(x) 餘割</h1><p>由 $csc(x) = \frac{1}{sin(x)}$ 開始：</p>
+<p>$\frac{d}{dx} csc(x) = \frac{d}{dx} \frac{1}{sin(x)}$</p>
+<p>$ = \frac{\frac{d}{dx} 1 \cdot sin(x) - 1 \cdot \frac{d}{dx} sin(x)}{sin^{2}(x)} \text{（※ 微分除法公式）}$</p>
+<p>$ = \frac{0 \cdot sin(x) - 1 \cdot cos(x)}{sin^{2}(x)} = - \frac{cos(x)}{sin^{2}(x)}$</p>
+<p>$ = - \frac{cos(x)}{sin(x)} \cdot \frac{1}{sin(x)} = - cot(x) csc(x)$</p>
+<h1 id="sec-x-正割"><a href="#sec-x-正割" class="headerlink" title="sec(x) 正割"></a>sec(x) 正割</h1><p>由 $sec(x) = \frac{1}{cos(x)}$ 開始：</p>
+<p>$\frac{d}{dx} sec(x) = \frac{d}{dx} \frac{1}{cos(x)}$</p>
+<p>$ = \frac{\frac{d}{dx} 1 \cdot cos(x) - 1 \cdot \frac{d}{dx} cos(x)}{cos^{2}(x)} \text{（※ 微分除法公式）}$</p>
+<p>$ = \frac{0 \cdot cos(x) - 1 \cdot [-sin(x)] }{cos^{2}(x)} = \frac{sin(x)}{cos^{2}(x)}$</p>
+<p>$ = \frac{sin(x)}{cos(x)} \cdot \frac{1}{cos(x)} = tan(x) sec(x)$</p>
+<h1 id="cot-x-餘切"><a href="#cot-x-餘切" class="headerlink" title="cot(x) 餘切"></a>cot(x) 餘切</h1><p>由 $cot(x) = \frac{cos(x)}{sin(x)}$ 開始：</p>
+<p>$\frac{d}{dx} cot(x) = \frac{d}{dx} \frac{cos(x)}{sin(x)}$</p>
+<p>$ = \frac{\frac{d}{dx}cos(x) \cdot sin(x) - cos(x) \cdot \frac{d}{dx} sin(x)}{sin^{2}(x)} \text{（※ 微分除法公式）}$</p>
+<p>$ = \frac{[-sin(x)] \cdot sin(x) - cos(x) \cdot cos(x)}{sin^{2}(x)} = \frac{ - sin^{2}(x) - cos^{2}(x)}{sin^{2}(x)}$</p>
+<p>$ = - \{\frac{sin^{2}(x) +&nbsp;cos^{2}(x)}{sin^{2}(x)}\}&nbsp;= - \frac{1}{sin^{2}(x)} = -csc^{2}(x)$</p>
+<p>（※ 跟 $tan(x)$ 一樣使用了 $sin^{2}(x) + cos^{2}(x) = 1$ 這條式子，證明請參考上面的資料。）</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>可以發現一些手法，除了 $sin(x)$ 以及 $cos(x)$ 要從定義來之外，<br>其他的有兩兩對應的步驟，像是 $tan(x)$ 跟 $cot(x)$ 就很類似、而 $csc(x)$ 跟 $sec(x)$ 也很相像。</p>
+]]></content>
+      <categories>
+        <category>微積分</category>
       </categories>
   </entry>
   <entry>
@@ -740,108 +825,175 @@
       </categories>
   </entry>
   <entry>
-    <title>三角函數的微分</title>
-    <url>/differential-trigonometric-functions/</url>
-    <content><![CDATA[<p>總之一個因緣際會複習微積分，所以寫下這篇文章。<br>本篇文章部分要仰賴一些先備知識：<br><a id="more"></a></p>
-<p>$\displaystyle{ \lim_{\theta \to 0} \frac{sin(\theta)}{\theta} = 1 }$</p>
-<p>（證明可以參考：<a href="http://mathtrain.jp/sinc\" target="_blank" rel="noopener">sinx/xについて覚えておくべき２つのこと</a>）</p>
-<p>題外話，在 tutor 板上出現過為什麼不可以用羅必達法則（l’H&ocirc;pital’s Rule）證明的問題。<br>有興趣可以自己前去觀看：<a href="https://www.ptt.cc/man/tutor/DFC5/D338/D20E/M.1174228073.A.6B3.html" target="_blank" rel="noopener">[討論] limsinx/x＝1 when x&rarr;0</a></p>
-<p>另一個部分是：</p>
-<p>$\displaystyle{ \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} = 0 }$</p>
-<p>推倒如下。</p>
-<p>$\displaystyle{ \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} = \lim_{\theta&nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} \cdot \frac{cos(\theta) + 1}{cos(\theta) + 1}}$</p>
-<p>$\displaystyle{ = \lim_{\theta&nbsp;\to 0} \frac{cos^{2}(\theta) - 1^{2}}{\theta [cos(\theta) + 1]} = \lim_{\theta&nbsp;\to 0} \frac{-sin^{2}(\theta)}{\theta [cos(\theta) + 1]}}$</p>
-<p>$\displaystyle{ = - \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{\theta}\frac{sin(\theta)}{cos(\theta) + 1} = - \{ \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{\theta} \cdot \lim_{\theta&nbsp;\to 0} \frac{sin(\theta)}{cos(\theta) + 1} \} }$</p>
-<p>$\displaystyle{ = - \{ 1&nbsp;\cdot \frac{0}{1 + 1} \} = 0 }$&nbsp;</p>
-<h1 id="sin-x-正弦"><a href="#sin-x-正弦" class="headerlink" title="sin(x) 正弦"></a>sin(x) 正弦</h1><p>利用微分定義推導：</p>
-<p>$\displaystyle{ \frac{d}{dx} sin(x) = \lim_{h \to 0} \frac{sin(x + h) - sin(x)}{h} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)cos(h) + cos(x)sin(h) - sin(x)}{h} \text{（※ 正弦和角公式）} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)cos(h) - sin(x) + cos(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{sin(x)&nbsp;[cos(h) - 1]}{h} + \lim_{h&nbsp;\to 0} \frac{cos(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ = sin(x) \cdot \lim_{h&nbsp;\to 0} \frac{cos(h) - 1}{h} + cos(x) \cdot&nbsp;\lim_{h&nbsp;\to 0} \frac{sin(h)}{h} }$</p>
-<p>$\displaystyle{ = sin(x) \cdot 0&nbsp;+ cos(x) \cdot 1 = cos(x) }$</p>
-<h1 id="cos-x-餘弦"><a href="#cos-x-餘弦" class="headerlink" title="cos(x) 餘弦"></a>cos(x) 餘弦</h1><p>利用微分定義推導：</p>
-<p>$\displaystyle{ \frac{d}{dx} cos(x) = \lim_{h \to 0} \frac{cos(x + h) - cos(x)}{h} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x)cos(h) - sin(x)sin(h) - cos(x)}{h} \text{（※ 餘弦和角公式）} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x)cos(h) -&nbsp;cos(x) -&nbsp;sin(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ = \lim_{h&nbsp;\to 0} \frac{cos(x) [cos(h) - 1]}{h} - \lim_{h&nbsp;\to 0}&nbsp;\frac{sin(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ = cos(x) \cdot \lim_{h&nbsp;\to 0} \frac{cos(h) - 1}{h} - sin(x) \cdot&nbsp;\lim_{h&nbsp;\to 0}&nbsp;\frac{sin(h)}{h} }$</p>
-<p>$\displaystyle{ = cos(x) \cdot 0&nbsp;- sin(x) \cdot 1 = - sin(x) }$</p>
-<h1 id="tan-x-正切"><a href="#tan-x-正切" class="headerlink" title="tan(x) 正切"></a>tan(x) 正切</h1><p>由 $tan(x) = \frac{sin(x)}{cos(x)}$ 開始：</p>
-<p>$\frac{d}{dx} tan(x) = \frac{d}{dx} \frac{sin(x)}{cos(x)}$</p>
-<p>$ = \frac{\frac{d}{dx}sin(x) \cdot&nbsp;cos(x) - sin(x) \cdot \frac{d}{dx}cos(x)}{cos^{2}(x)} \text{（※ 微分除法公式）}$</p>
-<p>$ = \frac{cos(x) \cdot&nbsp;cos(x) - sin(x) \cdot [-sin(x)]}{cos^{2}(x)} = \frac{cos^{2}(x) +&nbsp;sin^{2}(x)}{cos^{2}(x)}$</p>
-<p>$ = \frac{1}{cos^{2}(x)} = sec^{2}(x)$</p>
-<p>（※ 使用了 $sin^{2}(x) + cos^{2}(x) = 1$ 這條式子，證明請參考：<a href="https://www.youtube.com/watch?v=91Jxfu4FntM" target="_blank" rel="noopener">sin^2+cos^2=1</a>）</p>
-<h1 id="csc-x-餘割"><a href="#csc-x-餘割" class="headerlink" title="csc(x) 餘割"></a>csc(x) 餘割</h1><p>由 $csc(x) = \frac{1}{sin(x)}$ 開始：</p>
-<p>$\frac{d}{dx} csc(x) = \frac{d}{dx} \frac{1}{sin(x)}$</p>
-<p>$ = \frac{\frac{d}{dx} 1 \cdot sin(x) - 1 \cdot \frac{d}{dx} sin(x)}{sin^{2}(x)} \text{（※ 微分除法公式）}$</p>
-<p>$ = \frac{0 \cdot sin(x) - 1 \cdot cos(x)}{sin^{2}(x)} = - \frac{cos(x)}{sin^{2}(x)}$</p>
-<p>$ = - \frac{cos(x)}{sin(x)} \cdot \frac{1}{sin(x)} = - cot(x) csc(x)$</p>
-<h1 id="sec-x-正割"><a href="#sec-x-正割" class="headerlink" title="sec(x) 正割"></a>sec(x) 正割</h1><p>由 $sec(x) = \frac{1}{cos(x)}$ 開始：</p>
-<p>$\frac{d}{dx} sec(x) = \frac{d}{dx} \frac{1}{cos(x)}$</p>
-<p>$ = \frac{\frac{d}{dx} 1 \cdot cos(x) - 1 \cdot \frac{d}{dx} cos(x)}{cos^{2}(x)} \text{（※ 微分除法公式）}$</p>
-<p>$ = \frac{0 \cdot cos(x) - 1 \cdot [-sin(x)] }{cos^{2}(x)} = \frac{sin(x)}{cos^{2}(x)}$</p>
-<p>$ = \frac{sin(x)}{cos(x)} \cdot \frac{1}{cos(x)} = tan(x) sec(x)$</p>
-<h1 id="cot-x-餘切"><a href="#cot-x-餘切" class="headerlink" title="cot(x) 餘切"></a>cot(x) 餘切</h1><p>由 $cot(x) = \frac{cos(x)}{sin(x)}$ 開始：</p>
-<p>$\frac{d}{dx} cot(x) = \frac{d}{dx} \frac{cos(x)}{sin(x)}$</p>
-<p>$ = \frac{\frac{d}{dx}cos(x) \cdot sin(x) - cos(x) \cdot \frac{d}{dx} sin(x)}{sin^{2}(x)} \text{（※ 微分除法公式）}$</p>
-<p>$ = \frac{[-sin(x)] \cdot sin(x) - cos(x) \cdot cos(x)}{sin^{2}(x)} = \frac{ - sin^{2}(x) - cos^{2}(x)}{sin^{2}(x)}$</p>
-<p>$ = - \{\frac{sin^{2}(x) +&nbsp;cos^{2}(x)}{sin^{2}(x)}\}&nbsp;= - \frac{1}{sin^{2}(x)} = -csc^{2}(x)$</p>
-<p>（※ 跟 $tan(x)$ 一樣使用了 $sin^{2}(x) + cos^{2}(x) = 1$ 這條式子，證明請參考上面的資料。）</p>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>可以發現一些手法，除了 $sin(x)$ 以及 $cos(x)$ 要從定義來之外，<br>其他的有兩兩對應的步驟，像是 $tan(x)$ 跟 $cot(x)$ 就很類似、而 $csc(x)$ 跟 $sec(x)$ 也很相像。</p>
-]]></content>
-      <categories>
-        <category>微積分</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>串列 Linked List</title>
-    <url>/linked-list/</url>
-    <content><![CDATA[<p>串列是資料結構中，一種重要的資料表達方式，<br>這樣的表達方式可以透過指標來完成。</p>
+    <title>Thinking at night</title>
+    <url>/thinking-at-night/</url>
+    <content><![CDATA[<p>這是一個蒐集我編曲作品的音樂遊戲。</p>
+<p>當初看到國外素材全原創的遊戲，很想把這樣的風氣帶回 R 圈；<br>為此我跑去學了程式、美術跟音樂，目標是做出一個全原創的遊戲。</p>
+<p>不過事情總是沒有這麼順利，許多專案都棄坑或塵封了……</p>
 <a id="more"></a>
-<p>通常，從這個部分開始，<br>可以看出一個人對指標的熟練程度。</p>
-<h1 id="串列結構"><a href="#串列結構" class="headerlink" title="串列結構"></a>串列結構</h1><p>串列的典型做法是使用 struct 實作：</p>
+<p>自誤入作曲與編曲的領域後，就一直想做一個作品的大合集，<br>因緣際會看到 RPG 2020 比賽，就決定捲起袖子完成這個小小的夢想。</p>
 <div class="note info">
-            <p>為方便撰寫範例，這裡假設資料為整數。</p>
+            <p>同步發布於 <a href="https://forum.gamer.com.tw/C.php?bsn=4918&amp;snA=29415&amp;tnum=1" target="_blank" rel="noopener">巴哈姆特</a></p>
           </div>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;   <span class="comment">// 資料</span></span><br><span class="line">    Node *next; <span class="comment">// 下個節點</span></span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line">Node *node_1 = <span class="keyword">new</span> Node; <span class="comment">// 第 1 個節點</span></span><br><span class="line">Node *node_2 = <span class="keyword">new</span> Node; <span class="comment">// 第 2 個節點</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// 把第 2 個節點接在第 1 個後面</span></span><br><span class="line">node_1-&gt;next = node_2;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="遊戲介紹"><a href="#遊戲介紹" class="headerlink" title="遊戲介紹"></a>遊戲介紹</h1><p><img src="https://i.imgur.com/zPMiv63.png" alt="Thinking at night 封面圖"></p>
+<p><strong>【遊戲名稱】</strong> Thinking at night<br><strong>【最新版本】</strong> v1.3<br><strong>【遊戲類型】</strong> 音樂遊戲<br><strong>【開發引擎】</strong> RPG Maker MV<br><strong>【檔案大小】</strong> 195 MB / 101 MB(zip)<br><strong>【遊玩時間】</strong> 約 60 分鐘<br><strong>【素材來源】</strong> 全自製<br><strong>【下載連結】</strong> <a href="https://tinytsunami.itch.io/thinking-at-night" target="_blank" rel="noopener">itch.io</a></p>
+<iframe frameborder="0" src="https://itch.io/embed/516570?border_width=0&amp;bg_color=222&amp;fg_color=ffffff&amp;link_color=5b7efa&amp;border_color=4e4e4e" width="550" height="165"></iframe>
+
 <div class="note info">
-            <p>串列結構經過良好的封裝更便於使用。</p>
-          </div>
-<h1 id="創建節點"><a href="#創建節點" class="headerlink" title="創建節點"></a>創建節點</h1><p>可以透過一個函數取得節點，<br>動態建立節點後，記得回傳給主程式。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 給定資料建立一個節點</span></span><br><span class="line"><span class="function">Node* <span class="title">create</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = <span class="keyword">new</span> Node; <span class="comment">// 建立新節點</span></span><br><span class="line">    node-&gt;data = value;    <span class="comment">// 設定節點值</span></span><br><span class="line">    node-&gt;next = <span class="literal">nullptr</span>;  <span class="comment">// 初始化指標</span></span><br><span class="line">    <span class="keyword">return</span> node;           <span class="comment">// 回傳給主程序</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>接下來的插入節點就可以使用這個函數了。</p>
-<h1 id="搜索節點"><a href="#搜索節點" class="headerlink" title="搜索節點"></a>搜索節點</h1><p>我個人認為，搜索節點這件事情，<br>搜索當前節點的效益並不大，通常我們更需要「目標節點的前一個節點」。</p>
-<div class="note info">
-            <p>「搜索目標節點的前一個節點函數」下面簡稱為「搜前函數」。</p>
-          </div>
-<p>個人實作時，會先實作搜前函數，<br>搜索節點的函數則透過這個函數間接完成。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreachPrevious</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node* node = root;</span><br><span class="line">    <span class="keyword">while</span> (node-&gt;next != <span class="literal">nullptr</span>      <span class="comment">// 不是最後一個節點</span></span><br><span class="line">        &amp;&amp; node-&gt;next-&gt;data != value) <span class="comment">// 而且下個節點的值不是目標</span></span><br><span class="line">        node = node-&gt;next;            <span class="comment">// 繼續搜索</span></span><br><span class="line">    <span class="keyword">return</span> node;                      <span class="comment">// 回傳目標的上一節點或最後一個節點</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div class="note info">
-            <p>這裡的「root」是樹狀結構的名詞，但串列也可以視作一棵樹。</p>
-          </div>
-<p>透過搜前函數，可以實做出的搜索功能。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreach</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;data == value)</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    Node *node = sreachPrevious(root, value);</span><br><span class="line">    <span class="keyword">return</span> node-&gt;next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="插入節點"><a href="#插入節點" class="headerlink" title="插入節點"></a>插入節點</h1><p>插入節點不困難，這裡以插入到末端為例，<br>如果存在一個值不會出現在串列中的話，可以透過搜前函數實作。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 插入一個節點到串列的結尾</span></span><br><span class="line"><span class="function">Node* <span class="title">insert</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = create(value);       <span class="comment">// 新建節點</span></span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">nullptr</span>)              <span class="comment">// 如果串列尚不存在</span></span><br><span class="line">        <span class="keyword">return</span> node;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Node* tail = root;            <span class="comment">// 找尾巴節點</span></span><br><span class="line">        <span class="keyword">while</span> (tail-&gt;next != <span class="literal">nullptr</span>)</span><br><span class="line">            tail = tail-&gt;next;</span><br><span class="line">        tail-&gt;next = node;            <span class="comment">// 新增在尾巴</span></span><br><span class="line">        <span class="keyword">return</span> root;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div class="note info">
-            <p>插入到特定位置的功能，也可以利用搜前函數的實作。</p>
+            <p>原 Google Drive 下載版（桌面版），請直接由 itch.io 內連結下載。</p>
           </div>
 <div class="note warning">
-            <p>如果不回傳指標給主程序，則建立串列時會出錯。</p>
+            <p>有些鍵盤不能支援多鍵同時按下，可能需要自行設定到可用的鍵位</p>
           </div>
-<h1 id="刪除節點"><a href="#刪除節點" class="headerlink" title="刪除節點"></a>刪除節點</h1><p>刪除節點可以直接透過搜前函數實作。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *previous = sreachPrevious(root, value);</span><br><span class="line">    Node *target = previous-&gt;next;</span><br><span class="line">    <span class="keyword">if</span> (target != <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        previous-&gt;next = target-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="遍歷節點"><a href="#遍歷節點" class="headerlink" title="遍歷節點"></a>遍歷節點</h1><p>對串列進行一堆操作後，檢查串列的正確性，<br>或是有時我們需要對整個串列做特定運算，都需要遍歷功能：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traversal</span><span class="params">(Node *root, <span class="keyword">void</span> (*callback)(Node *node))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Node *node = root; node != <span class="literal">nullptr</span>; node = node-&gt;next)</span><br><span class="line">        callback(node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>遍歷功能的第二個參數是函數的指標，<br>串列的每個節點，會被當成這個函數的傳入值操作。</p>
-<p>以印出節點來說，可以這樣調用：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(Node *node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; node-&gt;data &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">traversal(root, show);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>演示包含插入與刪除節點，<br>其中插入功能隱含創建節點功能，而刪除功能隱含著搜尋功能。</p>
-<iframe scrolling="no" width="100%" height="130px" src="//jsfiddle.net/ngkx992u/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+<h1 id="曲目列表"><a href="#曲目列表" class="headerlink" title="曲目列表"></a>曲目列表</h1><p>這個作品有 16 首原創音樂，演奏特定歌曲後，才會解鎖某些曲目（不論成績皆會解鎖）<br>最後一首音樂是「Ending Mix」，只有前面所有曲目都通過才會解鎖。</p>
+<p>下面是 SoundCloud 的曲目列表，可以線上收聽。</p>
+<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/919956049&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
+
+<h1 id="更新紀錄"><a href="#更新紀錄" class="headerlink" title="更新紀錄"></a>更新紀錄</h1><div class="note success">
+            <p>更新紀錄提供給大家參考，目前的最新版是 <a href="#v1-3-版">v1.3 版</a></p>
+          </div>
+<h2 id="v1-1-版"><a href="#v1-1-版" class="headerlink" title="v1.1 版"></a>v1.1 版</h2><p><strong>更新說明</strong></p>
+<ul>
+<li>標題增加開始遊戲的按鍵提示</li>
+<li>移除曲目 Clear 解鎖條件，現在只要演奏完就解鎖新曲</li>
+<li>加入 Great / Good / Miss 擊中動畫</li>
+<li>Hit 改成 Accuracy 字樣</li>
+<li>部分曲目流速加速</li>
+<li>部分曲目譜面修正</li>
+<li>重開時按鍵操作消失 Bug 修正</li>
+<li>現在會紀錄每首歌最高 Accuracy 的分數</li>
+<li>在設定狀態中，顯示操作提示</li>
+<li>設定熱鍵由 tab 改成 shift</li>
+<li>中途退出曲目與暫停功能</li>
+<li>放寬判定標準，現在的判定為 [6.02, 12.04, 14.45] 幀倍率</li>
+</ul>
+<div class="note warning">
+            <p>v1.0 版的紀錄不再適用 v1.1 版</p>
+          </div>
+<div class="note info">
+            <p>v1.1 版開始，按下 shift 可以中途暫停或退出</p>
+          </div>
+<h2 id="v1-2-版"><a href="#v1-2-版" class="headerlink" title="v1.2 版"></a>v1.2 版</h2><p><strong>發行說明</strong></p>
+<ul>
+<li>不再提供極致壓縮的 7z 版</li>
+<li>新增了 Itch.io 的線上版</li>
+<li>接下來將會釋出這個音樂遊戲的核心腳本（目前正在整理中）</li>
+</ul>
+<p><strong>更新說明</strong></p>
+<ul>
+<li>手寫字風格 UI 修正</li>
+<li>增加選曲標示 UI/UX 修正</li>
+<li>增加自動演奏（auto-play）功能</li>
+<li>增加三種難度 Easy, Normalcy, Crazy 的譜面</li>
+<li>每首歌的難度分級由 3 顆星變為 8 顆星</li>
+</ul>
+<p><strong>譜面調整</strong></p>
+<ul>
+<li>thinking at night 的原譜現被歸類到 Normalcy 難度</li>
+<li>umbrella 的原譜現被歸類到 Crazy 難度</li>
+<li>night forset roadd 的原譜被歸類到 Crazy 難度，並調整單連 2/4 連擊處</li>
+<li>balasute meet 的原譜被歸類到 Normalcy 難度</li>
+<li>balasute battle 的原譜被歸類到 Crazy 難度</li>
+<li>bar 的原譜被歸類到 Crazy 難度</li>
+<li>bye bye tomorrow 的原譜簡化後為 Normalcy 難度，並在 Crazy 難度中變得更具挑戰性</li>
+<li>common battle 的原譜被歸類到 Crazy 難度</li>
+<li>conspiracy 的原譜被歸類到 Crazy 難度</li>
+<li>desert scorpion 的原譜被歸類到 Crazy 難度</li>
+<li>fragmentation 的原譜被歸類到 Crazy 難度</li>
+<li>fragmentation 在 Normalcy 難度中被略為簡化，而 Easy 難度中，去除 3/6 連擊處</li>
+<li>leave 的原譜被歸類到 Crazy 難度</li>
+<li>leave 的 Normalcy 難度的譜面與 Crazy 相同，但音符的流速更快</li>
+<li>leave 的 Easy 難度中刪去了 1-2-3-2-1-2-… 樓梯型連擊</li>
+<li>letter from you 的原譜被歸類到 Normalcy 難度</li>
+<li>letter from you 的 Crazy 難度強化了 3/6 拍打擊</li>
+<li>letter from you 在 Easy 難度中去除了 16 分音符</li>
+<li>on way 的原譜被歸類到 Crazy 難度</li>
+<li>on way 於 Normalcy 難度中去除了 1-2-3-2-1-2-… 樓梯型連擊</li>
+<li>the a minor 的原譜被歸類到 Crazy 難度</li>
+<li>the a minor 在 Easy 難度中簡化節奏與調降音符流速度</li>
+<li>ending mix 的原譜被歸類到 Normalcy難度，為各類難度譜面的集合</li>
+</ul>
+<div class="note warning">
+            <p>v1.1 版的紀錄不再適用 v1.2 版</p>
+          </div>
+<div class="note info">
+            <p>v1.1 版開始，按下 Ctrl 可以自動演奏</p>
+          </div>
+<h2 id="v1-3-版"><a href="#v1-3-版" class="headerlink" title="v1.3 版"></a>v1.3 版</h2><p><strong>發行說明</strong></p>
+<ul>
+<li>現在開始不再提供 Google Drive 的檔案，請直接在 itch.io 下載</li>
+<li>音樂遊戲插件已經整理完成，目前正在撰寫使用說明</li>
+</ul>
+<p><strong>更新說明</strong></p>
+<ul>
+<li>新增「長音符」（需要在長音開頭按下直至結尾，完成打擊）</li>
+<li>大部分譜面更新（少數沒有增加長音，少數譜面大改）</li>
+<li>曲目 Desert Scorpion 的圖標修正</li>
+<li>曲目 Desert Scorpion 音樂修正</li>
+<li>羊羽手札的顯示畫面修正</li>
+<li>部分曲目的星數調整</li>
+</ul>
+<p><strong>星數調整</strong></p>
+<ul>
+<li>Balasute meet (Normalcy) 難度調整為 ★6</li>
+<li>Balasute meet (Crazy) 難度調整為 ★7</li>
+<li>Beer bar (Crazy) 難度調整為 ★7</li>
+<li>Bye bye tomorrow (Easy) 難度調整為 ★3</li>
+<li>Desert scorpion (Normalcy) 難度調整為 ★8</li>
+<li>Leave (Easy) 難度調整為 ★2</li>
+<li>Letter from you (Crazy) 難度調整為 ★6</li>
+<li>On way (Crazy) 難度調整為 ★6</li>
+<li>The a minor (Easy) 難度調整為 ★3</li>
+</ul>
+<div class="note info">
+            <p>從 1.2 版升級到 1.3 版時。桌面版紀錄 save 資料夾可以複製到 www 目錄底下，<br>解鎖、演奏完成的資訊可被繼承，而 Great、Good、Miss、MaxCombo 等，分數類紀錄將歸零。</p>
+          </div>
+<h1 id="開發花絮"><a href="#開發花絮" class="headerlink" title="開發花絮"></a>開發花絮</h1><p>其實這不是我第一部公開的遊戲，但是這是第一部發布的遊戲。<br>記得以前巴哈 RM 版有遊戲發布預告的討論串，我發過一款名為「躲怪遊戲」的遊戲預告。<br>（RMVX，後來有嘗試把該遊戲遷移到 RMMV）</p>
+<p>那個時間點大概是剛學會寫 RMVX 腳本的時候……<br>而這個遊戲被那個棄坑作影響深遠，大概可以這樣理解吧 XDD”</p>
+<h2 id="樂曲背景"><a href="#樂曲背景" class="headerlink" title="樂曲背景"></a>樂曲背景</h2><p>《Thinking at night》（夜中思考）曲名是源於我經常熬夜，<br>不知道為何，深夜靈感比較豐富，這遊戲的曲目大部分都是深夜完成的。<br>不計《Ending Mix》的話，這首是這個遊戲最晚寫的曲目。</p>
+<p>《Umbrella》（傘）是最早寫的曲目，大約是躲怪遊戲預告發布後一陣子（2014 年前後），<br>完成這首曲目時，午後下起了太陽雨，所以無論是雨傘或陽傘的解釋都是對的。</p>
+<p>《Night forest road》（夜晚森林之路，我常簡稱為夜森之路或夜森），<br>封面的路燈是原本躲怪遊戲的怪物「結界路燈」，而這首最早是希望作為遊戲夜晚森林的 BGM。<br>值得一提的是，這首歌設計上是 Clarinet（單簧管）跟 Flute（長笛）交互演奏主旋律的曲子，<br>最早的版本沒有 73~105 小節的合奏。</p>
+<p><img src="https://i.imgur.com/9BEVNRn.jpg" alt="圖 1、躲怪遊戲的路燈（事件出沒）"><br><img src="https://i.imgur.com/8qC0WRT.png" alt="圖 2、結界路燈的形象圖"></p>
+<div class="note info">
+            <p>結界路燈原本應該是魔法都市附近森林的怪物，躲怪遊戲因特殊事件而出沒在城堡中。</p>
+          </div>
+<p>關於 Balasute（巴拉斯特）是躲怪遊戲的一位女性 NPC 角色，這個遊戲偷偷塞了兩首她的 BGM 在裡面，<br>分別是《Balasute meet》（巴拉斯特遭遇）以及《Balasute battle》（巴拉斯特戰鬥）。</p>
+<p>《Bye bye tomorrow》（再見明天）是我有一陣子低潮時的作品，當時真的想要直接結束，不過後來挺過來了。<br>上吊繩的由來是，當時閱讀完全自殺手冊後，發現上吊是這本書最推薦的自殺方法。<br>原本我有想過放上吊繩會不會把遊戲搞得「不合主流」，但是想要保留最初的原意，就沒有拿掉了。<br>這首原曲改過三次，遊戲中是第三版。</p>
+<p>《Conspiracy》的迷之動物其實是羊駝 (我發現幾乎所有人都覺得我畫的是長頸鹿)<br>因為這些音樂都是用 LMMS 作曲的，其中有個 LB302 的樂器插件是羊駝圖案。這首歌幾乎都是用這個樂器插件完成的。<br>另外，曲目中的低頻噪音是飛機起降的聲音，在 Crazy 的曲末，我用譜面模擬了飛機跑道。</p>
+<p><img src="https://i.imgur.com/lFw2BGR.png" alt="圖 3、LB302 的樂器插件"></p>
+<p>《Fragmentation》（碎片）對我來說是畢業歌，當時恰逢學校畢業，碎片指的是回憶的碎片。<br>遊戲中的畫面是左上的橘色背景跟飛散的照片。</p>
+<p>《Letter from you》（來自你的信）原本是寫在某論壇作曲教學的成品。<br>當時選曲的時候發覺大部分的曲目都很難，所以想放一首相對簡單的來平衡這樣……</p>
+<p>《the a minor》這首曲名是雙關，意思是 the a minor（一個小調）及 the A minor（這個 A 小調）。<br>顧名思義，全曲是 A 小調寫成，這是早期作品。圖中的蜥蜴是在 youtube 發布音樂時，隨手撇的蜥蜴。</p>
+<p>《Ending Mix》是選擇我最愛的曲目完成的，所以沒有包含所有歌曲 XD<br>另外這首是 FL Studio 寫成的，也可以作為我從 LMMS 搬家到 FL Studio 的里程碑：</p>
+<p><img src="https://i.imgur.com/7Sup7TK.jpg" alt="圖 4、《Ending Mix》樂曲軌道"></p>
+<p>然後這曲的設計順序是：</p>
+<ol>
+<li>用較慢的 Thinking at night 動機當開頭</li>
+<li>小銜接段，切進原創的段落，這裡我稱為 Bridge-A</li>
+<li>敲 4 拍鼓邊，切進 Fragmentation 副歌</li>
+<li>一個長音切到 Umbrella 的主歌</li>
+<li>鋼琴琶音後，切入 4 個主拍上行銜接段，然後鼓聲驟停 1 小節，切入 Bridge-B</li>
+<li>用比較急的鼓拍子，切入 on way 的特色段落（爬樓梯段落）</li>
+<li>延續爬樓梯的旋律，敲一個鈸切到 Night forest road</li>
+<li>Night forest road 這裡速度比原曲快，所以我把管樂換成純鋼琴</li>
+<li>標準 4 拍切到最後一個 Bridge-C</li>
+<li>用跳音切入 Bye bye Tomorrow 這裡是減慢版</li>
+<li>過門加速切回 Thinking at night 副歌，以此結尾</li>
+</ol>
+<p>其中 Bridge-A 希望設計成 RPG 冒險開始的感覺，<br>而 Bridge-B 是 RPG 遭遇曲折，最後 Bridge-C 是 RPG 過夜劇情的感覺 XDD</p>
+<h2 id="視覺設計"><a href="#視覺設計" class="headerlink" title="視覺設計"></a>視覺設計</h2><p>關於這個遊戲的選圖，其實是很掙扎的，<br>先要決定手上的音樂要搭什麼圖片，然後放置於主圖中的位置，<br>最早只有決定路燈、鯨魚跟上吊繩的相對位置。</p>
+<p>原本還打算放一些極早期的作品，只是因為換電腦很多曲子的分軌檔都不見了 QQ</p>
+<p><img src="https://i.imgur.com/Pk74d03.jpg" alt="圖 5、主圖的設計草稿"></p>
+<p>最早的遊戲難度與分級是我自己打過一輪，然後把百分比排序，切成三組（標示 1~3 星）<br>後來多數玩家反應說難度太高，我才發覺我太鼓七段自己測試根本失準 XD”</p>
+<p>所以在新版本中，我把難度切出來了，<br>在這裡的一個小彩蛋是難度分級 Easy、Normalcy 跟 Crazy 押韻。<br>（Normalcy 是常態的意思）</p>
+<p>至於最早曲目的解鎖順序是難度為基準的，<br>但是新版本中調整譜面後，這層關係就沒這麼明顯了。</p>
+<p><img src="https://i.imgur.com/BoPh5Zq.jpg" alt="圖 6、自己測試的成績紀錄手稿（最初版）"></p>
+<h2 id="製作後續"><a href="#製作後續" class="headerlink" title="製作後續"></a>製作後續</h2><div class="note info">
+            <p>這個音樂遊戲的插件請參考 <a href="/rpg-maker-mv-music-game/" title="RMMV 音樂遊戲">RMMV 音樂遊戲</a></p>
+          </div>
+]]></content>
       <categories>
-        <category>程式設計</category>
+        <category>獨立遊戲製作</category>
       </categories>
   </entry>
   <entry>
@@ -1040,32 +1192,129 @@
       </categories>
   </entry>
   <entry>
-    <title>Linux 螢幕解析度問題</title>
-    <url>/linux-screen-display-problem/</url>
-    <content><![CDATA[<p>我當初剛裝 Linux 時，被雙螢幕的問題搞了許久，<br>這篇主要是做個解決方案的筆記，以免之後又碰到相同的問題。</p>
-<p>本解決方案來自網路上的資料，我將把參考資料陳列於下方。<br><a id="more"></a></p>
+    <title>串列 Linked List</title>
+    <url>/linked-list/</url>
+    <content><![CDATA[<p>串列是資料結構中，一種重要的資料表達方式，<br>這樣的表達方式可以透過指標來完成。</p>
+<a id="more"></a>
+<p>通常，從這個部分開始，<br>可以看出一個人對指標的熟練程度。</p>
+<h1 id="串列結構"><a href="#串列結構" class="headerlink" title="串列結構"></a>串列結構</h1><p>串列的典型做法是使用 struct 實作：</p>
 <div class="note info">
-            <p>本篇的 Linux 版本為 <a href="https://linuxmint.com/" target="_blank" rel="noopener">Linux Mint</a><br>如果你的不是 Linux Mint 的話，解決方案可能大同小異，請參考其他資料處理。</p>
+            <p>為方便撰寫範例，這裡假設資料為整數。</p>
           </div>
-<h1 id="解析度問題"><a href="#解析度問題" class="headerlink" title="解析度問題"></a>解析度問題</h1><p>有時候安裝好 Linux 螢幕並不會自動抓到適當的解析度，<br>筆者的雙螢幕中，發生問題的螢幕是電視螢幕，具體參考圖 1。</p>
-<p>我的猜測是，螢幕本身不是電腦螢幕的話，可能發生機會會大得多。</p>
-<p><img src="https://i.imgur.com/w7Kga59.png" alt="圖 1、Linux Mint 螢幕設定畫面"></p>
-<p>如上圖所示，問題螢幕為 DVI-I 輸出，正常情況應為 1920x1080 解析度；<br>但由於某種原因，最高只到 1024x768 解析度。</p>
-<h1 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案"></a>解決方案</h1><p>我們會利用 cvt 及 xrandr 指令解決這個問題：</p>
-<ul>
-<li>利用 xrandr 找出問題螢幕的代號</li>
-<li>透過 cvt 生成 modeline</li>
-<li>透過 xrandr 以及 modeline 建立解析度</li>
-<li>透過 xrandr 增加解析度到螢幕代號</li>
-<li>設定螢幕為新解析度</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr</span><br><span class="line">Screen 0: minimum 320 x 200, current 2944 x 1080, maximum 16384 x 16384</span><br><span class="line">DVI-I-1 connected 1024x768+0+0 (normal left inverted right x axis y axis) 0mm x 0mm</span><br><span class="line">   1024x768      60.00* </span><br><span class="line">   800x600       60.32    56.25  </span><br><span class="line">   848x480       60.00  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">HDMI-1 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">VGA-1 connected primary 1920x1080+1024+0 (normal left inverted right x axis y axis) 477mm x 268mm</span><br><span class="line">   1920x1080     60.00*+</span><br><span class="line">   1680x1050     59.95  </span><br><span class="line">   1600x900      60.00  </span><br><span class="line">   1280x1024     60.02  </span><br><span class="line">   1280x800      59.81  </span><br><span class="line">   1280x720      60.00  </span><br><span class="line">   1024x768      60.00  </span><br><span class="line">   800x600       60.32  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ cvt 1920 1080 60</span><br><span class="line"><span class="comment"># 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz</span></span><br><span class="line">Modeline <span class="string">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --newmode <span class="string">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --addmode DVI-I-1 <span class="string">"1920x1080_60.00"</span></span><br><span class="line">tinytsunami@Tinytsunami-PC ~ $ xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
-<p>這個方法是暫時的，完成這些步驟後，要做一些設定來保存這個配置，<br>我的方案是使用開機執行程式（.sh）開機時自動完成上面那些操作：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xrandr --newmode <span class="string">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br><span class="line">xrandr --addmode DVI-I-1 1920x1080_60.00</span><br><span class="line">xrandr --output DVI-I-1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
-<h1 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h1><p><a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574" target="_blank" rel="noopener">https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?post_id=161574</a><br><a href="https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution" target="_blank" rel="noopener">https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution</a></p>
-]]></content>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;   <span class="comment">// 資料</span></span><br><span class="line">    Node *next; <span class="comment">// 下個節點</span></span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line">Node *node_1 = <span class="keyword">new</span> Node; <span class="comment">// 第 1 個節點</span></span><br><span class="line">Node *node_2 = <span class="keyword">new</span> Node; <span class="comment">// 第 2 個節點</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// 把第 2 個節點接在第 1 個後面</span></span><br><span class="line">node_1-&gt;next = node_2;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>串列結構經過良好的封裝更便於使用。</p>
+          </div>
+<h1 id="創建節點"><a href="#創建節點" class="headerlink" title="創建節點"></a>創建節點</h1><p>可以透過一個函數取得節點，<br>動態建立節點後，記得回傳給主程式。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 給定資料建立一個節點</span></span><br><span class="line"><span class="function">Node* <span class="title">create</span><span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = <span class="keyword">new</span> Node; <span class="comment">// 建立新節點</span></span><br><span class="line">    node-&gt;data = value;    <span class="comment">// 設定節點值</span></span><br><span class="line">    node-&gt;next = <span class="literal">nullptr</span>;  <span class="comment">// 初始化指標</span></span><br><span class="line">    <span class="keyword">return</span> node;           <span class="comment">// 回傳給主程序</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下來的插入節點就可以使用這個函數了。</p>
+<h1 id="搜索節點"><a href="#搜索節點" class="headerlink" title="搜索節點"></a>搜索節點</h1><p>我個人認為，搜索節點這件事情，<br>搜索當前節點的效益並不大，通常我們更需要「目標節點的前一個節點」。</p>
+<div class="note info">
+            <p>「搜索目標節點的前一個節點函數」下面簡稱為「搜前函數」。</p>
+          </div>
+<p>個人實作時，會先實作搜前函數，<br>搜索節點的函數則透過這個函數間接完成。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreachPrevious</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node* node = root;</span><br><span class="line">    <span class="keyword">while</span> (node-&gt;next != <span class="literal">nullptr</span>      <span class="comment">// 不是最後一個節點</span></span><br><span class="line">        &amp;&amp; node-&gt;next-&gt;data != value) <span class="comment">// 而且下個節點的值不是目標</span></span><br><span class="line">        node = node-&gt;next;            <span class="comment">// 繼續搜索</span></span><br><span class="line">    <span class="keyword">return</span> node;                      <span class="comment">// 回傳目標的上一節點或最後一個節點</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>這裡的「root」是樹狀結構的名詞，但串列也可以視作一棵樹。</p>
+          </div>
+<p>透過搜前函數，可以實做出的搜索功能。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">Node* <span class="title">sreach</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;data == value)</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    Node *node = sreachPrevious(root, value);</span><br><span class="line">    <span class="keyword">return</span> node-&gt;next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="插入節點"><a href="#插入節點" class="headerlink" title="插入節點"></a>插入節點</h1><p>插入節點不困難，這裡以插入到末端為例，<br>如果存在一個值不會出現在串列中的話，可以透過搜前函數實作。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 插入一個節點到串列的結尾</span></span><br><span class="line"><span class="function">Node* <span class="title">insert</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *node = create(value);       <span class="comment">// 新建節點</span></span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">nullptr</span>)              <span class="comment">// 如果串列尚不存在</span></span><br><span class="line">        <span class="keyword">return</span> node;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Node* tail = root;            <span class="comment">// 找尾巴節點</span></span><br><span class="line">        <span class="keyword">while</span> (tail-&gt;next != <span class="literal">nullptr</span>)</span><br><span class="line">            tail = tail-&gt;next;</span><br><span class="line">        tail-&gt;next = node;            <span class="comment">// 新增在尾巴</span></span><br><span class="line">        <span class="keyword">return</span> root;                  <span class="comment">// 回傳給主程序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>插入到特定位置的功能，也可以利用搜前函數的實作。</p>
+          </div>
+<div class="note warning">
+            <p>如果不回傳指標給主程序，則建立串列時會出錯。</p>
+          </div>
+<h1 id="刪除節點"><a href="#刪除節點" class="headerlink" title="刪除節點"></a>刪除節點</h1><p>刪除節點可以直接透過搜前函數實作。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node *root, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Node *previous = sreachPrevious(root, value);</span><br><span class="line">    Node *target = previous-&gt;next;</span><br><span class="line">    <span class="keyword">if</span> (target != <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        previous-&gt;next = target-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="遍歷節點"><a href="#遍歷節點" class="headerlink" title="遍歷節點"></a>遍歷節點</h1><p>對串列進行一堆操作後，檢查串列的正確性，<br>或是有時我們需要對整個串列做特定運算，都需要遍歷功能：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">traversal</span><span class="params">(Node *root, <span class="keyword">void</span> (*callback)(Node *node))</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Node *node = root; node != <span class="literal">nullptr</span>; node = node-&gt;next)</span><br><span class="line">        callback(node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>遍歷功能的第二個參數是函數的指標，<br>串列的每個節點，會被當成這個函數的傳入值操作。</p>
+<p>以印出節點來說，可以這樣調用：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(Node *node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; node-&gt;data &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">traversal(root, show);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>演示包含插入與刪除節點，<br>其中插入功能隱含創建節點功能，而刪除功能隱含著搜尋功能。</p>
+<iframe scrolling="no" width="100%" height="130px" src="//jsfiddle.net/ngkx992u/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
       <categories>
-        <category>Linux</category>
+        <category>程式設計</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>先驗算法 Apriori Algorithm</title>
+    <url>/apriori-algorithm/</url>
+    <content><![CDATA[<p>資料探勘的文章，多半是我大學資料探勘課程的筆記之類的東西，<br>因為覺得內容有點雜，不是很難，就是很多東西。</p>
+<p>所以想開個文章逐一紀錄。以後找資料也方便一點這樣。<br>不過課程吸收的感覺對這個領域把握不高，有錯誤還請見諒就是了。<br><a id="more"></a></p>
+<h1 id="關聯規則"><a href="#關聯規則" class="headerlink" title="關聯規則"></a>關聯規則</h1><p>關聯規則是類似這樣的一個問題：<br><div class="note info">
+            <p>如果我的客戶買了某個商品，那麼要再推薦什麼商品呢？</p>
+          </div></p>
+<p>想當然的，推薦的商品一定是那個「很有可能被加購的」商品。</p>
+<p>那麼，我要怎知道客戶有可能加購什麼呢？<br>事實上，我們大概可以猜到一些事情。  </p>
+<ul>
+<li>與「客戶的屬性」相關<ul>
+<li>客戶是學生，而他剛剛買了筆，是不是折扣的話會買更多？</li>
+<li>客戶是廚師的話呢？</li>
+</ul>
+</li>
+<li>與「外在的屬性」相關<ul>
+<li>天氣炎熱的話，買了午餐再買飲料的關聯，是不是會被加強？</li>
+<li>天氣涼爽的話呢？</li>
+</ul>
+</li>
+<li>與「先前購買的商品」相關  <ul>
+<li>買了鐵鎚，是不是會繼續選購釘子呢？</li>
+<li>推薦買了鐵鎚的人麵包如何？</li>
+</ul>
+</li>
+</ul>
+<p>而資料探勘當中，有一些方法，可以去得到這些關聯規則，</p>
+<p>對於商業行為來說，資料探勘的重點就是找到這些隱含在資料中的「商機」。<br>然而這三種可能，我們通常關注第三種，也就是「先前購買的商品」相關的部份。</p>
+<p>至於為什麼呢？看下面的例子，然後想想看：  </p>
+<ul>
+<li>某個男人在賣場中買了一個麵包，所以男人的職業是？</li>
+<li>早上天氣還很熱，下午開始轉涼了。</li>
+</ul>
+<h1 id="支持率與可信度"><a href="#支持率與可信度" class="headerlink" title="支持率與可信度"></a>支持率與可信度</h1><p>在開始進行算法之前，得先介紹一下：</p>
+<p>支持率（Support）以及可信度（Confidence）這兩個參數。  </p>
+<ul>
+<li>支持率：出現的概率。</li>
+<li>可信度：條件機率，當商品出現時，出現另一件商品的概率。</li>
+</ul>
+<p>下面做一些描述：  </p>
+<p>$Support(A) = P(A)$<br>$Confidence(A \Rightarrow B) = P(B \mid A)$  </p>
+<p>參數的作用，從這裡可以發現一些指標：</p>
+<div class="note info">
+            <p>支持率代表一條規則的重要程度。</p>
+          </div>
+<p>$Confidence(A \Rightarrow B) = 99%, Support({A, B}) = 1%$</p>
+<p>雖然買了 A 商品，幾乎也會買 B 商品，但出現這種買法相當罕見。<br>如果很少人會這樣買，是不是就沒有商機呢？</p>
+<div class="note info">
+            <p>可信度代表一條規則的準確程度</p>
+          </div>
+<div class="note info">
+            <p>想想看，有沒有可能出現可信度很高、但支持率很低的情況？</p>
+          </div>
+<p>$Confidence(A \Rightarrow B) = P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{Support({A, B})}{P(A)}$</p>
+<h1 id="先驗算法"><a href="#先驗算法" class="headerlink" title="先驗算法"></a>先驗算法</h1><p>先驗算法（Apriori Algorithm）是資料探勘中的一種基本方法，<br>讓我們可以從資料中取得這些關聯規則。</p>
+<p>實際操作的說明：  </p>
+<ul>
+<li>設定 $\text{minimum_support}$</li>
+<li>計算每種商品的 $\text{support}$</li>
+<li>刪去 $\text{support}$ 小於 $\text{minimum_support}$ 的商品</li>
+<li>組合剩下的商品</li>
+<li>重複 2 ～ 4 步，直到無法組合或滿足其他停止條件</li>
+<li>計算所有的 $\text{confidence}$</li>
+</ul>
+<p>公式化：  </p>
+<ul>
+<li>$\alpha = \text{Minimum Support}, X_{0} = \text{All Objects}$</li>
+<li>$X_{p+1} = { x_{i} \cup x_{j} : support(x_{i}) &gt; \alpha \land support(x_{j}) &gt; \alpha , x_{i} \neq x_{j}, \forall x_{i}, x_{j} \in X_{p} }$</li>
+<li>$\text{Repeat step.2, until } X_{n} = \varnothing$</li>
+</ul>
+<p>大致上就這個樣子，直到 $X$ 無法組合為止，而這時的最長規則，長度為 $n-1$ 單位，<br>很多時候，由於要人工篩選規則，所以所有出現過的 $X$ 都要考慮。</p>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="400px" src="//jsfiddle.net/okfyq5ub/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>資料結構與演算法</category>
       </categories>
   </entry>
   <entry>
@@ -1246,255 +1495,6 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
 ]]></content>
       <categories>
         <category>人工智慧</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Thinking at night</title>
-    <url>/thinking-at-night/</url>
-    <content><![CDATA[<p>這是一個蒐集我編曲作品的音樂遊戲。</p>
-<p>當初看到國外素材全原創的遊戲，很想把這樣的風氣帶回 R 圈；<br>為此我跑去學了程式、美術跟音樂，目標是做出一個全原創的遊戲。</p>
-<p>不過事情總是沒有這麼順利，許多專案都棄坑或塵封了……</p>
-<a id="more"></a>
-<p>自誤入作曲與編曲的領域後，就一直想做一個作品的大合集，<br>因緣際會看到 RPG 2020 比賽，就決定捲起袖子完成這個小小的夢想。</p>
-<div class="note info">
-            <p>同步發布於 <a href="https://forum.gamer.com.tw/C.php?bsn=4918&amp;snA=29415&amp;tnum=1" target="_blank" rel="noopener">巴哈姆特</a></p>
-          </div>
-<h1 id="遊戲介紹"><a href="#遊戲介紹" class="headerlink" title="遊戲介紹"></a>遊戲介紹</h1><p><img src="https://i.imgur.com/zPMiv63.png" alt="Thinking at night 封面圖"></p>
-<p><strong>【遊戲名稱】</strong> Thinking at night<br><strong>【最新版本】</strong> v1.3<br><strong>【遊戲類型】</strong> 音樂遊戲<br><strong>【開發引擎】</strong> RPG Maker MV<br><strong>【檔案大小】</strong> 195 MB / 101 MB(zip)<br><strong>【遊玩時間】</strong> 約 60 分鐘<br><strong>【素材來源】</strong> 全自製<br><strong>【下載連結】</strong> <a href="https://tinytsunami.itch.io/thinking-at-night" target="_blank" rel="noopener">itch.io</a></p>
-<iframe frameborder="0" src="https://itch.io/embed/516570?border_width=0&amp;bg_color=222&amp;fg_color=ffffff&amp;link_color=5b7efa&amp;border_color=4e4e4e" width="550" height="165"></iframe>
-
-<div class="note info">
-            <p>原 Google Drive 下載版（桌面版），請直接由 itch.io 內連結下載。</p>
-          </div>
-<div class="note warning">
-            <p>有些鍵盤不能支援多鍵同時按下，可能需要自行設定到可用的鍵位</p>
-          </div>
-<h1 id="曲目列表"><a href="#曲目列表" class="headerlink" title="曲目列表"></a>曲目列表</h1><p>這個作品有 16 首原創音樂，演奏特定歌曲後，才會解鎖某些曲目（不論成績皆會解鎖）<br>最後一首音樂是「Ending Mix」，只有前面所有曲目都通過才會解鎖。</p>
-<p>下面是 SoundCloud 的曲目列表，可以線上收聽。</p>
-<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/919956049&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
-
-<h1 id="更新紀錄"><a href="#更新紀錄" class="headerlink" title="更新紀錄"></a>更新紀錄</h1><div class="note success">
-            <p>更新紀錄提供給大家參考，目前的最新版是 <a href="#v1-3-版">v1.3 版</a></p>
-          </div>
-<h2 id="v1-1-版"><a href="#v1-1-版" class="headerlink" title="v1.1 版"></a>v1.1 版</h2><p><strong>更新說明</strong></p>
-<ul>
-<li>標題增加開始遊戲的按鍵提示</li>
-<li>移除曲目 Clear 解鎖條件，現在只要演奏完就解鎖新曲</li>
-<li>加入 Great / Good / Miss 擊中動畫</li>
-<li>Hit 改成 Accuracy 字樣</li>
-<li>部分曲目流速加速</li>
-<li>部分曲目譜面修正</li>
-<li>重開時按鍵操作消失 Bug 修正</li>
-<li>現在會紀錄每首歌最高 Accuracy 的分數</li>
-<li>在設定狀態中，顯示操作提示</li>
-<li>設定熱鍵由 tab 改成 shift</li>
-<li>中途退出曲目與暫停功能</li>
-<li>放寬判定標準，現在的判定為 [6.02, 12.04, 14.45] 幀倍率</li>
-</ul>
-<div class="note warning">
-            <p>v1.0 版的紀錄不再適用 v1.1 版</p>
-          </div>
-<div class="note info">
-            <p>v1.1 版開始，按下 shift 可以中途暫停或退出</p>
-          </div>
-<h2 id="v1-2-版"><a href="#v1-2-版" class="headerlink" title="v1.2 版"></a>v1.2 版</h2><p><strong>發行說明</strong></p>
-<ul>
-<li>不再提供極致壓縮的 7z 版</li>
-<li>新增了 Itch.io 的線上版</li>
-<li>接下來將會釋出這個音樂遊戲的核心腳本（目前正在整理中）</li>
-</ul>
-<p><strong>更新說明</strong></p>
-<ul>
-<li>手寫字風格 UI 修正</li>
-<li>增加選曲標示 UI/UX 修正</li>
-<li>增加自動演奏（auto-play）功能</li>
-<li>增加三種難度 Easy, Normalcy, Crazy 的譜面</li>
-<li>每首歌的難度分級由 3 顆星變為 8 顆星</li>
-</ul>
-<p><strong>譜面調整</strong></p>
-<ul>
-<li>thinking at night 的原譜現被歸類到 Normalcy 難度</li>
-<li>umbrella 的原譜現被歸類到 Crazy 難度</li>
-<li>night forset roadd 的原譜被歸類到 Crazy 難度，並調整單連 2/4 連擊處</li>
-<li>balasute meet 的原譜被歸類到 Normalcy 難度</li>
-<li>balasute battle 的原譜被歸類到 Crazy 難度</li>
-<li>bar 的原譜被歸類到 Crazy 難度</li>
-<li>bye bye tomorrow 的原譜簡化後為 Normalcy 難度，並在 Crazy 難度中變得更具挑戰性</li>
-<li>common battle 的原譜被歸類到 Crazy 難度</li>
-<li>conspiracy 的原譜被歸類到 Crazy 難度</li>
-<li>desert scorpion 的原譜被歸類到 Crazy 難度</li>
-<li>fragmentation 的原譜被歸類到 Crazy 難度</li>
-<li>fragmentation 在 Normalcy 難度中被略為簡化，而 Easy 難度中，去除 3/6 連擊處</li>
-<li>leave 的原譜被歸類到 Crazy 難度</li>
-<li>leave 的 Normalcy 難度的譜面與 Crazy 相同，但音符的流速更快</li>
-<li>leave 的 Easy 難度中刪去了 1-2-3-2-1-2-… 樓梯型連擊</li>
-<li>letter from you 的原譜被歸類到 Normalcy 難度</li>
-<li>letter from you 的 Crazy 難度強化了 3/6 拍打擊</li>
-<li>letter from you 在 Easy 難度中去除了 16 分音符</li>
-<li>on way 的原譜被歸類到 Crazy 難度</li>
-<li>on way 於 Normalcy 難度中去除了 1-2-3-2-1-2-… 樓梯型連擊</li>
-<li>the a minor 的原譜被歸類到 Crazy 難度</li>
-<li>the a minor 在 Easy 難度中簡化節奏與調降音符流速度</li>
-<li>ending mix 的原譜被歸類到 Normalcy難度，為各類難度譜面的集合</li>
-</ul>
-<div class="note warning">
-            <p>v1.1 版的紀錄不再適用 v1.2 版</p>
-          </div>
-<div class="note info">
-            <p>v1.1 版開始，按下 Ctrl 可以自動演奏</p>
-          </div>
-<h2 id="v1-3-版"><a href="#v1-3-版" class="headerlink" title="v1.3 版"></a>v1.3 版</h2><p><strong>發行說明</strong></p>
-<ul>
-<li>現在開始不再提供 Google Drive 的檔案，請直接在 itch.io 下載</li>
-<li>音樂遊戲插件已經整理完成，目前正在撰寫使用說明</li>
-</ul>
-<p><strong>更新說明</strong></p>
-<ul>
-<li>新增「長音符」（需要在長音開頭按下直至結尾，完成打擊）</li>
-<li>大部分譜面更新（少數沒有增加長音，少數譜面大改）</li>
-<li>曲目 Desert Scorpion 的圖標修正</li>
-<li>曲目 Desert Scorpion 音樂修正</li>
-<li>羊羽手札的顯示畫面修正</li>
-<li>部分曲目的星數調整</li>
-</ul>
-<p><strong>星數調整</strong></p>
-<ul>
-<li>Balasute meet (Normalcy) 難度調整為 ★6</li>
-<li>Balasute meet (Crazy) 難度調整為 ★7</li>
-<li>Beer bar (Crazy) 難度調整為 ★7</li>
-<li>Bye bye tomorrow (Easy) 難度調整為 ★3</li>
-<li>Desert scorpion (Normalcy) 難度調整為 ★8</li>
-<li>Leave (Easy) 難度調整為 ★2</li>
-<li>Letter from you (Crazy) 難度調整為 ★6</li>
-<li>On way (Crazy) 難度調整為 ★6</li>
-<li>The a minor (Easy) 難度調整為 ★3</li>
-</ul>
-<div class="note info">
-            <p>從 1.2 版升級到 1.3 版時。桌面版紀錄 save 資料夾可以複製到 www 目錄底下，<br>解鎖、演奏完成的資訊可被繼承，而 Great、Good、Miss、MaxCombo 等，分數類紀錄將歸零。</p>
-          </div>
-<h1 id="開發花絮"><a href="#開發花絮" class="headerlink" title="開發花絮"></a>開發花絮</h1><p>其實這不是我第一部公開的遊戲，但是這是第一部發布的遊戲。<br>記得以前巴哈 RM 版有遊戲發布預告的討論串，我發過一款名為「躲怪遊戲」的遊戲預告。<br>（RMVX，後來有嘗試把該遊戲遷移到 RMMV）</p>
-<p>那個時間點大概是剛學會寫 RMVX 腳本的時候……<br>而這個遊戲被那個棄坑作影響深遠，大概可以這樣理解吧 XDD”</p>
-<h2 id="樂曲背景"><a href="#樂曲背景" class="headerlink" title="樂曲背景"></a>樂曲背景</h2><p>《Thinking at night》（夜中思考）曲名是源於我經常熬夜，<br>不知道為何，深夜靈感比較豐富，這遊戲的曲目大部分都是深夜完成的。<br>不計《Ending Mix》的話，這首是這個遊戲最晚寫的曲目。</p>
-<p>《Umbrella》（傘）是最早寫的曲目，大約是躲怪遊戲預告發布後一陣子（2014 年前後），<br>完成這首曲目時，午後下起了太陽雨，所以無論是雨傘或陽傘的解釋都是對的。</p>
-<p>《Night forest road》（夜晚森林之路，我常簡稱為夜森之路或夜森），<br>封面的路燈是原本躲怪遊戲的怪物「結界路燈」，而這首最早是希望作為遊戲夜晚森林的 BGM。<br>值得一提的是，這首歌設計上是 Clarinet（單簧管）跟 Flute（長笛）交互演奏主旋律的曲子，<br>最早的版本沒有 73~105 小節的合奏。</p>
-<p><img src="https://i.imgur.com/9BEVNRn.jpg" alt="圖 1、躲怪遊戲的路燈（事件出沒）"><br><img src="https://i.imgur.com/8qC0WRT.png" alt="圖 2、結界路燈的形象圖"></p>
-<div class="note info">
-            <p>結界路燈原本應該是魔法都市附近森林的怪物，躲怪遊戲因特殊事件而出沒在城堡中。</p>
-          </div>
-<p>關於 Balasute（巴拉斯特）是躲怪遊戲的一位女性 NPC 角色，這個遊戲偷偷塞了兩首她的 BGM 在裡面，<br>分別是《Balasute meet》（巴拉斯特遭遇）以及《Balasute battle》（巴拉斯特戰鬥）。</p>
-<p>《Bye bye tomorrow》（再見明天）是我有一陣子低潮時的作品，當時真的想要直接結束，不過後來挺過來了。<br>上吊繩的由來是，當時閱讀完全自殺手冊後，發現上吊是這本書最推薦的自殺方法。<br>原本我有想過放上吊繩會不會把遊戲搞得「不合主流」，但是想要保留最初的原意，就沒有拿掉了。<br>這首原曲改過三次，遊戲中是第三版。</p>
-<p>《Conspiracy》的迷之動物其實是羊駝 (我發現幾乎所有人都覺得我畫的是長頸鹿)<br>因為這些音樂都是用 LMMS 作曲的，其中有個 LB302 的樂器插件是羊駝圖案。這首歌幾乎都是用這個樂器插件完成的。<br>另外，曲目中的低頻噪音是飛機起降的聲音，在 Crazy 的曲末，我用譜面模擬了飛機跑道。</p>
-<p><img src="https://i.imgur.com/lFw2BGR.png" alt="圖 3、LB302 的樂器插件"></p>
-<p>《Fragmentation》（碎片）對我來說是畢業歌，當時恰逢學校畢業，碎片指的是回憶的碎片。<br>遊戲中的畫面是左上的橘色背景跟飛散的照片。</p>
-<p>《Letter from you》（來自你的信）原本是寫在某論壇作曲教學的成品。<br>當時選曲的時候發覺大部分的曲目都很難，所以想放一首相對簡單的來平衡這樣……</p>
-<p>《the a minor》這首曲名是雙關，意思是 the a minor（一個小調）及 the A minor（這個 A 小調）。<br>顧名思義，全曲是 A 小調寫成，這是早期作品。圖中的蜥蜴是在 youtube 發布音樂時，隨手撇的蜥蜴。</p>
-<p>《Ending Mix》是選擇我最愛的曲目完成的，所以沒有包含所有歌曲 XD<br>另外這首是 FL Studio 寫成的，也可以作為我從 LMMS 搬家到 FL Studio 的里程碑：</p>
-<p><img src="https://i.imgur.com/7Sup7TK.jpg" alt="圖 4、《Ending Mix》樂曲軌道"></p>
-<p>然後這曲的設計順序是：</p>
-<ol>
-<li>用較慢的 Thinking at night 動機當開頭</li>
-<li>小銜接段，切進原創的段落，這裡我稱為 Bridge-A</li>
-<li>敲 4 拍鼓邊，切進 Fragmentation 副歌</li>
-<li>一個長音切到 Umbrella 的主歌</li>
-<li>鋼琴琶音後，切入 4 個主拍上行銜接段，然後鼓聲驟停 1 小節，切入 Bridge-B</li>
-<li>用比較急的鼓拍子，切入 on way 的特色段落（爬樓梯段落）</li>
-<li>延續爬樓梯的旋律，敲一個鈸切到 Night forest road</li>
-<li>Night forest road 這裡速度比原曲快，所以我把管樂換成純鋼琴</li>
-<li>標準 4 拍切到最後一個 Bridge-C</li>
-<li>用跳音切入 Bye bye Tomorrow 這裡是減慢版</li>
-<li>過門加速切回 Thinking at night 副歌，以此結尾</li>
-</ol>
-<p>其中 Bridge-A 希望設計成 RPG 冒險開始的感覺，<br>而 Bridge-B 是 RPG 遭遇曲折，最後 Bridge-C 是 RPG 過夜劇情的感覺 XDD</p>
-<h2 id="視覺設計"><a href="#視覺設計" class="headerlink" title="視覺設計"></a>視覺設計</h2><p>關於這個遊戲的選圖，其實是很掙扎的，<br>先要決定手上的音樂要搭什麼圖片，然後放置於主圖中的位置，<br>最早只有決定路燈、鯨魚跟上吊繩的相對位置。</p>
-<p>原本還打算放一些極早期的作品，只是因為換電腦很多曲子的分軌檔都不見了 QQ</p>
-<p><img src="https://i.imgur.com/Pk74d03.jpg" alt="圖 5、主圖的設計草稿"></p>
-<p>最早的遊戲難度與分級是我自己打過一輪，然後把百分比排序，切成三組（標示 1~3 星）<br>後來多數玩家反應說難度太高，我才發覺我太鼓七段自己測試根本失準 XD”</p>
-<p>所以在新版本中，我把難度切出來了，<br>在這裡的一個小彩蛋是難度分級 Easy、Normalcy 跟 Crazy 押韻。<br>（Normalcy 是常態的意思）</p>
-<p>至於最早曲目的解鎖順序是難度為基準的，<br>但是新版本中調整譜面後，這層關係就沒這麼明顯了。</p>
-<p><img src="https://i.imgur.com/BoPh5Zq.jpg" alt="圖 6、自己測試的成績紀錄手稿（最初版）"></p>
-<h2 id="製作後續"><a href="#製作後續" class="headerlink" title="製作後續"></a>製作後續</h2><div class="note info">
-            <p>這個音樂遊戲的插件請參考 <a href="/rpg-maker-mv-music-game/" title="RMMV 音樂遊戲">RMMV 音樂遊戲</a></p>
-          </div>
-]]></content>
-      <categories>
-        <category>獨立遊戲製作</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>先驗算法 Apriori Algorithm</title>
-    <url>/apriori-algorithm/</url>
-    <content><![CDATA[<p>資料探勘的文章，多半是我大學資料探勘課程的筆記之類的東西，<br>因為覺得內容有點雜，不是很難，就是很多東西。</p>
-<p>所以想開個文章逐一紀錄。以後找資料也方便一點這樣。<br>不過課程吸收的感覺對這個領域把握不高，有錯誤還請見諒就是了。<br><a id="more"></a></p>
-<h1 id="關聯規則"><a href="#關聯規則" class="headerlink" title="關聯規則"></a>關聯規則</h1><p>關聯規則是類似這樣的一個問題：<br><div class="note info">
-            <p>如果我的客戶買了某個商品，那麼要再推薦什麼商品呢？</p>
-          </div></p>
-<p>想當然的，推薦的商品一定是那個「很有可能被加購的」商品。</p>
-<p>那麼，我要怎知道客戶有可能加購什麼呢？<br>事實上，我們大概可以猜到一些事情。  </p>
-<ul>
-<li>與「客戶的屬性」相關<ul>
-<li>客戶是學生，而他剛剛買了筆，是不是折扣的話會買更多？</li>
-<li>客戶是廚師的話呢？</li>
-</ul>
-</li>
-<li>與「外在的屬性」相關<ul>
-<li>天氣炎熱的話，買了午餐再買飲料的關聯，是不是會被加強？</li>
-<li>天氣涼爽的話呢？</li>
-</ul>
-</li>
-<li>與「先前購買的商品」相關  <ul>
-<li>買了鐵鎚，是不是會繼續選購釘子呢？</li>
-<li>推薦買了鐵鎚的人麵包如何？</li>
-</ul>
-</li>
-</ul>
-<p>而資料探勘當中，有一些方法，可以去得到這些關聯規則，</p>
-<p>對於商業行為來說，資料探勘的重點就是找到這些隱含在資料中的「商機」。<br>然而這三種可能，我們通常關注第三種，也就是「先前購買的商品」相關的部份。</p>
-<p>至於為什麼呢？看下面的例子，然後想想看：  </p>
-<ul>
-<li>某個男人在賣場中買了一個麵包，所以男人的職業是？</li>
-<li>早上天氣還很熱，下午開始轉涼了。</li>
-</ul>
-<h1 id="支持率與可信度"><a href="#支持率與可信度" class="headerlink" title="支持率與可信度"></a>支持率與可信度</h1><p>在開始進行算法之前，得先介紹一下：</p>
-<p>支持率（Support）以及可信度（Confidence）這兩個參數。  </p>
-<ul>
-<li>支持率：出現的概率。</li>
-<li>可信度：條件機率，當商品出現時，出現另一件商品的概率。</li>
-</ul>
-<p>下面做一些描述：  </p>
-<p>$Support(A) = P(A)$<br>$Confidence(A \Rightarrow B) = P(B \mid A)$  </p>
-<p>參數的作用，從這裡可以發現一些指標：</p>
-<div class="note info">
-            <p>支持率代表一條規則的重要程度。</p>
-          </div>
-<p>$Confidence(A \Rightarrow B) = 99%, Support({A, B}) = 1%$</p>
-<p>雖然買了 A 商品，幾乎也會買 B 商品，但出現這種買法相當罕見。<br>如果很少人會這樣買，是不是就沒有商機呢？</p>
-<div class="note info">
-            <p>可信度代表一條規則的準確程度</p>
-          </div>
-<div class="note info">
-            <p>想想看，有沒有可能出現可信度很高、但支持率很低的情況？</p>
-          </div>
-<p>$Confidence(A \Rightarrow B) = P(B \mid A) = \frac{P(A \cap B)}{P(A)} = \frac{Support({A, B})}{P(A)}$</p>
-<h1 id="先驗算法"><a href="#先驗算法" class="headerlink" title="先驗算法"></a>先驗算法</h1><p>先驗算法（Apriori Algorithm）是資料探勘中的一種基本方法，<br>讓我們可以從資料中取得這些關聯規則。</p>
-<p>實際操作的說明：  </p>
-<ul>
-<li>設定 $\text{minimum_support}$</li>
-<li>計算每種商品的 $\text{support}$</li>
-<li>刪去 $\text{support}$ 小於 $\text{minimum_support}$ 的商品</li>
-<li>組合剩下的商品</li>
-<li>重複 2 ～ 4 步，直到無法組合或滿足其他停止條件</li>
-<li>計算所有的 $\text{confidence}$</li>
-</ul>
-<p>公式化：  </p>
-<ul>
-<li>$\alpha = \text{Minimum Support}, X_{0} = \text{All Objects}$</li>
-<li>$X_{p+1} = { x_{i} \cup x_{j} : support(x_{i}) &gt; \alpha \land support(x_{j}) &gt; \alpha , x_{i} \neq x_{j}, \forall x_{i}, x_{j} \in X_{p} }$</li>
-<li>$\text{Repeat step.2, until } X_{n} = \varnothing$</li>
-</ul>
-<p>大致上就這個樣子，直到 $X$ 無法組合為止，而這時的最長規則，長度為 $n-1$ 單位，<br>很多時候，由於要人工篩選規則，所以所有出現過的 $X$ 都要考慮。</p>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="400px" src="//jsfiddle.net/okfyq5ub/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
-      <categories>
-        <category>資料結構與演算法</category>
       </categories>
   </entry>
   <entry>
@@ -2156,77 +2156,6 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
       </categories>
   </entry>
   <entry>
-    <title>平均值與有效值證明</title>
-    <url>/proof-mean-and-rms/</url>
-    <content><![CDATA[<p>本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。<br>但是後來想了想，作為私人筆記留下來了。<br><a id="more"></a></p>
-<h1 id="交流電表示式"><a href="#交流電表示式" class="headerlink" title="交流電表示式"></a>交流電表示式</h1><p>在開始之前要先知道這個，<br>技職學校的話，大概是基本電學下半章的最後。</p>
-<p>正弦波的情況：  </p>
-<p>$$<br>v(t) = V_{m}sin(\omega \cdot t+\theta)<br>$$</p>
-<p>其中 $V_{m}$ 為峰值（最大值）也就是 $V_{peak}$ 的意思，<br>除此之外，在 $sin$ 函數內的 $\omega$ 是角頻率（$\omega = \frac{2\pi}{T}$）。<br>最後 $\theta$ 是相位差。</p>
-<div class="note info">
-            <p>參考圖形：<a href="https://www.desmos.com/calculator/xjy2v7yge7" target="_blank" rel="noopener">https://www.desmos.com/calculator/xjy2v7yge7</a></p>
-          </div>
-<h1 id="平均值"><a href="#平均值" class="headerlink" title="平均值"></a>平均值</h1><p>先來看比較簡易的平均值，平均值簡單的說就是取平均。<br>雖然聽起來像是廢話，畢竟正弦曲線誰沒看過？積分取個平均不就寫個 $0$ 而已嗎？<br>別忘了，正弦波在整流之後，它只剩下半波、或是全波。<br>也就是說，我們考慮的平均值，只要考量半波整流、或全波整流之後的就好。</p>
-<h2 id="半波整流"><a href="#半波整流" class="headerlink" title="半波整流"></a>半波整流</h2><p>對於半波整流，由於截去 $sin$ 函數的負半周。<br>我們直接算它正半周（函數週期的一半）有多少面積、再除以它的週期 $T$ 就好。</p>
-<p>$$<br>(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T<br>$$</p>
-<p>正弦波全部的週期 $T = 2\pi$ </p>
-<p>$$<br>V_{av} = (\int_{0}^{\pi} V_{m}sin(\omega \cdot t+\theta) \mathrm{d}t) / 2\pi<br>$$</p>
-<p>角頻率 $\omega = \frac{2\pi}{T} = \frac{2\pi}{2\pi} = 1$、相位差 $\theta = 0$</p>
-<p>$$<br>V_{av} = (\int_{0}^{\pi} V_{m}sin(t) \mathrm{d}t) / 2\pi<br>$$</p>
-<p>積分中常數 $V_{m}$ 提到外面</p>
-<p>$$<br>V_{av} = (V_{m} \int_{0}^{\pi} sin(t) \mathrm{d}t) / 2\pi<br>$$</p>
-<p>對 $sin(t)$ 取反導數，準備結束這個積分</p>
-<p>$$<br>\begin{align}<br>&amp; V_{av} = (V_{m} (-cos(t))\mid_{0}^{\pi}) / 2\pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-cos(\pi) + cos(0))) / 2\pi \nonumber\\<br>&amp; V_{av} = (V_{m} (-(-1) + 1)) / 2\pi \nonumber\\<br>&amp; V_{av} = (V_{m} (1 + 1)) / 2\pi \nonumber\\<br>&amp; V_{av} = 2V_{m} / 2\pi \nonumber\\<br>&amp; V_{av} = V_{m} / \pi \nonumber\\<br>\end{align}<br>$$</p>
-<p>得證半波整流的正弦波平均值為 $V_{m} / \pi$</p>
-<div class="note info">
-            <p>參考圖形：<a href="https://www.desmos.com/calculator/je1ka7naxl" target="_blank" rel="noopener">https://www.desmos.com/calculator/je1ka7naxl</a></p>
-          </div>
-<h2 id="全波整流"><a href="#全波整流" class="headerlink" title="全波整流"></a>全波整流</h2><p>全波整流跟半波整流很像，基本上換湯不換藥。<br>直接算它正半周（函數週期的一半）有多少面積，並予以雙倍（負半週被轉正），<br>再除以它的週期 $T$ 就好。</p>
-<p>$$<br>2(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T<br>$$</p>
-<p>正弦波全部的週期 $T = 2\pi$ </p>
-<p>$$<br>V_{av} = 2(\int_{0}^{\pi} V_{m}sin(\omega \cdot t+\theta) \mathrm{d}t) / 2\pi<br>$$</p>
-<p>角頻率 $\omega = \frac{2\pi}{T} = \frac{2\pi}{2\pi} = 1$、相位差 $\theta = 0$</p>
-<p>$$<br>V_{av} = 2(\int_{0}^{\pi} V_{m}sin(t) \mathrm{d}t) / 2\pi<br>$$</p>
-<p>常數 $V_{m}$ 提到外面，順便把 $2$ 常數約掉</p>
-<p>$$<br>\begin{align}<br>&amp; V_{av} = (V_{m} \int_{0}^{\pi} sin(t) \mathrm{d}t) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-cos(t))\mid_{0}^{\pi}) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-cos(\pi) + cos(0))) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-(-1) + 1)) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (1 + 1)) / \pi \nonumber \\<br>&amp; V_{av} = 2V_{m} / \pi \nonumber \\<br>&amp; V_{av} = 2V_{m} / \pi \nonumber \\<br>\end{align}<br>$$</p>
-<p>得證全波整流的正弦波平均值為 $2V_{m} / \pi$</p>
-<div class="note info">
-            <p>參考圖形：<a href="https://www.desmos.com/calculator/fnaaqr3fom" target="_blank" rel="noopener">https://www.desmos.com/calculator/fnaaqr3fom</a></p>
-          </div>
-<h1 id="有效值"><a href="#有效值" class="headerlink" title="有效值"></a>有效值</h1><p>有效值比較機車，不過也沒啥困難的，<br>唯一要注意的是，它會用到三角函數的半角公式。<br>有效值又名「均方根」值，顧名思義：先開方平均、再取根號。  </p>
-<p>對於連續函數 $f(x)$ 在區間 $[a, b]$ 來說：</p>
-<p>$$<br>f(x) = \sqrt{\frac{1}{b - a}\int_{a}^{b} f(x)^2  \mathrm{d}x}<br>$$</p>
-<p>寫成我們交流電的形式（區間在 $[0, 2\pi]$）：<br>$$<br>V_{rms} = \sqrt{\frac{1}{2\pi}\int_{0}^{2\pi} v(t)^2  \mathrm{d}t}<br>$$</p>
-<p>我們來考慮半波、跟全波整流後的情況。</p>
-<h2 id="半波整流-1"><a href="#半波整流-1" class="headerlink" title="半波整流"></a>半波整流</h2><p>半波整流中，負半週整個被刪去。<br>所以說，我們積分的區間要改成 $[0, \pi]$ 才正確。</p>
-<p>$$<br>V_{rms} = \sqrt{\frac{1}{2\pi}\int_{0}^{\pi} v(t)^2  \mathrm{d}t}<br>$$</p>
-<p>把 $v(t)$ 代換掉，另外角頻率 $\omega = \frac{2\pi}{T} = \frac{2\pi}{2\pi} = 1$、相位差 $\theta = 0$。</p>
-<p>$$<br>\begin{align}<br>&amp; V_{rms} = \sqrt{\frac{1}{2\pi}\int_{0}^{\pi} (V_{m}sin(\omega \cdot t+\theta))^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{1}{2\pi}\int_{0}^{\pi} (V_{m}sin(t))^2  \mathrm{d}t} \nonumber \\<br>\end{align}<br>$$</p>
-<p>把積分那邊的平方移進去，常數 $V_{m}^{2}$ 移出積分。</p>
-<p>$$<br>V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi}\int_{0}^{\pi} sin(t)^2  \mathrm{d}t}<br>$$</p>
-<p>接下來很關鍵，半角公式登場 $sin^{2}(x) = \frac{1}{2}(1 - cos(2x))$  </p>
-<p>$$<br>V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi}\int_{0}^{\pi} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t}<br>$$</p>
-<p>常數通通丟出去。</p>
-<p>$$<br>V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi}\int_{0}^{\pi} 1 - cos(2x) \mathrm{d}t}<br>$$</p>
-<p>取 $1 - cos(2x)$ 的反導數準備結束積分。</p>
-<p>$$<br>\begin{align}<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi} (x - \frac{1}{2}sin(2x))\mid_{0}^{\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi} (\pi - \frac{1}{2}sin(2\pi)) - (0 - \frac{1}{2}sin(0))} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi} (\pi - \frac{1}{2}sin(2\pi)) - (0 - 0)} \nonumber \\<br>\end{align}<br>$$</p>
-<p>當中 $sin(2\pi) = 0$ 直接拿掉</p>
-<p>$$<br>\begin{align}<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi} (\pi - 0)} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)(\pi)}{4\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)}{4}} \nonumber \\<br>&amp; V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{4}} \nonumber \\<br>&amp; V_{rms} = \frac{V_{m}}{2}  \nonumber \\<br>\end{align}<br>$$</p>
-<p>半波整流的有效值，是最大值（峰值）的一半。</p>
-<div class="note info">
-            <p>參考圖形：<a href="https://www.desmos.com/calculator/qfo1snucty" target="_blank" rel="noopener">https://www.desmos.com/calculator/qfo1snucty</a></p>
-          </div>
-<h2 id="全波整流-1"><a href="#全波整流-1" class="headerlink" title="全波整流"></a>全波整流</h2><p>在積分那邊，取個雙倍而已。</p>
-<p>$$<br>\begin{align}<br>&amp; V_{rms} = \sqrt{\frac{1}{2\pi} 2\int_{0}^{\pi} v(t)^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{1}{\pi}\int_{0}^{\pi} (V_{m}sin(\omega \cdot t+\theta))^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{1}{\pi}\int_{0}^{\pi} (V_{m}sin(t))^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{\pi}\int_{0}^{\pi} sin(t)^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{\pi}\int_{0}^{\pi} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi}\int_{0}^{\pi} 1 - cos(2x) \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (x - \frac{1}{2}sin(2x))\mid_{0}^{\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (\pi - \frac{1}{2}sin(2\pi)) - (0 - \frac{1}{2}sin(0))} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (\pi - \frac{1}{2}sin(2\pi)) - (0 - 0)} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (\pi - 0)} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)(\pi)}{2\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)}{2}} \nonumber \\<br>&amp; V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{2}} \nonumber \\<br>&amp; V_{rms} = \frac{V_{m}}{\sqrt{2}} \nonumber \\<br>\end{align}<br>$$</p>
-<div class="note info">
-            <p>參考圖形：<a href="https://www.desmos.com/calculator/bmnutv8k7m" target="_blank" rel="noopener">https://www.desmos.com/calculator/bmnutv8k7m</a></p>
-          </div>
-]]></content>
-      <categories>
-        <category>基本電學與電子學</category>
-      </categories>
-  </entry>
-  <entry>
     <title>影像濾波 Image Filter</title>
     <url>/Image-Filter/</url>
     <content><![CDATA[<p>這次的主題是影像濾波（image filter）。</p>
@@ -2352,6 +2281,77 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
 ]]></content>
       <categories>
         <category>資料結構與演算法</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>平均值與有效值證明</title>
+    <url>/proof-mean-and-rms/</url>
+    <content><![CDATA[<p>本篇原本從舊站搬過來時，因為內容比較偏門有考慮要刪掉。<br>但是後來想了想，作為私人筆記留下來了。<br><a id="more"></a></p>
+<h1 id="交流電表示式"><a href="#交流電表示式" class="headerlink" title="交流電表示式"></a>交流電表示式</h1><p>在開始之前要先知道這個，<br>技職學校的話，大概是基本電學下半章的最後。</p>
+<p>正弦波的情況：  </p>
+<p>$$<br>v(t) = V_{m}sin(\omega \cdot t+\theta)<br>$$</p>
+<p>其中 $V_{m}$ 為峰值（最大值）也就是 $V_{peak}$ 的意思，<br>除此之外，在 $sin$ 函數內的 $\omega$ 是角頻率（$\omega = \frac{2\pi}{T}$）。<br>最後 $\theta$ 是相位差。</p>
+<div class="note info">
+            <p>參考圖形：<a href="https://www.desmos.com/calculator/xjy2v7yge7" target="_blank" rel="noopener">https://www.desmos.com/calculator/xjy2v7yge7</a></p>
+          </div>
+<h1 id="平均值"><a href="#平均值" class="headerlink" title="平均值"></a>平均值</h1><p>先來看比較簡易的平均值，平均值簡單的說就是取平均。<br>雖然聽起來像是廢話，畢竟正弦曲線誰沒看過？積分取個平均不就寫個 $0$ 而已嗎？<br>別忘了，正弦波在整流之後，它只剩下半波、或是全波。<br>也就是說，我們考慮的平均值，只要考量半波整流、或全波整流之後的就好。</p>
+<h2 id="半波整流"><a href="#半波整流" class="headerlink" title="半波整流"></a>半波整流</h2><p>對於半波整流，由於截去 $sin$ 函數的負半周。<br>我們直接算它正半周（函數週期的一半）有多少面積、再除以它的週期 $T$ 就好。</p>
+<p>$$<br>(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T<br>$$</p>
+<p>正弦波全部的週期 $T = 2\pi$ </p>
+<p>$$<br>V_{av} = (\int_{0}^{\pi} V_{m}sin(\omega \cdot t+\theta) \mathrm{d}t) / 2\pi<br>$$</p>
+<p>角頻率 $\omega = \frac{2\pi}{T} = \frac{2\pi}{2\pi} = 1$、相位差 $\theta = 0$</p>
+<p>$$<br>V_{av} = (\int_{0}^{\pi} V_{m}sin(t) \mathrm{d}t) / 2\pi<br>$$</p>
+<p>積分中常數 $V_{m}$ 提到外面</p>
+<p>$$<br>V_{av} = (V_{m} \int_{0}^{\pi} sin(t) \mathrm{d}t) / 2\pi<br>$$</p>
+<p>對 $sin(t)$ 取反導數，準備結束這個積分</p>
+<p>$$<br>\begin{align}<br>&amp; V_{av} = (V_{m} (-cos(t))\mid_{0}^{\pi}) / 2\pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-cos(\pi) + cos(0))) / 2\pi \nonumber\\<br>&amp; V_{av} = (V_{m} (-(-1) + 1)) / 2\pi \nonumber\\<br>&amp; V_{av} = (V_{m} (1 + 1)) / 2\pi \nonumber\\<br>&amp; V_{av} = 2V_{m} / 2\pi \nonumber\\<br>&amp; V_{av} = V_{m} / \pi \nonumber\\<br>\end{align}<br>$$</p>
+<p>得證半波整流的正弦波平均值為 $V_{m} / \pi$</p>
+<div class="note info">
+            <p>參考圖形：<a href="https://www.desmos.com/calculator/je1ka7naxl" target="_blank" rel="noopener">https://www.desmos.com/calculator/je1ka7naxl</a></p>
+          </div>
+<h2 id="全波整流"><a href="#全波整流" class="headerlink" title="全波整流"></a>全波整流</h2><p>全波整流跟半波整流很像，基本上換湯不換藥。<br>直接算它正半周（函數週期的一半）有多少面積，並予以雙倍（負半週被轉正），<br>再除以它的週期 $T$ 就好。</p>
+<p>$$<br>2(\int_{0}^{\frac{T}{2}} v(t) \mathrm{d}t) / T<br>$$</p>
+<p>正弦波全部的週期 $T = 2\pi$ </p>
+<p>$$<br>V_{av} = 2(\int_{0}^{\pi} V_{m}sin(\omega \cdot t+\theta) \mathrm{d}t) / 2\pi<br>$$</p>
+<p>角頻率 $\omega = \frac{2\pi}{T} = \frac{2\pi}{2\pi} = 1$、相位差 $\theta = 0$</p>
+<p>$$<br>V_{av} = 2(\int_{0}^{\pi} V_{m}sin(t) \mathrm{d}t) / 2\pi<br>$$</p>
+<p>常數 $V_{m}$ 提到外面，順便把 $2$ 常數約掉</p>
+<p>$$<br>\begin{align}<br>&amp; V_{av} = (V_{m} \int_{0}^{\pi} sin(t) \mathrm{d}t) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-cos(t))\mid_{0}^{\pi}) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-cos(\pi) + cos(0))) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (-(-1) + 1)) / \pi \nonumber \\<br>&amp; V_{av} = (V_{m} (1 + 1)) / \pi \nonumber \\<br>&amp; V_{av} = 2V_{m} / \pi \nonumber \\<br>&amp; V_{av} = 2V_{m} / \pi \nonumber \\<br>\end{align}<br>$$</p>
+<p>得證全波整流的正弦波平均值為 $2V_{m} / \pi$</p>
+<div class="note info">
+            <p>參考圖形：<a href="https://www.desmos.com/calculator/fnaaqr3fom" target="_blank" rel="noopener">https://www.desmos.com/calculator/fnaaqr3fom</a></p>
+          </div>
+<h1 id="有效值"><a href="#有效值" class="headerlink" title="有效值"></a>有效值</h1><p>有效值比較機車，不過也沒啥困難的，<br>唯一要注意的是，它會用到三角函數的半角公式。<br>有效值又名「均方根」值，顧名思義：先開方平均、再取根號。  </p>
+<p>對於連續函數 $f(x)$ 在區間 $[a, b]$ 來說：</p>
+<p>$$<br>f(x) = \sqrt{\frac{1}{b - a}\int_{a}^{b} f(x)^2  \mathrm{d}x}<br>$$</p>
+<p>寫成我們交流電的形式（區間在 $[0, 2\pi]$）：<br>$$<br>V_{rms} = \sqrt{\frac{1}{2\pi}\int_{0}^{2\pi} v(t)^2  \mathrm{d}t}<br>$$</p>
+<p>我們來考慮半波、跟全波整流後的情況。</p>
+<h2 id="半波整流-1"><a href="#半波整流-1" class="headerlink" title="半波整流"></a>半波整流</h2><p>半波整流中，負半週整個被刪去。<br>所以說，我們積分的區間要改成 $[0, \pi]$ 才正確。</p>
+<p>$$<br>V_{rms} = \sqrt{\frac{1}{2\pi}\int_{0}^{\pi} v(t)^2  \mathrm{d}t}<br>$$</p>
+<p>把 $v(t)$ 代換掉，另外角頻率 $\omega = \frac{2\pi}{T} = \frac{2\pi}{2\pi} = 1$、相位差 $\theta = 0$。</p>
+<p>$$<br>\begin{align}<br>&amp; V_{rms} = \sqrt{\frac{1}{2\pi}\int_{0}^{\pi} (V_{m}sin(\omega \cdot t+\theta))^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{1}{2\pi}\int_{0}^{\pi} (V_{m}sin(t))^2  \mathrm{d}t} \nonumber \\<br>\end{align}<br>$$</p>
+<p>把積分那邊的平方移進去，常數 $V_{m}^{2}$ 移出積分。</p>
+<p>$$<br>V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi}\int_{0}^{\pi} sin(t)^2  \mathrm{d}t}<br>$$</p>
+<p>接下來很關鍵，半角公式登場 $sin^{2}(x) = \frac{1}{2}(1 - cos(2x))$  </p>
+<p>$$<br>V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi}\int_{0}^{\pi} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t}<br>$$</p>
+<p>常數通通丟出去。</p>
+<p>$$<br>V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi}\int_{0}^{\pi} 1 - cos(2x) \mathrm{d}t}<br>$$</p>
+<p>取 $1 - cos(2x)$ 的反導數準備結束積分。</p>
+<p>$$<br>\begin{align}<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi} (x - \frac{1}{2}sin(2x))\mid_{0}^{\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi} (\pi - \frac{1}{2}sin(2\pi)) - (0 - \frac{1}{2}sin(0))} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi} (\pi - \frac{1}{2}sin(2\pi)) - (0 - 0)} \nonumber \\<br>\end{align}<br>$$</p>
+<p>當中 $sin(2\pi) = 0$ 直接拿掉</p>
+<p>$$<br>\begin{align}<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{4\pi} (\pi - 0)} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)(\pi)}{4\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)}{4}} \nonumber \\<br>&amp; V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{4}} \nonumber \\<br>&amp; V_{rms} = \frac{V_{m}}{2}  \nonumber \\<br>\end{align}<br>$$</p>
+<p>半波整流的有效值，是最大值（峰值）的一半。</p>
+<div class="note info">
+            <p>參考圖形：<a href="https://www.desmos.com/calculator/qfo1snucty" target="_blank" rel="noopener">https://www.desmos.com/calculator/qfo1snucty</a></p>
+          </div>
+<h2 id="全波整流-1"><a href="#全波整流-1" class="headerlink" title="全波整流"></a>全波整流</h2><p>在積分那邊，取個雙倍而已。</p>
+<p>$$<br>\begin{align}<br>&amp; V_{rms} = \sqrt{\frac{1}{2\pi} 2\int_{0}^{\pi} v(t)^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{1}{\pi}\int_{0}^{\pi} (V_{m}sin(\omega \cdot t+\theta))^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{1}{\pi}\int_{0}^{\pi} (V_{m}sin(t))^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{\pi}\int_{0}^{\pi} sin(t)^2  \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{\pi}\int_{0}^{\pi} \frac{1}{2}(1 - cos(2x)) \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi}\int_{0}^{\pi} 1 - cos(2x) \mathrm{d}t} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (x - \frac{1}{2}sin(2x))\mid_{0}^{\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (\pi - \frac{1}{2}sin(2\pi)) - (0 - \frac{1}{2}sin(0))} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (\pi - \frac{1}{2}sin(2\pi)) - (0 - 0)} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{V_{m}^2}{2\pi} (\pi - 0)} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)(\pi)}{2\pi}} \nonumber \\<br>&amp; V_{rms} = \sqrt{\frac{(V_{m}^2)}{2}} \nonumber \\<br>&amp; V_{rms} = \frac{\sqrt{V_{m}^2}}{\sqrt{2}} \nonumber \\<br>&amp; V_{rms} = \frac{V_{m}}{\sqrt{2}} \nonumber \\<br>\end{align}<br>$$</p>
+<div class="note info">
+            <p>參考圖形：<a href="https://www.desmos.com/calculator/bmnutv8k7m" target="_blank" rel="noopener">https://www.desmos.com/calculator/bmnutv8k7m</a></p>
+          </div>
+]]></content>
+      <categories>
+        <category>基本電學與電子學</category>
       </categories>
   </entry>
   <entry>
@@ -3130,6 +3130,70 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
       </categories>
   </entry>
   <entry>
+    <title>牛頓法計算 sqrt 函數</title>
+    <url>/newton-method-sqrt/</url>
+    <content><![CDATA[<p>這篇最早是 Evernote 的筆記，整理之後就放到部落格這裡來了；<br>忘記最早是為了要做什麼，總之就是利用牛頓法計算開根號函數的作法。</p>
+<a id="more"></a>
+<h1 id="函數化"><a href="#函數化" class="headerlink" title="函數化"></a>函數化</h1><p>當要估計 $\text{sqrt}(a) = \sqrt{a}$ 時，<br>可以先令 $x_k$  為一近似解，即 $x_k \approx \sqrt{a}$。</p>
+<p>接著整理：</p>
+<p>$x^{2}_{k} \approx a$ </p>
+<p>$x^{2}_{k} - a \approx 0$</p>
+<p>將 $x^{2}_{k} - a$ 視為一函數 $f(p) = p^{2} - a$</p>
+<p>令 $p = x_{k}$ 就有 $f(x_{k}) = x_{k}^{2} - a \approx 0$</p>
+<p>則 $x_k$ 恰為函數近似解 $f(x_k) \approx 0$ 之值。</p>
+<h1 id="泰勒展開"><a href="#泰勒展開" class="headerlink" title="泰勒展開"></a>泰勒展開</h1><p>對函數 $f(p)$ 在 $x_{k}$ 處取泰勒展開（Taylor series）有：</p>
+<p>$f(p) = \frac{f(x_{k})}{0!}(p-x_{k})^0  + \frac{f’(x_{k})}{1!}(p-x_{k})^1 + R(p)$</p>
+<p>整理後得：</p>
+<p>$f(p) = f(x_{k}) + f’(x_{k})(p-x_{k}) + R(p)$</p>
+<p>其中 $R(p)$ 為餘項。</p>
+<h1 id="迭代關係"><a href="#迭代關係" class="headerlink" title="迭代關係"></a>迭代關係</h1><p>回憶最早的假設 $x_k \approx \sqrt{a}$；</p>
+<p>我們現在考慮迭代法，即 $x_{k+1}$ 比 $x_{k}$ 的答案更精準：</p>
+<p>$x_{k+1} \approx \sqrt{a}$</p>
+<p>取 $p = x_{k+1}$ 帶入泰勒展開：</p>
+<p>$f(x_{k+1}) = f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k}) + R(x_{k+1})$</p>
+<p>由於是近似解，故捨去餘項 $R(p)$ 有：</p>
+<p>$f(x_{k+1}) \approx f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k})$</p>
+<p>這兩者都可以視做原函數的近似，即 $f(x_k) \approx f(x_{k+1})$ 只是 $f(x_{k+1})$ 更精確。</p>
+<div class="note warning">
+            <p>注意對象目前是 $f(p) = p^{2} - a$ 而 $f(p) \neq \sqrt{p}$</p>
+          </div>
+<p>之前的函數 $f(p) = p^{2} - a$；</p>
+<p>我們現在帶入更精確的 $x_{k+1} \approx \sqrt{a}$ 於是：</p>
+<p>$f(x_{k+1}) = x_{k+1}^{2} - a \approx 0$</p>
+<p>同時，展開式：</p>
+<p>$f(x_{k+1}) \approx f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k})$</p>
+<p>兩式串接可得：</p>
+<p>$f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k}) \approx 0$</p>
+<p>$f’(x_{k})(x_{k+1}-x_{k}) \approx -f(x_{k})$</p>
+<p>$x_{k+1}-x_{k} \approx \frac{-f(x_{k})}{f’(x_{k})}$</p>
+<p>$x_{k+1} \approx \frac{-f(x_{k})}{f’(x_{k})} + x_{k}$</p>
+<p>$x_{k+1} \approx x_{k} - \frac{f(x_{k})}{f’(x_{k})}$</p>
+<p>我們現在找到近似關係了，一旦我們確定 $x_{k}$ 那就可以計算右項來推得 $x_{k+1}$。</p>
+<h1 id="程式解"><a href="#程式解" class="headerlink" title="程式解"></a>程式解</h1><p>函數 $f(x_{k}) = x_k^2 - a$</p>
+<p>一階微分函數 $f’(x_{k}) = 2 \cdot x_k$</p>
+<div class="note info">
+            <p>這裡的 $a$ 為一常數，也是確定的輸入參數值 $\text{sqrt}(a) = \sqrt{a}$</p>
+          </div>
+<p>整個合併整理：</p>
+<p>$x_{k+1} \approx x_{k} - \frac{\displaystyle x_k^2 - a}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle 2 x_{k}^2}{\displaystyle 2 x_k} - \frac{\displaystyle x_k^2 - a}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle 2 x_{k}^2 - (x_k^2 - a)}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle 2 x_{k}^2 - x_k^2 + a}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle x_{k}^2 + a}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle x_{k}^2}{\displaystyle 2} + \frac{\displaystyle a}{\displaystyle 2 x_k}$</p>
+<p>$x_{k+1} \approx \frac{\displaystyle 1}{\displaystyle 2} \left( \displaystyle x_{k}^2 + \frac{\displaystyle a}{\displaystyle x_k} \right)$</p>
+<p>所以說 $\text{sqrt}(a)$ 的值為 $x_{k+1} \approx \frac{1}{2} \left(x_{k}^2 + \frac{a}{x_k} \right)$</p>
+<p>只要先隨便令一個 $x_k$ 為任意值，就透過計算 $x_{k+1}$ 得到更精確地解：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sqrt</span>(<span class="params">a</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">let</span> epsilon = <span class="number">1e-6</span>;        <span class="comment">// 迭代到精準度 1e-6</span></span><br><span class="line">  <span class="keyword">let</span> x0;                    <span class="comment">// x[k]</span></span><br><span class="line">  <span class="keyword">let</span> x1;                    <span class="comment">// x[k+1]</span></span><br><span class="line">  x1 = a;                    <span class="comment">// 隨便猜一個數</span></span><br><span class="line">  <span class="keyword">do</span>&#123;</span><br><span class="line">    x0 = x1;                 <span class="comment">// 讓 k 遞增（x[k] 變成 x[k+1]）</span></span><br><span class="line">    x1 = (x0 + a/x0) / <span class="number">2</span>;    <span class="comment">// 公式 x[k+1] = (1/2)(x[k] + a/x[k])</span></span><br><span class="line">  &#125;<span class="keyword">while</span>(x0 - x1 &gt; epsilon); <span class="comment">// 不夠精準則繼續</span></span><br><span class="line">  <span class="keyword">return</span> x1;                 <span class="comment">// 答案在 x[k+1]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info">
+            <p>程式上的一個細節是，初始猜的值跟終止條件有關。</p><p>若初始條件 $x_{k} &gt; \sqrt a$ 則收斂時 $x_{k+1}$ 會比 $x_{k}$ 更小；<br>反之，初始條件 $x_{k} &lt; \sqrt a$ 則收斂時 $x_{k+1}$ 會比 $x_{k}$ 更大。</p><p>考慮 $a \in N$ 則必有 $a \geq \sqrt a$，<br>則初始條件給 $x_{k} = a$ 則必向更小的方向收斂，終止條件就可以避免使用另外的判斷式。</p>
+          </div>
+]]></content>
+      <categories>
+        <category>程式設計</category>
+      </categories>
+  </entry>
+  <entry>
     <title>直方圖均化 Histogram Equalization</title>
     <url>/histogram-equalization/</url>
     <content><![CDATA[<p>之前影像處理課有寫過直方圖均化（Histogram Equalization）的程式，<br>這篇是重新紀錄做法，以及提供 Web 的演示。</p>
@@ -3293,6 +3357,51 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
       </categories>
   </entry>
   <entry>
+    <title>羊羽手札更新歷程 04</title>
+    <url>/tinytsunami-update-04/</url>
+    <content><![CDATA[<p>最近比較開始有時間重新開始維護部落格了。<br><a id="more"></a></p>
+<h1 id="更新歷程"><a href="#更新歷程" class="headerlink" title="更新歷程"></a>更新歷程</h1><ul>
+<li>2016.10.24 羊羽手札v1（PHP）</li>
+<li>2017.12.18 羊羽手札v2（Vue.js+Express）</li>
+<li>2017.02.25 羊羽手札v3（Hexo）</li>
+<li>2017.02.25 更新歷程 01 發表</li>
+<li>2018.07.01 更新歷程 02 發表</li>
+<li>2018.09.24 暫停更新</li>
+<li>2018.09.24 更新歷程 03 發表</li>
+<li>2019.03.28 重啟更新</li>
+<li>2019.04.20 羊羽手札v4（Hexo/Next Update）</li>
+<li>2019.04.20 更新歷程 04 發表</li>
+</ul>
+<h1 id="系統更新"><a href="#系統更新" class="headerlink" title="系統更新"></a>系統更新</h1><ol>
+<li>數學公式顯示系統「MathJax」的版本更新</li>
+<li>文章中的標籤改成顯示圖示</li>
+<li>留言系統更新</li>
+<li>增加圖片的文字標題</li>
+</ol>
+]]></content>
+      <categories>
+        <category>羊羽手札</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>羊羽手札更新歷程 03</title>
+    <url>/tinytsunami-update-03/</url>
+    <content><![CDATA[<p>原本以為暑假可以很閒，結果意外的忙，<br>沒意外的話，一直到明年過完年才會有時間更新。<br><a id="more"></a></p>
+<h1 id="更新歷程"><a href="#更新歷程" class="headerlink" title="更新歷程"></a>更新歷程</h1><ul>
+<li>2016.10.24 羊羽手札v1（PHP）</li>
+<li>2017.12.18 羊羽手札v2（Vue.js+Express）</li>
+<li>2017.02.25 羊羽手札v3（Hexo）</li>
+<li>2017.02.25 更新歷程 01 發表</li>
+<li>2018.07.01 更新歷程 02 發表</li>
+<li>2018.09.24 暫停更新</li>
+<li>2018.09.24 更新歷程 03 發表</li>
+</ul>
+]]></content>
+      <categories>
+        <category>羊羽手札</category>
+      </categories>
+  </entry>
+  <entry>
     <title>羊羽手札更新歷程 02</title>
     <url>/tinytsunami-update-02/</url>
     <content><![CDATA[<p>這學期一開始還好，期中之後就很忙，<br>這個部落格也就在後半學期暫緩一下子了。</p>
@@ -3319,51 +3428,6 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
 <p>本來是要做成 Missile Command 的文青版，也就是「雨輕輕的飄落在屏幕上」的感覺，<br>後來關卡設計做一做，變成除了下雨，還加了黑雨（小說《黒い雨》）及隕石撞地球。</p>
 <p>最後腦洞開太大，後來就只做成類似遊戲畫面的東西了。<br>（這張照片是筆者拍的，是我們學校後山。）</p>
 <iframe scrolling="no" width="100%" height="520px" src="//jsfiddle.net/8epx9rvo/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
-      <categories>
-        <category>羊羽手札</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>羊羽手札更新歷程 03</title>
-    <url>/tinytsunami-update-03/</url>
-    <content><![CDATA[<p>原本以為暑假可以很閒，結果意外的忙，<br>沒意外的話，一直到明年過完年才會有時間更新。<br><a id="more"></a></p>
-<h1 id="更新歷程"><a href="#更新歷程" class="headerlink" title="更新歷程"></a>更新歷程</h1><ul>
-<li>2016.10.24 羊羽手札v1（PHP）</li>
-<li>2017.12.18 羊羽手札v2（Vue.js+Express）</li>
-<li>2017.02.25 羊羽手札v3（Hexo）</li>
-<li>2017.02.25 更新歷程 01 發表</li>
-<li>2018.07.01 更新歷程 02 發表</li>
-<li>2018.09.24 暫停更新</li>
-<li>2018.09.24 更新歷程 03 發表</li>
-</ul>
-]]></content>
-      <categories>
-        <category>羊羽手札</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>羊羽手札更新歷程 04</title>
-    <url>/tinytsunami-update-04/</url>
-    <content><![CDATA[<p>最近比較開始有時間重新開始維護部落格了。<br><a id="more"></a></p>
-<h1 id="更新歷程"><a href="#更新歷程" class="headerlink" title="更新歷程"></a>更新歷程</h1><ul>
-<li>2016.10.24 羊羽手札v1（PHP）</li>
-<li>2017.12.18 羊羽手札v2（Vue.js+Express）</li>
-<li>2017.02.25 羊羽手札v3（Hexo）</li>
-<li>2017.02.25 更新歷程 01 發表</li>
-<li>2018.07.01 更新歷程 02 發表</li>
-<li>2018.09.24 暫停更新</li>
-<li>2018.09.24 更新歷程 03 發表</li>
-<li>2019.03.28 重啟更新</li>
-<li>2019.04.20 羊羽手札v4（Hexo/Next Update）</li>
-<li>2019.04.20 更新歷程 04 發表</li>
-</ul>
-<h1 id="系統更新"><a href="#系統更新" class="headerlink" title="系統更新"></a>系統更新</h1><ol>
-<li>數學公式顯示系統「MathJax」的版本更新</li>
-<li>文章中的標籤改成顯示圖示</li>
-<li>留言系統更新</li>
-<li>增加圖片的文字標題</li>
-</ol>
-]]></content>
       <categories>
         <category>羊羽手札</category>
       </categories>
@@ -3517,6 +3581,55 @@ $(x^{(1)}_{1}, x^{(1)}_{2}, ..., x^{(1)}_{n}, y^{(1)})$
           </div>]]></content>
       <categories>
         <category>獨立遊戲製作</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>老鼠走迷宮 Mouse Maze</title>
+    <url>/mouse-maze/</url>
+    <content><![CDATA[<p>這是資料結構第三次作業。<br>本篇老鼠走迷宮會大致上分成：「生成迷宮」與「解出迷宮」兩個部分。<br><a id="more"></a></p>
+<h1 id="建立迷宮"><a href="#建立迷宮" class="headerlink" title="建立迷宮"></a>建立迷宮</h1><p>老鼠走迷宮畢竟是一個經典問題，當然對於迷宮生成也是，<br>所以已經有許多很棒的網路資源可以參考了。</p>
+<div class="note info">
+            <p>我覺得很棒的 <a href="http://hctu.blogspot.tw/search?q=%E8%BF%B7%E5%AE%AE\" target="_blank" rel="noopener">參考資料</a></p>
+          </div>
+<div class="note success">
+            <p>本文改寫前使用碎形結構建立迷宮。<!-- ；請參閱 [L系統與碎形 L-system and Fractal](/2018/03/03/L系統與碎形%20L-system%20and%20Fractal/#more) --></p>
+          </div>
+<p>那接下來，我就不重複裡面的內容，畢竟重複就沒有太大的意義。<br>我會依照我原先的想法來製作迷宮。</p>
+<p>好的迷宮是又亂又複雜的，所以直觀的想法是：使用亂數。</p>
+<p>參考室內結構來說，梁柱、牆板之類的部分是必要的；<br>我想迷宮也一樣，而且我們最好有一條路徑可以找到出口。</p>
+<p>對於亂數生成的做法來講，以下提供基本操作的想法：</p>
+<ul>
+<li>產生入口</li>
+<li>產生出口</li>
+<li>格子狀佈滿柱子</li>
+<li>柱子間隨機方向延伸 1 格成為牆板，或不延伸</li>
+<li>輸出迷宮</li>
+</ul>
+<div class="note info">
+            <p>好的迷宮有哪些特徵呢？</p>
+          </div>
+<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>演示提供三個參數可以調整。</p>
+<p>我增加了柱子間連接的機率，也就是說，即使選取了A、B兩個柱子。<br>也要剛好機會符合才相接牆面，間接降低了圖形的密度。</p>
+<iframe scrolling="no" width="100%" height="560px" src="//jsfiddle.net/rzun2ogn/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+<h1 id="迷宮解法"><a href="#迷宮解法" class="headerlink" title="迷宮解法"></a>迷宮解法</h1><div class="note success">
+            <p>本段需有堆疊與佇列的先備知識；請參閱 <a href="/stack-and-queue/" title="堆疊與佇列 Stack and Queue">堆疊與佇列 Stack and Queue</a></p>
+          </div>
+<p>其實在之前 ITSA 中就有這樣的題目，<br>當時是採用複製地圖副本且標記的作法來解，也順利解出來了。<br>其實是同一類的做法，只差在這邊多了一種資料結構來控制與調整。</p>
+<p>有趣的是，如果直接在地圖上記錄哪裡走過，<br>最後輸出路徑還是需要掃描一次地圖。</p>
+<p>下面是解法的粗略步驟：  </p>
+<ol>
+<li>堆疊初始化（存入第一步）</li>
+<li>根據堆疊內的資料走出下一步</li>
+<li>走出下一步時將資料存入堆疊</li>
+<li>重複 2 ~ 3 步驟，直到堆疊為空或到達出口</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">// 給予第一步</span></span><br><span class="line"><span class="built_in">stack</span>.push((<span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line"><span class="comment">// 尚有路徑沒試</span></span><br><span class="line"><span class="keyword">while</span>(!<span class="built_in">stack</span>.empty())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 走回頭路</span></span><br><span class="line">    obj step = <span class="built_in">stack</span>.pop();</span><br><span class="line">    x = step.x;</span><br><span class="line">    y = step.y;</span><br><span class="line">    dir = step.dir;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 嘗試每個方向</span></span><br><span class="line">    <span class="keyword">while</span>(dir)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 下一步的位置</span></span><br><span class="line">        u = x + dx;</span><br><span class="line">        v = y + dy;</span><br><span class="line">        <span class="comment">// 下一步可以通行</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">map</span>[u][v].through())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 把這步塞進堆疊</span></span><br><span class="line">            <span class="built_in">stack</span>.push((x, y));</span><br><span class="line">            <span class="comment">// 移動到下一步</span></span><br><span class="line">            x = u;</span><br><span class="line">            y = v;</span><br><span class="line">            <span class="comment">// 發現這步正是終點</span></span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">map</span>[x][y].end?())</span><br><span class="line">                outputResult();</span><br><span class="line">            <span class="comment">//方向重置</span></span><br><span class="line">            dir.initialize();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 所有路徑都已經嘗試</span></span><br><span class="line"><span class="comment">// 但沒有走到終點，代表無解</span></span><br><span class="line">noResult();</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>這邊巧妙的利用方向重置來找路，並僅使用一行掉頭找其他路徑。<br><div class="note info">
+            <p>迷宮的布局、嘗試方向的順序，皆會影響解出迷宮的時間。</p>
+          </div></p>
+<h2 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h2><iframe scrolling="no" width="100%" height="540px" src="//jsfiddle.net/suws2m74/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>資料結構與演算法</category>
       </categories>
   </entry>
   <entry>
@@ -3858,55 +3971,6 @@ P_{i, j} = P_{i + 1, j - 1} && \text{if } S_{i} = S_{j}, |i - j| > 1 \\
       </categories>
   </entry>
   <entry>
-    <title>老鼠走迷宮 Mouse Maze</title>
-    <url>/mouse-maze/</url>
-    <content><![CDATA[<p>這是資料結構第三次作業。<br>本篇老鼠走迷宮會大致上分成：「生成迷宮」與「解出迷宮」兩個部分。<br><a id="more"></a></p>
-<h1 id="建立迷宮"><a href="#建立迷宮" class="headerlink" title="建立迷宮"></a>建立迷宮</h1><p>老鼠走迷宮畢竟是一個經典問題，當然對於迷宮生成也是，<br>所以已經有許多很棒的網路資源可以參考了。</p>
-<div class="note info">
-            <p>我覺得很棒的 <a href="http://hctu.blogspot.tw/search?q=%E8%BF%B7%E5%AE%AE\" target="_blank" rel="noopener">參考資料</a></p>
-          </div>
-<div class="note success">
-            <p>本文改寫前使用碎形結構建立迷宮。<!-- ；請參閱 [L系統與碎形 L-system and Fractal](/2018/03/03/L系統與碎形%20L-system%20and%20Fractal/#more) --></p>
-          </div>
-<p>那接下來，我就不重複裡面的內容，畢竟重複就沒有太大的意義。<br>我會依照我原先的想法來製作迷宮。</p>
-<p>好的迷宮是又亂又複雜的，所以直觀的想法是：使用亂數。</p>
-<p>參考室內結構來說，梁柱、牆板之類的部分是必要的；<br>我想迷宮也一樣，而且我們最好有一條路徑可以找到出口。</p>
-<p>對於亂數生成的做法來講，以下提供基本操作的想法：</p>
-<ul>
-<li>產生入口</li>
-<li>產生出口</li>
-<li>格子狀佈滿柱子</li>
-<li>柱子間隨機方向延伸 1 格成為牆板，或不延伸</li>
-<li>輸出迷宮</li>
-</ul>
-<div class="note info">
-            <p>好的迷宮有哪些特徵呢？</p>
-          </div>
-<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>演示提供三個參數可以調整。</p>
-<p>我增加了柱子間連接的機率，也就是說，即使選取了A、B兩個柱子。<br>也要剛好機會符合才相接牆面，間接降低了圖形的密度。</p>
-<iframe scrolling="no" width="100%" height="560px" src="//jsfiddle.net/rzun2ogn/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
-<h1 id="迷宮解法"><a href="#迷宮解法" class="headerlink" title="迷宮解法"></a>迷宮解法</h1><div class="note success">
-            <p>本段需有堆疊與佇列的先備知識；請參閱 <a href="/stack-and-queue/" title="堆疊與佇列 Stack and Queue">堆疊與佇列 Stack and Queue</a></p>
-          </div>
-<p>其實在之前 ITSA 中就有這樣的題目，<br>當時是採用複製地圖副本且標記的作法來解，也順利解出來了。<br>其實是同一類的做法，只差在這邊多了一種資料結構來控制與調整。</p>
-<p>有趣的是，如果直接在地圖上記錄哪裡走過，<br>最後輸出路徑還是需要掃描一次地圖。</p>
-<p>下面是解法的粗略步驟：  </p>
-<ol>
-<li>堆疊初始化（存入第一步）</li>
-<li>根據堆疊內的資料走出下一步</li>
-<li>走出下一步時將資料存入堆疊</li>
-<li>重複 2 ~ 3 步驟，直到堆疊為空或到達出口</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">// 給予第一步</span></span><br><span class="line"><span class="built_in">stack</span>.push((<span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line"><span class="comment">// 尚有路徑沒試</span></span><br><span class="line"><span class="keyword">while</span>(!<span class="built_in">stack</span>.empty())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 走回頭路</span></span><br><span class="line">    obj step = <span class="built_in">stack</span>.pop();</span><br><span class="line">    x = step.x;</span><br><span class="line">    y = step.y;</span><br><span class="line">    dir = step.dir;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 嘗試每個方向</span></span><br><span class="line">    <span class="keyword">while</span>(dir)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 下一步的位置</span></span><br><span class="line">        u = x + dx;</span><br><span class="line">        v = y + dy;</span><br><span class="line">        <span class="comment">// 下一步可以通行</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">map</span>[u][v].through())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 把這步塞進堆疊</span></span><br><span class="line">            <span class="built_in">stack</span>.push((x, y));</span><br><span class="line">            <span class="comment">// 移動到下一步</span></span><br><span class="line">            x = u;</span><br><span class="line">            y = v;</span><br><span class="line">            <span class="comment">// 發現這步正是終點</span></span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">map</span>[x][y].end?())</span><br><span class="line">                outputResult();</span><br><span class="line">            <span class="comment">//方向重置</span></span><br><span class="line">            dir.initialize();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 所有路徑都已經嘗試</span></span><br><span class="line"><span class="comment">// 但沒有走到終點，代表無解</span></span><br><span class="line">noResult();</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>這邊巧妙的利用方向重置來找路，並僅使用一行掉頭找其他路徑。<br><div class="note info">
-            <p>迷宮的布局、嘗試方向的順序，皆會影響解出迷宮的時間。</p>
-          </div></p>
-<h2 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h2><iframe scrolling="no" width="100%" height="540px" src="//jsfiddle.net/suws2m74/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
-      <categories>
-        <category>資料結構與演算法</category>
-      </categories>
-  </entry>
-  <entry>
     <title>邏輯回歸與感知器 Logistic Regression and Perceptron</title>
     <url>/logistic-regression-and-perceptron/</url>
     <content><![CDATA[<p>上一篇介紹的是線性回歸與梯度下降，這一篇將會討論「邏輯回歸與感知器」。<br><a id="more"></a></p>
@@ -4011,6 +4075,110 @@ $Cost(\theta) = \left\{\begin{array}{l} -ln(h_{\theta}(x)) && \text{if }y = 1 \\
 <footer><strong>Wikipedia</strong><cite><a href="https://zh.wikipedia.org/wiki/%E6%84%9F%E7%9F%A5%E5%99%A8" target="_blank" rel="noopener">zh.wikipedia.org/wiki/%E6%84%9F%E7%9F%A5%E5%99%A8</a></cite></footer></blockquote>
 <h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>這個演示是邏輯回歸（單個神經元）學習邏輯運算的規則，<br>可以發現除了 XOR 外，其他邏輯都可以使紅、藍兩色分明。</p>
 <iframe scrolling="no" width="100%" height="550px" src="//jsfiddle.net/ht98xhej/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>]]></content>
+      <categories>
+        <category>人工智慧</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>馬可爾夫決策過程 Markov Decision Process</title>
+    <url>/markov-decision-process/</url>
+    <content><![CDATA[<p>這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，<br>從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。<br><a id="more"></a></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前半年太忙一直沒時間更新 Blog，現在終於有時間寫新文章了 XD</p>
+<p>強化學習（reinforcement learning）一直是非常有趣的主題，跟遊戲設計搭配更是如此。<br>我曾經在 RPG Maker MV 中使用手刻的 3 層全連接神經網路來做 ARPG（動作 RPG）怪物的 AI 設計，<br>雖然效果不是很理想，不過確實可以觀察到怪物可以學習到一些玩家的攻擊模式並且迴避。</p>
+<p>全連接神經網路在分類上是屬於監督學習，而本篇著重於強化學習，<br>強化學習是不透過標籤（label），系統直接由環境中取得資訊來學習的 AI 系統。</p>
+<p>當時初學時，關於 Q 學習的部分其實看不太懂，我後來發現有一系列的途徑去理解，<br>一開始是自己閱讀《人工智能：一種現代的方法》，好不容易看懂（筆者數學不好……），<br>後來在 Udacity 的強化學習課程，又做了一次整理才明白。</p>
+<div class="note info">
+            <p>關於課程請至 <a href="https://www.udacity.com/course/reinforcement-learning--ud600" target="_blank" rel="noopener">Udacity 的課程資訊</a></p>
+          </div>
+<p>我認為的最佳學習途徑：</p>
+<ul>
+<li>馬可爾夫決策過程（Markov Decision Process, MDP）</li>
+<li>價值迭代（value iteration）與策略迭代（policy iteration）</li>
+<li>Q 學習（Q-learning）</li>
+<li>深度 Q 網路（Deep Q-Network, DQN）</li>
+</ul>
+<p>其中，前兩部分是序列式決策問題（sequential decision problem）的入門，<br>第三部分 Q 學習是關於序列決策的變體，最後深度 Q 網路則是將 Q 學習結合神經網路所誕生的算法。</p>
+<p>本篇是第一部分，重點擺在討論馬可爾夫決策過程與問題建模，<br>至於策略、效用與貝爾曼方程將在下一篇文章解決。</p>
+<div class="note success">
+            <p>這是 DQN 的系列文章，下一篇是 <a href="/value-iteration/" title="價值迭代 Value Iteration">價值迭代 Value Iteration</a></p>
+          </div>
+<div class="note info">
+            <p>於 2019.05.13 更新了部分數學符號的表示</p>
+          </div>
+<h1 id="馬可爾夫決策"><a href="#馬可爾夫決策" class="headerlink" title="馬可爾夫決策"></a>馬可爾夫決策</h1><p>馬可爾夫決策由下列部分組成：</p>
+<ul>
+<li>狀態集合 $S$</li>
+<li>動作函數 $ACTION: S \mapsto A$ 其中 $A$ 為可執行的動作</li>
+<li>轉移模型 $P(s_{t+1}|s_{t}, a)$ 其中 $s_{t} \in S$ 為當前狀態、$s_{t+1} \in S$ 為下一個狀態，$a \in A$ 為時間 $t$ 時執行的動作</li>
+<li>回報函數 $R(s)$</li>
+</ul>
+<p>其中轉移模型必須滿足馬可爾夫假設（Markov assumption）即「$s_{t+1}$ 的狀態僅受 $s_{t}$ 狀態影響」。</p>
+<div class="note info">
+            <p>動作函數，通常被說是「動作集合」，但在書中公式表達像是「回傳集合的函數」，故在此以函數說明。</p>
+          </div>
+<h1 id="玩具問題"><a href="#玩具問題" class="headerlink" title="玩具問題"></a>玩具問題</h1><p>筆者的經驗是，初學見到這些符號會水土不服，<br>所以可以先過渡到幾個其他的玩具問題（toy problem）來理解馬可爾夫決策的過程。<br>順便練習把問題定義清楚。</p>
+<h2 id="地圖尋路"><a href="#地圖尋路" class="headerlink" title="地圖尋路"></a>地圖尋路</h2><p>這是《人工智能：一種現代的方法》第 17.1 節序列式決策出現的玩具問題。</p>
+<p>地圖大小寬度為 3、長度為 4，位置 $(2, 2)$ 是一堵牆，<br>寶藏在 $(4, 3)$，陷阱在 $(4, 2)$。電腦從 $(1, 1)$ 開始，每次移動 1 格，移動會消耗 0.04 分，<br>目標是透過探索地圖，找到一個最佳策略來獲得高分。</p>
+<p>很難想像的話，看下面的圖 1。</p>
+<p><img src="https://i.imgur.com/8g4n6Sv.png" alt="圖 1、基本玩具問題"></p>
+<p>對於這個問題來說，建模的四個部分分別為：</p>
+<ul>
+<li>狀態集合，即座標集合 $S = \{(x, y)| x \in \{1, 2, 3\}, y \in \{1, 2, 3, 4\} \}$</li>
+<li>動作函數，即在某一座標可以執行的動作 $MOVE: S \mapsto A$ 其中 $A = \{\text{up}, \text{left}, \text{right}, \text{down}\}$</li>
+<li>轉移模型，即在某座標、執行某動作後，轉移到下個狀態的機率 $P(s_{t+1}|s_{t}, a_{t})$ 其中 $s_{t}, s_{t+1} \in S$ 且 $a_{t} \in A$</li>
+<li>回報函數，每個位置的得分 $SCORE(s) = SCORE(x, y)$</li>
+</ul>
+<p>下面給出一段淺白的描述作為例子。</p>
+<p>目前在某一個座標 $x = 1$ 且 $y = 3$，所以我的「狀態」是 $s = (1, 3) \in S$<br>在這個狀態下，我可以執行的動作為 $MOVE(1, 3) = \text{up}, \text{left}, \text{right}, \text{down}$<br>也就是上下左右；如果此時我選擇 $a = \text{right} \in A$ 即向右移動。</p>
+<div class="note info">
+            <p>注意這裡的動作函數 $MOVE$ 是「一對多映射」，正因如此，玩家才在某些狀態，可以選擇多種動作。</p>
+          </div>
+<p>若動作「一定會成功」則轉移模型為：$P((2, 3)|(1, 3), \text{right}) = 100\%$<br>至於環境的回報（得分）是：</p>
+
+$SCORE(s) = \left\{\begin{array}{l}
++1 && \text{if } s = (4, 3) \\
+-1 && \text{if } s = (4, 2) \\
+-0.04 && \text{otherwise}
+\end{array}\right .$
+<br><br><div class="note info">
+            <p>書中的轉移模型是不確定的。舉例來說，你決定往上移動，只有 80% 的機會成功之類的。</p>
+          </div>
+<h2 id="簡化的二十一點"><a href="#簡化的二十一點" class="headerlink" title="簡化的二十一點"></a>簡化的二十一點</h2><p>為了更理解「轉移模型」的部分，筆者再針對簡化過後的二十一點（Black Jack）建模，<br>這個簡化過後的規則如下：</p>
+<ul>
+<li>牌面 1、2、3、4、5 每種牌都有無限多張且抽到每一種的機率相等</li>
+<li>牌面 1、2、3、4、5 對應點數為牌面的數字</li>
+<li>每一回合莊家、玩家決定要不要繼續抽牌</li>
+<li>若某回合不抽牌，接下來的回合不能繼續抽牌</li>
+<li>若超過 10 點，則判輸</li>
+<li>若雙方皆超過 10 點，則平手</li>
+<li>若雙方皆小於等於 10 點，則點數大者勝</li>
+<li>所有牌都是明牌（玩家可觀察）</li>
+<li>莊家先抽牌</li>
+</ul>
+<p>如果你覺得規則理解有點困難，請嘗試玩玩看：<br><iframe scrolling="no" width="100%" height="200px" src="//jsfiddle.net/d6bues10/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe></p>
+<div class="note info">
+            <p>因為還沒介紹完策略，暫時不將完整的 AI 放出來，這裡的電腦僅是單純的邏輯模擬。</p>
+          </div>
+<p>對於這個問題來說，建模的四個部分分別為：</p>
+<ul>
+<li>狀態集合，即各種手牌 $s$ 及允許抽牌標誌 $t$ 的集合 $S = \{s = (c, t) | c \subseteq \{1, 2, 3, 4, 5\},  t \in \{1, 0\}\}$</li>
+<li>動作函數，即每回合可以執行的動作 $ACTION: S \mapsto A$ 其中 $A = \{\text{draw}, \text{pass}\}$</li>
+<li>轉移模型，即抽牌後，轉移到下個狀態的機率 $P(s_{t+1}|s_{t}, a_{t})$ 其中 $s_{t}, s_{t+1} \in S, a_{t} \in A$</li>
+<li>回報函數，即一局遊戲的牌面數字 $POINT(s), s \in S$</li>
+</ul>
+<p>我們先看動作函數，對於每一種手牌的狀態，<br>除非已經超過 10 點或曾經放棄抽牌，否則可以繼續抽牌，所以有：</p>
+
+$ACTION(s) = ACTION(c, t) = \left\{\begin{array}{l}
+\text{draw}, \text{pass} && \text{if } t = 1 \text{ and } \sum\limits_{x \in c}x \leq 10 \\
+\text{pass} && \text{if }  t = 0 \text{ or } \sum\limits_{x \in c}x > 10 \\
+\end{array}\right .$
+<br><br>然後轉移模型此時便不是「確定」的，轉移到不同的狀態是透過機率，<br>比方說目前我有手牌且可抽牌 $s = (\{1, 2, 3\}, 1)$ 考慮動作函數有 $ACTION(c, t) = \text{draw}, \text{pass}$<br>所以轉移模型，有兩種動作可以選擇：<br><br>若選擇不抽牌，那下回合一定保持原來的手牌，但抽牌標誌變成 0。<br>$P((\{1, 2, 3\}, 0)|(\{1, 2, 3\}, 1), \text{pass}) = 100\%$<br><br>若選擇抽牌，那下回合增加手牌（每種機率相等），抽牌標誌不變。<br>$P((\{1, 2, 3, 1\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 1）<br>$P((\{1, 2, 3, 2\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 2）<br>$P((\{1, 2, 3, 3\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 3）<br>$P((\{1, 2, 3, 4\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 4）<br>$P((\{1, 2, 3, 5\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 5）<br><br>不難發現，對於某一種動作，機率和必為 $1$。<br><br>回報函數為牌面點數和，點數和越高越好，而超過 10 點則給予 0 值：<br><br>
+$POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
+\sum\limits_{x \in c}x && \text{if } \sum\limits_{x \in c}x \leq 10 \\
+0 && \text{if } \sum\limits_{x \in c}x > 10 \\
+\end{array}\right .$
+
+]]></content>
       <categories>
         <category>人工智慧</category>
       </categories>
@@ -4142,110 +4310,6 @@ $Cost(\theta) = \left\{\begin{array}{l} -ln(h_{\theta}(x)) && \text{if }y = 1 \\
 ]]></content>
       <categories>
         <category>程式設計</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>馬可爾夫決策過程 Markov Decision Process</title>
-    <url>/markov-decision-process/</url>
-    <content><![CDATA[<p>這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，<br>從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。<br><a id="more"></a></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前半年太忙一直沒時間更新 Blog，現在終於有時間寫新文章了 XD</p>
-<p>強化學習（reinforcement learning）一直是非常有趣的主題，跟遊戲設計搭配更是如此。<br>我曾經在 RPG Maker MV 中使用手刻的 3 層全連接神經網路來做 ARPG（動作 RPG）怪物的 AI 設計，<br>雖然效果不是很理想，不過確實可以觀察到怪物可以學習到一些玩家的攻擊模式並且迴避。</p>
-<p>全連接神經網路在分類上是屬於監督學習，而本篇著重於強化學習，<br>強化學習是不透過標籤（label），系統直接由環境中取得資訊來學習的 AI 系統。</p>
-<p>當時初學時，關於 Q 學習的部分其實看不太懂，我後來發現有一系列的途徑去理解，<br>一開始是自己閱讀《人工智能：一種現代的方法》，好不容易看懂（筆者數學不好……），<br>後來在 Udacity 的強化學習課程，又做了一次整理才明白。</p>
-<div class="note info">
-            <p>關於課程請至 <a href="https://www.udacity.com/course/reinforcement-learning--ud600" target="_blank" rel="noopener">Udacity 的課程資訊</a></p>
-          </div>
-<p>我認為的最佳學習途徑：</p>
-<ul>
-<li>馬可爾夫決策過程（Markov Decision Process, MDP）</li>
-<li>價值迭代（value iteration）與策略迭代（policy iteration）</li>
-<li>Q 學習（Q-learning）</li>
-<li>深度 Q 網路（Deep Q-Network, DQN）</li>
-</ul>
-<p>其中，前兩部分是序列式決策問題（sequential decision problem）的入門，<br>第三部分 Q 學習是關於序列決策的變體，最後深度 Q 網路則是將 Q 學習結合神經網路所誕生的算法。</p>
-<p>本篇是第一部分，重點擺在討論馬可爾夫決策過程與問題建模，<br>至於策略、效用與貝爾曼方程將在下一篇文章解決。</p>
-<div class="note success">
-            <p>這是 DQN 的系列文章，下一篇是 <a href="/value-iteration/" title="價值迭代 Value Iteration">價值迭代 Value Iteration</a></p>
-          </div>
-<div class="note info">
-            <p>於 2019.05.13 更新了部分數學符號的表示</p>
-          </div>
-<h1 id="馬可爾夫決策"><a href="#馬可爾夫決策" class="headerlink" title="馬可爾夫決策"></a>馬可爾夫決策</h1><p>馬可爾夫決策由下列部分組成：</p>
-<ul>
-<li>狀態集合 $S$</li>
-<li>動作函數 $ACTION: S \mapsto A$ 其中 $A$ 為可執行的動作</li>
-<li>轉移模型 $P(s_{t+1}|s_{t}, a)$ 其中 $s_{t} \in S$ 為當前狀態、$s_{t+1} \in S$ 為下一個狀態，$a \in A$ 為時間 $t$ 時執行的動作</li>
-<li>回報函數 $R(s)$</li>
-</ul>
-<p>其中轉移模型必須滿足馬可爾夫假設（Markov assumption）即「$s_{t+1}$ 的狀態僅受 $s_{t}$ 狀態影響」。</p>
-<div class="note info">
-            <p>動作函數，通常被說是「動作集合」，但在書中公式表達像是「回傳集合的函數」，故在此以函數說明。</p>
-          </div>
-<h1 id="玩具問題"><a href="#玩具問題" class="headerlink" title="玩具問題"></a>玩具問題</h1><p>筆者的經驗是，初學見到這些符號會水土不服，<br>所以可以先過渡到幾個其他的玩具問題（toy problem）來理解馬可爾夫決策的過程。<br>順便練習把問題定義清楚。</p>
-<h2 id="地圖尋路"><a href="#地圖尋路" class="headerlink" title="地圖尋路"></a>地圖尋路</h2><p>這是《人工智能：一種現代的方法》第 17.1 節序列式決策出現的玩具問題。</p>
-<p>地圖大小寬度為 3、長度為 4，位置 $(2, 2)$ 是一堵牆，<br>寶藏在 $(4, 3)$，陷阱在 $(4, 2)$。電腦從 $(1, 1)$ 開始，每次移動 1 格，移動會消耗 0.04 分，<br>目標是透過探索地圖，找到一個最佳策略來獲得高分。</p>
-<p>很難想像的話，看下面的圖 1。</p>
-<p><img src="https://i.imgur.com/8g4n6Sv.png" alt="圖 1、基本玩具問題"></p>
-<p>對於這個問題來說，建模的四個部分分別為：</p>
-<ul>
-<li>狀態集合，即座標集合 $S = \{(x, y)| x \in \{1, 2, 3\}, y \in \{1, 2, 3, 4\} \}$</li>
-<li>動作函數，即在某一座標可以執行的動作 $MOVE: S \mapsto A$ 其中 $A = \{\text{up}, \text{left}, \text{right}, \text{down}\}$</li>
-<li>轉移模型，即在某座標、執行某動作後，轉移到下個狀態的機率 $P(s_{t+1}|s_{t}, a_{t})$ 其中 $s_{t}, s_{t+1} \in S$ 且 $a_{t} \in A$</li>
-<li>回報函數，每個位置的得分 $SCORE(s) = SCORE(x, y)$</li>
-</ul>
-<p>下面給出一段淺白的描述作為例子。</p>
-<p>目前在某一個座標 $x = 1$ 且 $y = 3$，所以我的「狀態」是 $s = (1, 3) \in S$<br>在這個狀態下，我可以執行的動作為 $MOVE(1, 3) = \text{up}, \text{left}, \text{right}, \text{down}$<br>也就是上下左右；如果此時我選擇 $a = \text{right} \in A$ 即向右移動。</p>
-<div class="note info">
-            <p>注意這裡的動作函數 $MOVE$ 是「一對多映射」，正因如此，玩家才在某些狀態，可以選擇多種動作。</p>
-          </div>
-<p>若動作「一定會成功」則轉移模型為：$P((2, 3)|(1, 3), \text{right}) = 100\%$<br>至於環境的回報（得分）是：</p>
-
-$SCORE(s) = \left\{\begin{array}{l}
-+1 && \text{if } s = (4, 3) \\
--1 && \text{if } s = (4, 2) \\
--0.04 && \text{otherwise}
-\end{array}\right .$
-<br><br><div class="note info">
-            <p>書中的轉移模型是不確定的。舉例來說，你決定往上移動，只有 80% 的機會成功之類的。</p>
-          </div>
-<h2 id="簡化的二十一點"><a href="#簡化的二十一點" class="headerlink" title="簡化的二十一點"></a>簡化的二十一點</h2><p>為了更理解「轉移模型」的部分，筆者再針對簡化過後的二十一點（Black Jack）建模，<br>這個簡化過後的規則如下：</p>
-<ul>
-<li>牌面 1、2、3、4、5 每種牌都有無限多張且抽到每一種的機率相等</li>
-<li>牌面 1、2、3、4、5 對應點數為牌面的數字</li>
-<li>每一回合莊家、玩家決定要不要繼續抽牌</li>
-<li>若某回合不抽牌，接下來的回合不能繼續抽牌</li>
-<li>若超過 10 點，則判輸</li>
-<li>若雙方皆超過 10 點，則平手</li>
-<li>若雙方皆小於等於 10 點，則點數大者勝</li>
-<li>所有牌都是明牌（玩家可觀察）</li>
-<li>莊家先抽牌</li>
-</ul>
-<p>如果你覺得規則理解有點困難，請嘗試玩玩看：<br><iframe scrolling="no" width="100%" height="200px" src="//jsfiddle.net/d6bues10/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe></p>
-<div class="note info">
-            <p>因為還沒介紹完策略，暫時不將完整的 AI 放出來，這裡的電腦僅是單純的邏輯模擬。</p>
-          </div>
-<p>對於這個問題來說，建模的四個部分分別為：</p>
-<ul>
-<li>狀態集合，即各種手牌 $s$ 及允許抽牌標誌 $t$ 的集合 $S = \{s = (c, t) | c \subseteq \{1, 2, 3, 4, 5\},  t \in \{1, 0\}\}$</li>
-<li>動作函數，即每回合可以執行的動作 $ACTION: S \mapsto A$ 其中 $A = \{\text{draw}, \text{pass}\}$</li>
-<li>轉移模型，即抽牌後，轉移到下個狀態的機率 $P(s_{t+1}|s_{t}, a_{t})$ 其中 $s_{t}, s_{t+1} \in S, a_{t} \in A$</li>
-<li>回報函數，即一局遊戲的牌面數字 $POINT(s), s \in S$</li>
-</ul>
-<p>我們先看動作函數，對於每一種手牌的狀態，<br>除非已經超過 10 點或曾經放棄抽牌，否則可以繼續抽牌，所以有：</p>
-
-$ACTION(s) = ACTION(c, t) = \left\{\begin{array}{l}
-\text{draw}, \text{pass} && \text{if } t = 1 \text{ and } \sum\limits_{x \in c}x \leq 10 \\
-\text{pass} && \text{if }  t = 0 \text{ or } \sum\limits_{x \in c}x > 10 \\
-\end{array}\right .$
-<br><br>然後轉移模型此時便不是「確定」的，轉移到不同的狀態是透過機率，<br>比方說目前我有手牌且可抽牌 $s = (\{1, 2, 3\}, 1)$ 考慮動作函數有 $ACTION(c, t) = \text{draw}, \text{pass}$<br>所以轉移模型，有兩種動作可以選擇：<br><br>若選擇不抽牌，那下回合一定保持原來的手牌，但抽牌標誌變成 0。<br>$P((\{1, 2, 3\}, 0)|(\{1, 2, 3\}, 1), \text{pass}) = 100\%$<br><br>若選擇抽牌，那下回合增加手牌（每種機率相等），抽牌標誌不變。<br>$P((\{1, 2, 3, 1\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 1）<br>$P((\{1, 2, 3, 2\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 2）<br>$P((\{1, 2, 3, 3\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 3）<br>$P((\{1, 2, 3, 4\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 4）<br>$P((\{1, 2, 3, 5\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 5）<br><br>不難發現，對於某一種動作，機率和必為 $1$。<br><br>回報函數為牌面點數和，點數和越高越好，而超過 10 點則給予 0 值：<br><br>
-$POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
-\sum\limits_{x \in c}x && \text{if } \sum\limits_{x \in c}x \leq 10 \\
-0 && \text{if } \sum\limits_{x \in c}x > 10 \\
-\end{array}\right .$
-
-]]></content>
-      <categories>
-        <category>人工智慧</category>
       </categories>
   </entry>
   <entry>

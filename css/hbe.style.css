@@ -747,3 +747,33 @@
 	transform: translate3d(0, 2em, 0) scale3d(0.655, 0.655, 1);
 }
 /* shrink theme }}} */
+
+
+/* simple theme {{{ */
+.hbe-content {
+	font-size: 100%;
+	padding: 0 0 4em 0;
+}
+
+.hbe-input {
+	margin: 1em;
+	margin: 0em 0em 0em 0.2em;
+  width: auto;
+}
+
+.hbe-input-blink {
+	padding-top: 0em;
+}
+
+.hbe-input-blink::before{
+	padding-top: 0em;
+}
+
+.hbe-input-field {
+padding: 0.5em;
+}
+
+.hbe-input-field-blink {
+	color: #999;
+}
+/* simple theme }}} */

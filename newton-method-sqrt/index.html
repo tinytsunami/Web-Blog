@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#536F87">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 6.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
@@ -18,21 +18,21 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="這篇最早是 Evernote 的筆記，整理之後就放到部落格這裡來了；忘記最早是為了要做什麼，總之就是利用牛頓法計算開根號函數的作法。">
-<meta name="keywords" content="技術, 獨立遊戲">
 <meta property="og:type" content="article">
 <meta property="og:title" content="牛頓法計算 sqrt 函數">
 <meta property="og:url" content="https://www.tinytsunami.info/newton-method-sqrt/index.html">
 <meta property="og:site_name" content="羊羽手札">
 <meta property="og:description" content="這篇最早是 Evernote 的筆記，整理之後就放到部落格這裡來了；忘記最早是為了要做什麼，總之就是利用牛頓法計算開根號函數的作法。">
-<meta property="og:locale" content="zh-TW">
-<meta property="og:updated_time" content="2021-10-03T06:06:27.636Z">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2021-10-03T00:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-12T08:40:33.657Z">
+<meta property="article:author" content="Tinytusnami">
+<meta property="article:tag" content="技術, 獨立遊戲">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="牛頓法計算 sqrt 函數">
-<meta name="twitter:description" content="這篇最早是 Evernote 的筆記，整理之後就放到部落格這裡來了；忘記最早是為了要做什麼，總之就是利用牛頓法計算開根號函數的作法。">
 
 <link rel="canonical" href="https://www.tinytsunami.info/newton-method-sqrt/">
 
@@ -213,17 +213,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">發表於</span>
-              
 
-              <time title="創建時間：2021-10-03 00:00:00 / 修改時間：06:06:27" itemprop="dateCreated datePublished" datetime="2021-10-03T00:00:00Z">2021-10-03</time>
+              <time title="創建時間：2021-10-03 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-03T00:00:00Z">2021-10-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2022-02-12 08:40:33" itemprop="dateModified" datetime="2022-02-12T08:40:33Z">2022-02-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/程式設計/" itemprop="url" rel="index"><span itemprop="name">程式設計</span></a>
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88/" itemprop="url" rel="index"><span itemprop="name">程式設計</span></a>
                 </span>
             </span>
 
@@ -239,33 +245,35 @@
 
       
         <p>這篇最早是 Evernote 的筆記，整理之後就放到部落格這裡來了；<br>忘記最早是為了要做什麼，總之就是利用牛頓法計算開根號函數的作法。</p>
-<a id="more"></a>
-<h1 id="函數化"><a href="#函數化" class="headerlink" title="函數化"></a>函數化</h1><p>當要估計 $\text{sqrt}(a) = \sqrt{a}$ 時，<br>可以先令 $x_k$  為一近似解，即 $x_k \approx \sqrt{a}$。</p>
+<span id="more"></span>
+
+<h1 id="函數化"><a href="#函數化" class="headerlink" title="函數化"></a>函數化</h1><p>當要估計 $\text{sqrt}(a) &#x3D; \sqrt{a}$ 時，<br>可以先令 $x_k$  為一近似解，即 $x_k \approx \sqrt{a}$。</p>
 <p>接著整理：</p>
 <p>$x^{2}_{k} \approx a$ </p>
 <p>$x^{2}_{k} - a \approx 0$</p>
-<p>將 $x^{2}_{k} - a$ 視為一函數 $f(p) = p^{2} - a$</p>
-<p>令 $p = x_{k}$ 就有 $f(x_{k}) = x_{k}^{2} - a \approx 0$</p>
+<p>將 $x^{2}_{k} - a$ 視為一函數 $f(p) &#x3D; p^{2} - a$</p>
+<p>令 $p &#x3D; x_{k}$ 就有 $f(x_{k}) &#x3D; x_{k}^{2} - a \approx 0$</p>
 <p>則 $x_k$ 恰為函數近似解 $f(x_k) \approx 0$ 之值。</p>
 <h1 id="泰勒展開"><a href="#泰勒展開" class="headerlink" title="泰勒展開"></a>泰勒展開</h1><p>對函數 $f(p)$ 在 $x_{k}$ 處取泰勒展開（Taylor series）有：</p>
-<p>$f(p) = \frac{f(x_{k})}{0!}(p-x_{k})^0  + \frac{f’(x_{k})}{1!}(p-x_{k})^1 + R(p)$</p>
+<p>$f(p) &#x3D; \frac{f(x_{k})}{0!}(p-x_{k})^0  + \frac{f’(x_{k})}{1!}(p-x_{k})^1 + R(p)$</p>
 <p>整理後得：</p>
-<p>$f(p) = f(x_{k}) + f’(x_{k})(p-x_{k}) + R(p)$</p>
+<p>$f(p) &#x3D; f(x_{k}) + f’(x_{k})(p-x_{k}) + R(p)$</p>
 <p>其中 $R(p)$ 為餘項。</p>
 <h1 id="迭代關係"><a href="#迭代關係" class="headerlink" title="迭代關係"></a>迭代關係</h1><p>回憶最早的假設 $x_k \approx \sqrt{a}$；</p>
 <p>我們現在考慮迭代法，即 $x_{k+1}$ 比 $x_{k}$ 的答案更精準：</p>
 <p>$x_{k+1} \approx \sqrt{a}$</p>
-<p>取 $p = x_{k+1}$ 帶入泰勒展開：</p>
-<p>$f(x_{k+1}) = f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k}) + R(x_{k+1})$</p>
+<p>取 $p &#x3D; x_{k+1}$ 帶入泰勒展開：</p>
+<p>$f(x_{k+1}) &#x3D; f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k}) + R(x_{k+1})$</p>
 <p>由於是近似解，故捨去餘項 $R(p)$ 有：</p>
 <p>$f(x_{k+1}) \approx f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k})$</p>
 <p>這兩者都可以視做原函數的近似，即 $f(x_k) \approx f(x_{k+1})$ 只是 $f(x_{k+1})$ 更精確。</p>
 <div class="note warning">
-            <p>注意對象目前是 $f(p) = p^{2} - a$ 而 $f(p) \neq \sqrt{p}$</p>
+            <p>注意對象目前是 $f(p) &#x3D; p^{2} - a$ 而 $f(p) \neq \sqrt{p}$</p>
           </div>
-<p>之前的函數 $f(p) = p^{2} - a$；</p>
+
+<p>之前的函數 $f(p) &#x3D; p^{2} - a$；</p>
 <p>我們現在帶入更精確的 $x_{k+1} \approx \sqrt{a}$ 於是：</p>
-<p>$f(x_{k+1}) = x_{k+1}^{2} - a \approx 0$</p>
+<p>$f(x_{k+1}) &#x3D; x_{k+1}^{2} - a \approx 0$</p>
 <p>同時，展開式：</p>
 <p>$f(x_{k+1}) \approx f(x_{k}) + f’(x_{k})(x_{k+1}-x_{k})$</p>
 <p>兩式串接可得：</p>
@@ -275,11 +283,12 @@
 <p>$x_{k+1} \approx \frac{-f(x_{k})}{f’(x_{k})} + x_{k}$</p>
 <p>$x_{k+1} \approx x_{k} - \frac{f(x_{k})}{f’(x_{k})}$</p>
 <p>我們現在找到近似關係了，一旦我們確定 $x_{k}$ 那就可以計算右項來推得 $x_{k+1}$。</p>
-<h1 id="程式解"><a href="#程式解" class="headerlink" title="程式解"></a>程式解</h1><p>函數 $f(x_{k}) = x_k^2 - a$</p>
-<p>一階微分函數 $f’(x_{k}) = 2 \cdot x_k$</p>
+<h1 id="程式解"><a href="#程式解" class="headerlink" title="程式解"></a>程式解</h1><p>函數 $f(x_{k}) &#x3D; x_k^2 - a$</p>
+<p>一階微分函數 $f’(x_{k}) &#x3D; 2 \cdot x_k$</p>
 <div class="note info">
-            <p>這裡的 $a$ 為一常數，也是確定的輸入參數值 $\text{sqrt}(a) = \sqrt{a}$</p>
+            <p>這裡的 $a$ 為一常數，也是確定的輸入參數值 $\text{sqrt}(a) &#x3D; \sqrt{a}$</p>
           </div>
+
 <p>整個合併整理：</p>
 <p>$x_{k+1} \approx x_{k} - \frac{\displaystyle x_k^2 - a}{\displaystyle 2 x_k}$</p>
 <p>$x_{k+1} \approx \frac{\displaystyle 2 x_{k}^2}{\displaystyle 2 x_k} - \frac{\displaystyle x_k^2 - a}{\displaystyle 2 x_k}$</p>
@@ -290,9 +299,10 @@
 <p>$x_{k+1} \approx \frac{\displaystyle 1}{\displaystyle 2} \left( \displaystyle x_{k}^2 + \frac{\displaystyle a}{\displaystyle x_k} \right)$</p>
 <p>所以說 $\text{sqrt}(a)$ 的值為 $x_{k+1} \approx \frac{1}{2} \left(x_{k}^2 + \frac{a}{x_k} \right)$</p>
 <p>只要先隨便令一個 $x_k$ 為任意值，就透過計算 $x_{k+1}$ 得到更精確地解：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sqrt</span>(<span class="params">a</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">let</span> epsilon = <span class="number">1e-6</span>;        <span class="comment">// 迭代到精準度 1e-6</span></span><br><span class="line">  <span class="keyword">let</span> x0;                    <span class="comment">// x[k]</span></span><br><span class="line">  <span class="keyword">let</span> x1;                    <span class="comment">// x[k+1]</span></span><br><span class="line">  x1 = a;                    <span class="comment">// 隨便猜一個數</span></span><br><span class="line">  <span class="keyword">do</span>&#123;</span><br><span class="line">    x0 = x1;                 <span class="comment">// 讓 k 遞增（x[k] 變成 x[k+1]）</span></span><br><span class="line">    x1 = (x0 + a/x0) / <span class="number">2</span>;    <span class="comment">// 公式 x[k+1] = (1/2)(x[k] + a/x[k])</span></span><br><span class="line">  &#125;<span class="keyword">while</span>(x0 - x1 &gt; epsilon); <span class="comment">// 不夠精準則繼續</span></span><br><span class="line">  <span class="keyword">return</span> x1;                 <span class="comment">// 答案在 x[k+1]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">sqrt</span>(<span class="params">a</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">let</span> epsilon = <span class="number">1e-6</span>;        <span class="comment">// 迭代到精準度 1e-6</span></span><br><span class="line">  <span class="keyword">let</span> x0;                    <span class="comment">// x[k]</span></span><br><span class="line">  <span class="keyword">let</span> x1;                    <span class="comment">// x[k+1]</span></span><br><span class="line">  x1 = a;                    <span class="comment">// 隨便猜一個數</span></span><br><span class="line">  <span class="keyword">do</span>&#123;</span><br><span class="line">    x0 = x1;                 <span class="comment">// 讓 k 遞增（x[k] 變成 x[k+1]）</span></span><br><span class="line">    x1 = (x0 + a/x0) / <span class="number">2</span>;    <span class="comment">// 公式 x[k+1] = (1/2)(x[k] + a/x[k])</span></span><br><span class="line">  &#125;<span class="keyword">while</span>(x0 - x1 &gt; epsilon); <span class="comment">// 不夠精準則繼續</span></span><br><span class="line">  <span class="keyword">return</span> x1;                 <span class="comment">// 答案在 x[k+1]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <div class="note info">
-            <p>程式上的一個細節是，初始猜的值跟終止條件有關。</p><p>若初始條件 $x_{k} &gt; \sqrt a$ 則收斂時 $x_{k+1}$ 會比 $x_{k}$ 更小；<br>反之，初始條件 $x_{k} &lt; \sqrt a$ 則收斂時 $x_{k+1}$ 會比 $x_{k}$ 更大。</p><p>考慮 $a \in N$ 則必有 $a \geq \sqrt a$，<br>則初始條件給 $x_{k} = a$ 則必向更小的方向收斂，終止條件就可以避免使用另外的判斷式。</p>
+            <p>程式上的一個細節是，初始猜的值跟終止條件有關。</p><p>若初始條件 $x_{k} &gt; \sqrt a$ 則收斂時 $x_{k+1}$ 會比 $x_{k}$ 更小；<br>反之，初始條件 $x_{k} &lt; \sqrt a$ 則收斂時 $x_{k+1}$ 會比 $x_{k}$ 更大。</p><p>考慮 $a \in N$ 則必有 $a \geq \sqrt a$，<br>則初始條件給 $x_{k} &#x3D; a$ 則必向更小的方向收斂，終止條件就可以避免使用另外的判斷式。</p>
           </div>
 
     </div>
@@ -312,7 +322,10 @@
     <a href="/array/" rel="prev" title="陣列 Array">
       <i class="fa fa-chevron-left"></i> 陣列 Array
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/graph/" rel="next" title="圖 Graph">
+      圖 Graph <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -372,7 +385,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#函數化"><span class="nav-number">1.</span> <span class="nav-text">函數化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泰勒展開"><span class="nav-number">2.</span> <span class="nav-text">泰勒展開</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#迭代關係"><span class="nav-number">3.</span> <span class="nav-text">迭代關係</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#程式解"><span class="nav-number">4.</span> <span class="nav-text">程式解</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B8%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">函數化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%B0%E5%8B%92%E5%B1%95%E9%96%8B"><span class="nav-number">2.</span> <span class="nav-text">泰勒展開</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E9%97%9C%E4%BF%82"><span class="nav-number">3.</span> <span class="nav-text">迭代關係</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E8%A7%A3"><span class="nav-number">4.</span> <span class="nav-text">程式解</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -388,7 +401,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -402,16 +415,16 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/tinytsunami" title="GitHub → https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/tinytsunami" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
         <a href="mailto:z27619273@gmail.com" title="E-Mail → mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;profile.php?id&#x3D;100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
       </span>
   </div>
 
@@ -422,7 +435,7 @@
     </div>
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
-          <a href="https://blog.eevee.tw/" title="https://blog.eevee.tw/" rel="noopener" target="_blank">Yctseng's Blog</a>
+          <a href="https://blog.eevee.tw/" title="https:&#x2F;&#x2F;blog.eevee.tw&#x2F;" rel="noopener" target="_blank">Yctseng's Blog</a>
         </li>
     </ul>
   </div>
@@ -446,13 +459,13 @@
 <div class="copyright">
   
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-bomb"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
   </div>
 
         
@@ -474,9 +487,17 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -485,7 +506,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

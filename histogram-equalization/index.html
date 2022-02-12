@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#536F87">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 6.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
@@ -18,22 +18,22 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="之前影像處理課有寫過直方圖均化（Histogram Equalization）的程式，這篇是重新紀錄做法，以及提供 Web 的演示。">
-<meta name="keywords" content="技術, 獨立遊戲">
 <meta property="og:type" content="article">
 <meta property="og:title" content="直方圖均化 Histogram Equalization">
 <meta property="og:url" content="https://www.tinytsunami.info/histogram-equalization/index.html">
 <meta property="og:site_name" content="羊羽手札">
 <meta property="og:description" content="之前影像處理課有寫過直方圖均化（Histogram Equalization）的程式，這篇是重新紀錄做法，以及提供 Web 的演示。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://i.imgur.com/Ms1N4xX.png">
-<meta property="og:updated_time" content="2020-08-11T04:09:25.763Z">
+<meta property="article:published_time" content="2020-03-25T00:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-12T08:41:09.574Z">
+<meta property="article:author" content="Tinytusnami">
+<meta property="article:tag" content="技術, 獨立遊戲">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="直方圖均化 Histogram Equalization">
-<meta name="twitter:description" content="之前影像處理課有寫過直方圖均化（Histogram Equalization）的程式，這篇是重新紀錄做法，以及提供 Web 的演示。">
 <meta name="twitter:image" content="https://i.imgur.com/Ms1N4xX.png">
 
 <link rel="canonical" href="https://www.tinytsunami.info/histogram-equalization/">
@@ -223,7 +223,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
+                <time title="修改時間：2022-02-12 08:41:09" itemprop="dateModified" datetime="2022-02-12T08:41:09Z">2022-02-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,7 +231,7 @@
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/資料結構與演算法/" itemprop="url" rel="index"><span itemprop="name">資料結構與演算法</span></a>
+                  <a href="/categories/%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E8%88%87%E6%BC%94%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">資料結構與演算法</span></a>
                 </span>
             </span>
 
@@ -247,34 +247,42 @@
 
       
         <p>之前影像處理課有寫過直方圖均化（Histogram Equalization）的程式，<br>這篇是重新紀錄做法，以及提供 Web 的演示。</p>
-<a id="more"></a>
+<span id="more"></span>
+
 <p>因為最近稍微小忙，為了保持每月更新的步調，<br>所以挑了一個比較簡單的主題先寫這樣 XD”</p>
 <div class="note success">
-            <p>請參閱 <a href="/ming-chuan-university-homework/" title="我的大學作業整理">我的大學作業整理</a> 的「影像處理課程」部分。</p>
+            <p>請參閱 <a href="#">Post not found: ming-chuan-university-homework</a> 的「影像處理課程」部分。</p>
           </div>
+
 <h1 id="色階與直方圖"><a href="#色階與直方圖" class="headerlink" title="色階與直方圖"></a>色階與直方圖</h1><p>圖片的「色階」（level）是統計圖片像素的灰階亮度或各顏色分量，<br>然後依照其值與像素的數量，畫成一張直方圖（histogram）如圖 1 所示：</p>
 <p><img src="https://i.imgur.com/Ms1N4xX.png" alt="圖 1、Paint.net 中的色階"></p>
 <div class="note info">
             <p>嚴格說，色階是顏色亮度的強弱，但直方圖是表示色階的一種圖表；<br>表示色階未必要用直方圖，而且直方圖的 X 與 Y 軸也不見得是亮度與數量。</p>
           </div>
+
 <h1 id="直方圖均化"><a href="#直方圖均化" class="headerlink" title="直方圖均化"></a>直方圖均化</h1><p>直觀地說，直方圖均化（histogram equalization）做法是紀錄圖像中，每個像素（pixel）的亮度（brightness），<br>然後根據「每個像素亮度的數量」重新分配亮度的過程，具體作法如下：</p>
 <ol>
-<li>初始化直方圖 $h(c, v) = 0 \ \forall c, v$ 其中 $c \in \{0, 1, 2\}$ 為顏色分量，而 $v = [0, 255] \in N$ 為統計數量</li>
+<li>初始化直方圖 $h(c, v) &#x3D; 0 \ \forall c, v$ 其中 $c \in \{0, 1, 2\}$ 為顏色分量，而 $v &#x3D; [0, 255] \in N$ 為統計數量</li>
 <li>遍歷所有像素，計算出直方圖 $h(c, v)$</li>
-<li>根據直方圖 $h$ 算出累積分布函數（Cumulative Distribution Function, CDF）<br>其定義為 $CDF(c, v) = \sum_{i = 0}^{v} h(c, i)$</li>
+<li>根據直方圖 $h$ 算出累積分布函數（Cumulative Distribution Function, CDF）<br>其定義為 $CDF(c, v) &#x3D; \sum_{i &#x3D; 0}^{v} h(c, i)$</li>
 <li>按 $CDF$ 比例，重新分配像素 $p(c)$ 顏色 $c$ 的亮度值，定義為：</li>
 </ol>
-<p>$$<br>p_{new}(c) = round\left(\text{color_range} \cdot \frac{p_{old}(c) - CDF_{min}(c)}{\text{image_size} - CDF_{min}(c)}\right) \ \forall c<br>$$</p>
-<p>其中，根據累積分布函數的定義，有 $CDF_{min}(c) = CDF(c, 0)$ 的關係，<br>而 $\text{color_range}$ 是該顏色 $c$ 的最大值、$\text{image_size}$ 的圖片像素總數（寬、高相乘），<br>另外就是 $round$ 函數實際上可以根據需要調整（常見的候選為 $floor(x)$ 及 $ceil(x)$ 函數）。</p>
+<p>$$<br>p_{new}(c) &#x3D; round\left(\text{color_range} \cdot \frac{p_{old}(c) - CDF_{min}(c)}{\text{image_size} - CDF_{min}(c)}\right) \ \forall c<br>$$</p>
+<p>其中，根據累積分布函數的定義，有 $CDF_{min}(c) &#x3D; CDF(c, 0)$ 的關係，<br>而 $\text{color_range}$ 是該顏色 $c$ 的最大值、$\text{image_size}$ 的圖片像素總數（寬、高相乘），<br>另外就是 $round$ 函數實際上可以根據需要調整（常見的候選為 $floor(x)$ 及 $ceil(x)$ 函數）。</p>
 <p>具體的程式如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 直方圖初始化 */</span></span><br><span class="line"><span class="keyword">let</span> histogram = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, () =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">256</span>&#125;, () =&gt; <span class="number">0</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 遍歷所有像素 */</span></span><br><span class="line"><span class="keyword">let</span> pixels = imgData.data;                              <span class="comment">// 讀取的圖片值，存在 ImageData 中</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = pixels.length; i &lt; l; i += <span class="number">4</span>) &#123;     <span class="comment">// 每個像素都有紅, 綠, 藍及透明度，共 4 個值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                      <span class="comment">// 紀錄 3 種顏色的數量</span></span><br><span class="line">    histogram[c][pixels[i + c]] += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 累積分布函數初始化 */</span></span><br><span class="line"><span class="keyword">let</span> cdf = <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, () =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Array</span>.from(&#123;<span class="attr">length</span>: <span class="number">256</span>&#125;, () =&gt; <span class="number">0</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 計算累積分布函數 */</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                        <span class="comment">// 遍歷所有顏色</span></span><br><span class="line">  cdf[c][<span class="number">0</span>] = histogram[c][<span class="number">0</span>];                          <span class="comment">// 紀錄第一個數量值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; <span class="number">256</span>; i += <span class="number">1</span>) &#123;</span><br><span class="line">    cdf[c][i] = cdf[c][i - <span class="number">1</span>] + histogram[c][i];        <span class="comment">// 累計後面所有數量的值</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 定義一些變數 */</span></span><br><span class="line"><span class="keyword">let</span> w = imgData.width;                                  <span class="comment">// 舊圖片的寬度</span></span><br><span class="line"><span class="keyword">let</span> h = imgData.height;                                 <span class="comment">// 舊圖片的高度</span></span><br><span class="line"><span class="keyword">let</span> max = w * h;                                        <span class="comment">// 圖片的像素總數（image_size = width*height）</span></span><br><span class="line"><span class="keyword">let</span> newData = imageContext.createImageData(w, h);       <span class="comment">// 宣告新圖片</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 開始直方圖均化 */</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                        <span class="comment">// 遍歷所有顏色</span></span><br><span class="line">  <span class="keyword">let</span> min = cdf[c][<span class="number">0</span>];                                  <span class="comment">// 取的該顏色最小 CDF 值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = pixels.length; i &lt; l; i += <span class="number">4</span>) &#123;   <span class="comment">// 遍歷所有像素</span></span><br><span class="line">    <span class="keyword">let</span> v = cdf[c][pixels[i + c]];                      <span class="comment">// 取得 CDF 值</span></span><br><span class="line">    <span class="keyword">let</span> r = (v - min) / (max - min);                    <span class="comment">// 計算該 CDF 值的比例</span></span><br><span class="line">    newData.data[i + c] = <span class="built_in">Math</span>.round(<span class="number">255</span> * r);          <span class="comment">// 設定新圖片的像素顏色（color_range = 255）</span></span><br><span class="line">    newData.data[i + <span class="number">3</span>] = <span class="number">255</span>;                          <span class="comment">// 設定新圖片的像素透明度</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 直方圖初始化 */</span></span><br><span class="line"><span class="keyword">let</span> histogram = <span class="title class_">Array</span>.<span class="title function_">from</span>(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Array</span>.<span class="title function_">from</span>(&#123;<span class="attr">length</span>: <span class="number">256</span>&#125;, <span class="function">() =&gt;</span> <span class="number">0</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 遍歷所有像素 */</span></span><br><span class="line"><span class="keyword">let</span> pixels = imgData.<span class="property">data</span>;                              <span class="comment">// 讀取的圖片值，存在 ImageData 中</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = pixels.<span class="property">length</span>; i &lt; l; i += <span class="number">4</span>) &#123;     <span class="comment">// 每個像素都有紅, 綠, 藍及透明度，共 4 個值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                      <span class="comment">// 紀錄 3 種顏色的數量</span></span><br><span class="line">    histogram[c][pixels[i + c]] += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 累積分布函數初始化 */</span></span><br><span class="line"><span class="keyword">let</span> cdf = <span class="title class_">Array</span>.<span class="title function_">from</span>(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Array</span>.<span class="title function_">from</span>(&#123;<span class="attr">length</span>: <span class="number">256</span>&#125;, <span class="function">() =&gt;</span> <span class="number">0</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 計算累積分布函數 */</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                        <span class="comment">// 遍歷所有顏色</span></span><br><span class="line">  cdf[c][<span class="number">0</span>] = histogram[c][<span class="number">0</span>];                          <span class="comment">// 紀錄第一個數量值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; <span class="number">256</span>; i += <span class="number">1</span>) &#123;</span><br><span class="line">    cdf[c][i] = cdf[c][i - <span class="number">1</span>] + histogram[c][i];        <span class="comment">// 累計後面所有數量的值</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 定義一些變數 */</span></span><br><span class="line"><span class="keyword">let</span> w = imgData.<span class="property">width</span>;                                  <span class="comment">// 舊圖片的寬度</span></span><br><span class="line"><span class="keyword">let</span> h = imgData.<span class="property">height</span>;                                 <span class="comment">// 舊圖片的高度</span></span><br><span class="line"><span class="keyword">let</span> max = w * h;                                        <span class="comment">// 圖片的像素總數（image_size = width*height）</span></span><br><span class="line"><span class="keyword">let</span> newData = imageContext.<span class="title function_">createImageData</span>(w, h);       <span class="comment">// 宣告新圖片</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 開始直方圖均化 */</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> c = <span class="number">0</span>; c &lt; <span class="number">3</span>; c += <span class="number">1</span>) &#123;                        <span class="comment">// 遍歷所有顏色</span></span><br><span class="line">  <span class="keyword">let</span> min = cdf[c][<span class="number">0</span>];                                  <span class="comment">// 取的該顏色最小 CDF 值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = pixels.<span class="property">length</span>; i &lt; l; i += <span class="number">4</span>) &#123;   <span class="comment">// 遍歷所有像素</span></span><br><span class="line">    <span class="keyword">let</span> v = cdf[c][pixels[i + c]];                      <span class="comment">// 取得 CDF 值</span></span><br><span class="line">    <span class="keyword">let</span> r = (v - min) / (max - min);                    <span class="comment">// 計算該 CDF 值的比例</span></span><br><span class="line">    newData.<span class="property">data</span>[i + c] = <span class="title class_">Math</span>.<span class="title function_">round</span>(<span class="number">255</span> * r);          <span class="comment">// 設定新圖片的像素顏色（color_range = 255）</span></span><br><span class="line">    newData.<span class="property">data</span>[i + <span class="number">3</span>] = <span class="number">255</span>;                          <span class="comment">// 設定新圖片的像素透明度</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 <div class="note success">
-            <p>關於讀取、顯示圖片，請參考 <a href="/javascript-file-process/" title="JavaScript 檔案處理">JavaScript 檔案處理</a> 及 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData" target="_blank" rel="noopener">MDN ImageData</a> 相關文章。</p>
+            <p>關於讀取、顯示圖片，請參考 <a href="#">Post not found: javascript-file-process</a> 及 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData">MDN ImageData</a> 相關文章。</p>
           </div>
+
 <div class="note info">
             <p>在 Paint.net 軟體中的「自動色階」功能，就是「直方圖均化」。</p>
           </div>
-<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="600px" src="//jsfiddle.net/9v4xg21t/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe>
+
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="600px" src="https://jsfiddle.net/9v4xg21t/embedded/result,js,html,css/dark" frameborder="0" loading="lazy" allowfullscreen></iframe>
+
 <div class="note info">
             <p>重複執行多次直方圖均化時，由於浮點數經過 $round(x)$ 函數，<br>會導致直方圖有時候會有稍微差異（約 1 個亮度值），但是對於圖片來說，並不會造成視覺上的改變。</p>
           </div>
@@ -359,7 +367,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#色階與直方圖"><span class="nav-number">1.</span> <span class="nav-text">色階與直方圖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#直方圖均化"><span class="nav-number">2.</span> <span class="nav-text">直方圖均化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#演示"><span class="nav-number">3.</span> <span class="nav-text">演示</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%89%B2%E9%9A%8E%E8%88%87%E7%9B%B4%E6%96%B9%E5%9C%96"><span class="nav-number">1.</span> <span class="nav-text">色階與直方圖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B4%E6%96%B9%E5%9C%96%E5%9D%87%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">直方圖均化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%94%E7%A4%BA"><span class="nav-number">3.</span> <span class="nav-text">演示</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -375,7 +383,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -389,16 +397,16 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/tinytsunami" title="GitHub → https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/tinytsunami" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
         <a href="mailto:z27619273@gmail.com" title="E-Mail → mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;profile.php?id&#x3D;100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
       </span>
   </div>
 
@@ -409,7 +417,7 @@
     </div>
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
-          <a href="https://blog.eevee.tw/" title="https://blog.eevee.tw/" rel="noopener" target="_blank">Yctseng's Blog</a>
+          <a href="https://blog.eevee.tw/" title="https:&#x2F;&#x2F;blog.eevee.tw&#x2F;" rel="noopener" target="_blank">Yctseng's Blog</a>
         </li>
     </ul>
   </div>
@@ -433,13 +441,13 @@
 <div class="copyright">
   
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-bomb"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
   </div>
 
         
@@ -461,9 +469,17 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -472,7 +488,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#536F87">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 6.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
@@ -18,25 +18,25 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="上一篇介紹的是邏輯回歸與感知器，這一篇將會討論「全連接神經網路」。 睽違 2 年的主要原因是覺得網路上關於反向傳播很多人寫了，另外微積分其實我沒有掌握得很完全，所以很猶豫哪時要完成這篇文章。">
-<meta name="keywords" content="技術, 獨立遊戲">
 <meta property="og:type" content="article">
 <meta property="og:title" content="全連接神經網路 Fully-Connected Neural Network">
 <meta property="og:url" content="https://www.tinytsunami.info/fully-connected-neural-network/index.html">
 <meta property="og:site_name" content="羊羽手札">
 <meta property="og:description" content="上一篇介紹的是邏輯回歸與感知器，這一篇將會討論「全連接神經網路」。 睽違 2 年的主要原因是覺得網路上關於反向傳播很多人寫了，另外微積分其實我沒有掌握得很完全，所以很猶豫哪時要完成這篇文章。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="http://i.imgur.com/Mi5EawQ.png">
 <meta property="og:image" content="https://i.imgur.com/QpM15R6.png">
 <meta property="og:image" content="https://i.imgur.com/zOAQra2.png">
 <meta property="og:image" content="https://i.imgur.com/wPg7VqS.png">
-<meta property="og:updated_time" content="2020-08-11T04:09:25.757Z">
+<meta property="article:published_time" content="2019-07-07T00:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-12T08:40:47.137Z">
+<meta property="article:author" content="Tinytusnami">
+<meta property="article:tag" content="技術, 獨立遊戲">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="全連接神經網路 Fully-Connected Neural Network">
-<meta name="twitter:description" content="上一篇介紹的是邏輯回歸與感知器，這一篇將會討論「全連接神經網路」。 睽違 2 年的主要原因是覺得網路上關於反向傳播很多人寫了，另外微積分其實我沒有掌握得很完全，所以很猶豫哪時要完成這篇文章。">
 <meta name="twitter:image" content="http://i.imgur.com/Mi5EawQ.png">
 
 <link rel="canonical" href="https://www.tinytsunami.info/fully-connected-neural-network/">
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
+                <time title="修改時間：2022-02-12 08:40:47" itemprop="dateModified" datetime="2022-02-12T08:40:47Z">2022-02-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,7 +234,7 @@
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/人工智慧/" itemprop="url" rel="index"><span itemprop="name">人工智慧</span></a>
+                  <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E6%85%A7/" itemprop="url" rel="index"><span itemprop="name">人工智慧</span></a>
                 </span>
             </span>
 
@@ -250,47 +250,57 @@
 
       
         <p>上一篇介紹的是邏輯回歸與感知器，這一篇將會討論「全連接神經網路」。</p>
-<p>睽違 2 年的主要原因是覺得網路上關於反向傳播很多人寫了，<br>另外微積分其實我沒有掌握得很完全，所以很猶豫哪時要完成這篇文章。<br><a id="more"></a></p>
+<p>睽違 2 年的主要原因是覺得網路上關於反向傳播很多人寫了，<br>另外微積分其實我沒有掌握得很完全，所以很猶豫哪時要完成這篇文章。</p>
+<span id="more"></span>
+
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>回顧邏輯回歸與感知器的文章，圖 1 是單科感知器的模型，現在我們將拓展它，<br>不難理解，單個感知器（perceptron）可以視作是簡化的邏輯回歸，也可以視作基本的神經元（neuron）。</p>
 <p><img src="http://i.imgur.com/Mi5EawQ.png" alt="圖 1、感知器"></p>
 <p>在基於這個想法，我們堆砌感知器成神經網路，便可以解決上一篇提及的「線性不可分問題」。</p>
 <div class="note success">
-            <p>這是 ANN 的系列文章<br>上一篇是 <a href="/logistic-regression-and-perceptron/" title="邏輯回歸與感知器 Logistic Regression and Perceptron">邏輯回歸與感知器 Logistic Regression and Perceptron</a></p>
+            <p>這是 ANN 的系列文章<br>上一篇是 <a href="#">Post not found: logistic-regression-and-perceptron</a></p>
           </div>
+
 <div class="note success">
-            <p>筆者於大學專題時，曾向組員介紹過相關內容，<br>如有需要可以參考 <a href="https://docs.google.com/presentation/d/1ji7tSou_7TV-IMlE-9ZJavc1lmHDdJiHtQO6MYAVFEQ/edit?usp=sharing" target="_blank" rel="noopener">Artificial Neural Network - I 簡報</a>、<a href="https://docs.google.com/presentation/d/1Cw0rmJ51FyleMM-rMzit5oFoNCwtXLrjqkDtjz0Khc8/edit?usp=sharing" target="_blank" rel="noopener">Artificial Neural Network - II 簡報</a></p>
+            <p>筆者於大學專題時，曾向組員介紹過相關內容，<br>如有需要可以參考 <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1ji7tSou_7TV-IMlE-9ZJavc1lmHDdJiHtQO6MYAVFEQ/edit?usp=sharing">Artificial Neural Network - I 簡報</a>、<a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1Cw0rmJ51FyleMM-rMzit5oFoNCwtXLrjqkDtjz0Khc8/edit?usp=sharing">Artificial Neural Network - II 簡報</a></p>
           </div>
+
 <div class="note success">
-            <p>其他資源請參考：<a href="https://www.youtube.com/watch?v=PgcKcu-RMcc" target="_blank" rel="noopener">解說影片</a></p>
+            <p>其他資源請參考：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=PgcKcu-RMcc">解說影片</a></p>
           </div>
+
 <h1 id="神經網路簡介"><a href="#神經網路簡介" class="headerlink" title="神經網路簡介"></a>神經網路簡介</h1><p>全連接神經網路（Fully-connect Neural Network, FNN）是一種多個神經元的「連接模式」，<br>事實上，許多的神經網路模型都只是各種神經元的連接模式，而全連接神經網路是其中最簡單的一種，<br>參考圖 2 所示，全連接神經網路的特色是，上一層的神經元與下一層所有的神經元相接。</p>
 <p><img src="https://i.imgur.com/QpM15R6.png" alt="圖 2、全連接神經網路示意圖"></p>
 <p>我們將帶有數值的輸入，當成一個獨立的神經元，構成圖 2 藍色處，神經網路的輸入層（input layer）<br>然後圖 2 右邊深綠框為會輸出結果的輸出層（output layer），中間紫色框是神經網路的主體，稱為隱藏層（hidden layer）</p>
 <div class="note info">
-            <p>計算神經網路層數時，通常不計算輸入層（input layer），請參考 <a href="https://datascience.stackexchange.com/questions/14027/counting-the-number-of-layers-in-a-neural-network" target="_blank" rel="noopener">Counting the number of layers in a neural network</a> </p>
+            <p>計算神經網路層數時，通常不計算輸入層（input layer），請參考 <a target="_blank" rel="noopener" href="https://datascience.stackexchange.com/questions/14027/counting-the-number-of-layers-in-a-neural-network">Counting the number of layers in a neural network</a> </p>
           </div>
+
 <p>在邏輯回歸時，我們訓練一組 $\theta$ 來完成任務，在神經網路的情況也是一樣，<br>我們將訓練 $\Theta$ 權重，由於維度增加，我們用大寫取代小寫，而權重出現在每一條神經元的連接中。<br>（圖 2 中帶箭頭的線是沒有權重的，那僅是表示輸入、出的箭頭。）</p>
 <div class="note warning">
             <p>注意第一段「各種神經元」，說明了神經網路的神經元並非只有一種。</p>
           </div>
+
 <h1 id="前向傳播演算法"><a href="#前向傳播演算法" class="headerlink" title="前向傳播演算法"></a>前向傳播演算法</h1><p>還記得當初學習「函數」的時候，是怎麼想像函數的嗎？<br>函數是一個機器，你可以給它一個值，它就會給你另一個值。</p>
 <p>現在，全連接神經網路就是那部機器！我們的函數名為 $h_{\Theta}(X)$<br>計算這個函數值的過程，就稱為「前向傳播演算法（forward propagation algorithm）」。</p>
-<p>試想我們輸入為列向量 $\boldsymbol{x}^{T} = [x_{1}, x_{2}, …, x_{n}]$ 是一筆具有 $n$ 個特徵的資料，<br>若為第 $j$ 筆，我們表示為 $(\boldsymbol{x}^{(j)})^{T} = [x_{1}^{(j)}, x_{2}^{(j)}, …, x_{n}^{(j)}]$<br>當我們有 $m$ 筆資料構成一個批次（batch）時，輸入矩陣為：</p>
-<p>$$<br>X =<br>\left[ \begin{matrix}<br>(\boldsymbol{x}^{(1)})^{T} \\<br>(\boldsymbol{x}^{(2)})^{T} \\<br>\vdots               \\<br>(\boldsymbol{x}^{(m)})^{T}<br>\end{matrix} \right]<br>=<br>\left[ \begin{matrix}<br>x_{1}^{(1)} &amp; x_{2}^{(1)} &amp; \dots &amp; x_{n}^{(1)} \\<br>x_{1}^{(2)} &amp; x_{2}^{(2)} &amp; \dots &amp; x_{n}^{(2)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>x_{1}^{(m)} &amp; x_{2}^{(m)} &amp; \dots  &amp; x_{n}^{(m)}<br>\end{matrix} \right]<br>$$</p>
+<p>試想我們輸入為列向量 $\boldsymbol{x}^{T} &#x3D; [x_{1}, x_{2}, …, x_{n}]$ 是一筆具有 $n$ 個特徵的資料，<br>若為第 $j$ 筆，我們表示為 $(\boldsymbol{x}^{(j)})^{T} &#x3D; [x_{1}^{(j)}, x_{2}^{(j)}, …, x_{n}^{(j)}]$<br>當我們有 $m$ 筆資料構成一個批次（batch）時，輸入矩陣為：</p>
+<p>$$<br>X &#x3D;<br>\left[ \begin{matrix}<br>(\boldsymbol{x}^{(1)})^{T} \\<br>(\boldsymbol{x}^{(2)})^{T} \\<br>\vdots               \\<br>(\boldsymbol{x}^{(m)})^{T}<br>\end{matrix} \right]<br>&#x3D;<br>\left[ \begin{matrix}<br>x_{1}^{(1)} &amp; x_{2}^{(1)} &amp; \dots &amp; x_{n}^{(1)} \\<br>x_{1}^{(2)} &amp; x_{2}^{(2)} &amp; \dots &amp; x_{n}^{(2)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>x_{1}^{(m)} &amp; x_{2}^{(m)} &amp; \dots  &amp; x_{n}^{(m)}<br>\end{matrix} \right]<br>$$</p>
 <div class="note info">
             <p>輸入資料的行、列可能相反，只要公式做對應的改變即可。</p>
           </div>
+
 <div class="note info">
             <p>訓練神經網路時，通常會多筆資料一起訓練，而這個多筆資料則稱為一個批次（batch）</p>
           </div>
+
 <p>而假設第 $k$ 層為 $a \times b$ 的神經網路層，權重矩陣為：</p>
-<p>$$<br>\Theta^{(k)} =<br>\left[ \begin{matrix}<br>\Theta_{1, 1}^{(k)} &amp; \Theta_{1, 2}^{(k)} &amp; \dots  &amp; \Theta_{1, b}^{(k)} \\<br>\Theta_{2, 1}^{(k)} &amp; \Theta_{2, 2}^{(k)} &amp; \dots  &amp; \Theta_{2, b}^{(k)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\Theta_{a, 1}^{(k)} &amp; \Theta_{a, 2}^{(k)} &amp; \dots  &amp; \Theta_{a, b}^{(k)}<br>\end{matrix} \right]<br>$$</p>
+<p>$$<br>\Theta^{(k)} &#x3D;<br>\left[ \begin{matrix}<br>\Theta_{1, 1}^{(k)} &amp; \Theta_{1, 2}^{(k)} &amp; \dots  &amp; \Theta_{1, b}^{(k)} \\<br>\Theta_{2, 1}^{(k)} &amp; \Theta_{2, 2}^{(k)} &amp; \dots  &amp; \Theta_{2, b}^{(k)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\Theta_{a, 1}^{(k)} &amp; \Theta_{a, 2}^{(k)} &amp; \dots  &amp; \Theta_{a, b}^{(k)}<br>\end{matrix} \right]<br>$$</p>
 <p>上一篇文章邏輯回歸中的 $f(x)$ 函數，在神經網路被稱為激勵函數（activation function）<br>所以當 $X$ 往前計算一層時，只要將兩個矩陣相乘，然後套用激勵函數即可。</p>
 <div class="note info">
-            <p>激勵函數通常只在輸出層使用，有許多不同的函數可供選擇，請參考 <a href="https://en.wikipedia.org/wiki/Activation_function" target="_blank" rel="noopener">Wikipedia: activation function</a>；<br>從這裡也可以知道，激勵函數的一個作用是限制輸出值域。</p>
+            <p>激勵函數通常只在輸出層使用，有許多不同的函數可供選擇，請參考 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Activation_function">Wikipedia: activation function</a>；<br>從這裡也可以知道，激勵函數的一個作用是限制輸出值域。</p>
           </div>
+
 <p>彙整一下，舉例來說，第 1 層有：</p>
-<p>$$<br>X\Theta^{(1)} =<br>\left[ \begin{matrix}<br>(\boldsymbol{x}^{(1)})^{T} \\<br>(\boldsymbol{x}^{(2)})^{T} \\<br>\vdots \\<br>(\boldsymbol{x}^{(m)})^{T}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>\Theta_{1, 1}^{(1)} &amp; \Theta_{1, 2}^{(1)} &amp; \dots  &amp; \Theta_{1, b}^{(1)} \\<br>\Theta_{2, 1}^{(1)} &amp; \Theta_{2, 2}^{(1)} &amp; \dots  &amp; \Theta_{2, b}^{(1)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\Theta_{a, 1}^{(1)} &amp; \Theta_{a, 2}^{(1)} &amp; \dots  &amp; \Theta_{a, b}^{(1)}<br>\end{matrix} \right]<br>=<br>\left[ \begin{matrix}<br>x_{1}^{(1)} &amp; x_{2}^{(1)} &amp; \dots &amp; x_{n}^{(1)} \\<br>x_{1}^{(2)} &amp; x_{2}^{(2)} &amp; \dots &amp; x_{n}^{(2)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>x_{1}^{(m)} &amp; x_{2}^{(m)} &amp; \dots  &amp; x_{n}^{(m)}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>\Theta_{1, 1}^{(1)} &amp; \Theta_{1, 2}^{(1)} &amp; \dots &amp; \Theta_{1, b}^{(1)} \\<br>\Theta_{2, 1}^{(1)} &amp; \Theta_{2, 2}^{(1)} &amp; \dots &amp; \Theta_{2, b}^{(1)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\Theta_{a, 1}^{(1)} &amp; \Theta_{a, 2}^{(1)} &amp; \dots &amp; \Theta_{a, b}^{(1)}<br>\end{matrix} \right]<br>$$<br>$$<br>=<br>\left[ \begin{matrix}<br>\sum\limits_{i = 1}^{a} x_{i}^{(1)}\Theta_{i, 1}^{(k)} &amp; \sum\limits_{i = 1}^{a} x_{i}^{(1)}\Theta_{i, 2}^{(k)} &amp; \dots &amp; \sum\limits_{i = 1}^{a} x_{i}^{(1)}\Theta_{i, b}^{(k)} \\<br>\sum\limits_{i = 1}^{a} x_{i}^{(2)}\Theta_{i, 1}^{(k)} &amp; \sum\limits_{i = 1}^{a} x_{i}^{(2)}\Theta_{i, 2}^{(k)} &amp; \dots &amp; \sum\limits_{i = 1}^{a} x_{i}^{(2)}\Theta_{i, b}^{(k)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\sum\limits_{i = 1}^{a} x_{i}^{(m)}\Theta_{i, 1}^{(k)} &amp; \sum\limits_{i = 1}^{a} x_{i}^{(m)}\Theta_{i, 2}^{(k)} &amp; \dots &amp; \sum\limits_{i = 1}^{a} x_{i}^{(m)}\Theta_{i, b}^{(k)} \\<br>\end{matrix} \right]<br>$$</p>
+<p>$$<br>X\Theta^{(1)} &#x3D;<br>\left[ \begin{matrix}<br>(\boldsymbol{x}^{(1)})^{T} \\<br>(\boldsymbol{x}^{(2)})^{T} \\<br>\vdots \\<br>(\boldsymbol{x}^{(m)})^{T}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>\Theta_{1, 1}^{(1)} &amp; \Theta_{1, 2}^{(1)} &amp; \dots  &amp; \Theta_{1, b}^{(1)} \\<br>\Theta_{2, 1}^{(1)} &amp; \Theta_{2, 2}^{(1)} &amp; \dots  &amp; \Theta_{2, b}^{(1)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\Theta_{a, 1}^{(1)} &amp; \Theta_{a, 2}^{(1)} &amp; \dots  &amp; \Theta_{a, b}^{(1)}<br>\end{matrix} \right]<br>&#x3D;<br>\left[ \begin{matrix}<br>x_{1}^{(1)} &amp; x_{2}^{(1)} &amp; \dots &amp; x_{n}^{(1)} \\<br>x_{1}^{(2)} &amp; x_{2}^{(2)} &amp; \dots &amp; x_{n}^{(2)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>x_{1}^{(m)} &amp; x_{2}^{(m)} &amp; \dots  &amp; x_{n}^{(m)}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>\Theta_{1, 1}^{(1)} &amp; \Theta_{1, 2}^{(1)} &amp; \dots &amp; \Theta_{1, b}^{(1)} \\<br>\Theta_{2, 1}^{(1)} &amp; \Theta_{2, 2}^{(1)} &amp; \dots &amp; \Theta_{2, b}^{(1)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\Theta_{a, 1}^{(1)} &amp; \Theta_{a, 2}^{(1)} &amp; \dots &amp; \Theta_{a, b}^{(1)}<br>\end{matrix} \right]<br>$$<br>$$<br>&#x3D;<br>\left[ \begin{matrix}<br>\sum\limits_{i &#x3D; 1}^{a} x_{i}^{(1)}\Theta_{i, 1}^{(k)} &amp; \sum\limits_{i &#x3D; 1}^{a} x_{i}^{(1)}\Theta_{i, 2}^{(k)} &amp; \dots &amp; \sum\limits_{i &#x3D; 1}^{a} x_{i}^{(1)}\Theta_{i, b}^{(k)} \\<br>\sum\limits_{i &#x3D; 1}^{a} x_{i}^{(2)}\Theta_{i, 1}^{(k)} &amp; \sum\limits_{i &#x3D; 1}^{a} x_{i}^{(2)}\Theta_{i, 2}^{(k)} &amp; \dots &amp; \sum\limits_{i &#x3D; 1}^{a} x_{i}^{(2)}\Theta_{i, b}^{(k)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>\sum\limits_{i &#x3D; 1}^{a} x_{i}^{(m)}\Theta_{i, 1}^{(k)} &amp; \sum\limits_{i &#x3D; 1}^{a} x_{i}^{(m)}\Theta_{i, 2}^{(k)} &amp; \dots &amp; \sum\limits_{i &#x3D; 1}^{a} x_{i}^{(m)}\Theta_{i, b}^{(k)} \\<br>\end{matrix} \right]<br>$$</p>
 <p>這是全部寫出來的情況，雖然看起來有點複雜，<br>但我們仔細觀察注標，可以發現這個矩陣大小關係為：</p>
 <ul>
 <li>$X$ 大小為 $m \times n$</li>
@@ -298,12 +308,13 @@
 <li>$X\Theta^{(1)}$ 大小為 $m \times b$</li>
 </ul>
 <div class="note info">
-            <p>輸入層的神經元數量，等於輸入資料的特徵數量，即有 $n = a$ 的關係。</p>
+            <p>輸入層的神經元數量，等於輸入資料的特徵數量，即有 $n &#x3D; a$ 的關係。</p>
           </div>
+
 <p>而第 2 層為 $b \times c$ 的神經網路，以 $X\Theta^{(1)}$ 作為輸入，<br>以此類推，假設我們有 $L$ 層，而激活函數為 $\phi(z)$，則前向傳播為：</p>
-<p>$$<br>h_{\Theta}(X) = \phi(X\Theta^{(1)}\Theta^{(2)} \dots \Theta^{(L)})<br>$$</p>
+<p>$$<br>h_{\Theta}(X) &#x3D; \phi(X\Theta^{(1)}\Theta^{(2)} \dots \Theta^{(L)})<br>$$</p>
 <p>參考圖 2 的情況，輸入我們可以寫成：</p>
-<p>$$<br>h_{\Theta}(X) = \phi(X\Theta^{(1)}\Theta^{(2)}) =<br>\phi \left(<br>\begin{bmatrix}<br>x_{1, 1} &amp; x_{1, 2} \\<br>x_{2, 1} &amp; x_{2, 2}<br>\end{bmatrix}<br>\left[ \begin{matrix}<br>\Theta_{1, 1}^{(1)} &amp; \Theta_{1, 2}^{(1)} &amp; \Theta_{1, 3}^{(1)} &amp; \Theta_{1, 4}^{(1)} \\<br>\Theta_{2, 1}^{(1)} &amp; \Theta_{2, 2}^{(1)} &amp; \Theta_{2, 3}^{(1)} &amp; \Theta_{2, 4}^{(1)}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>\Theta_{1, 1}^{(2)} &amp; \Theta_{1, 2}^{(2)} &amp; \Theta_{1, 3}^{(2)} \\<br>\Theta_{2, 1}^{(2)} &amp; \Theta_{2, 2}^{(2)} &amp; \Theta_{2, 3}^{(2)} \\<br>\Theta_{3, 1}^{(2)} &amp; \Theta_{3, 2}^{(2)} &amp; \Theta_{3, 3}^{(2)} \\<br>\Theta_{4, 1}^{(2)} &amp; \Theta_{4, 2}^{(2)} &amp; \Theta_{4, 3}^{(2)}<br>\end{matrix} \right]<br>\right)<br>$$</p>
+<p>$$<br>h_{\Theta}(X) &#x3D; \phi(X\Theta^{(1)}\Theta^{(2)}) &#x3D;<br>\phi \left(<br>\begin{bmatrix}<br>x_{1, 1} &amp; x_{1, 2} \\<br>x_{2, 1} &amp; x_{2, 2}<br>\end{bmatrix}<br>\left[ \begin{matrix}<br>\Theta_{1, 1}^{(1)} &amp; \Theta_{1, 2}^{(1)} &amp; \Theta_{1, 3}^{(1)} &amp; \Theta_{1, 4}^{(1)} \\<br>\Theta_{2, 1}^{(1)} &amp; \Theta_{2, 2}^{(1)} &amp; \Theta_{2, 3}^{(1)} &amp; \Theta_{2, 4}^{(1)}<br>\end{matrix} \right]<br>\left[ \begin{matrix}<br>\Theta_{1, 1}^{(2)} &amp; \Theta_{1, 2}^{(2)} &amp; \Theta_{1, 3}^{(2)} \\<br>\Theta_{2, 1}^{(2)} &amp; \Theta_{2, 2}^{(2)} &amp; \Theta_{2, 3}^{(2)} \\<br>\Theta_{3, 1}^{(2)} &amp; \Theta_{3, 2}^{(2)} &amp; \Theta_{3, 3}^{(2)} \\<br>\Theta_{4, 1}^{(2)} &amp; \Theta_{4, 2}^{(2)} &amp; \Theta_{4, 3}^{(2)}<br>\end{matrix} \right]<br>\right)<br>$$</p>
 <h1 id="反向傳播演算法"><a href="#反向傳播演算法" class="headerlink" title="反向傳播演算法"></a>反向傳播演算法</h1><p>對於神經網路來說，反向傳播算法（back propagation algorithm）才是訓練的重點，<br>具體來說，我們的訓練的過程為：</p>
 <ol>
 <li>準備輸入的值 $X$ 與訓練的標籤 $Y$</li>
@@ -313,68 +324,71 @@
 <li>重複 4~5 步，直到神經網路訓練結束</li>
 <li>使用 $h_{\Theta}(X)$ 預測值（這相當於做一次第 4 步的前向傳播算法）</li>
 </ol>
-<p>如果我們使用 <a href="https://en.wikipedia.org/wiki/Mean_squared_error" target="_blank" rel="noopener">均方誤差（Mean Squared Error, MSE）</a> 成本函數：</p>
-<p>$$<br>Cost(\theta) = \frac{1}{2m} \sum\limits_{i=1}^m (y^{(i)} - \hat{y}^{(i)})^{2}<br>$$</p>
+<p>如果我們使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Mean_squared_error">均方誤差（Mean Squared Error, MSE）</a> 成本函數：</p>
+<p>$$<br>Cost(\theta) &#x3D; \frac{1}{2m} \sum\limits_{i&#x3D;1}^m (y^{(i)} - \hat{y}^{(i)})^{2}<br>$$</p>
 <div class="note info">
             <p>習慣上，我們會多乘一個 $\frac{1}{2}$ 來消去微分後的項</p>
           </div>
+
 <p>我們重寫一次，當輸入批次共 $m$ 筆資料、每筆資料都有 $n$ 個特徵：</p>
-<p>$$<br>X =<br>\left[ \begin{matrix}<br>(\boldsymbol{x}^{(1)})^{T} \\<br>(\boldsymbol{x}^{(2)})^{T} \\<br>\vdots               \\<br>(\boldsymbol{x}^{(m)})^{T}<br>\end{matrix} \right]<br>=<br>\left[ \begin{matrix}<br>x_{1}^{(1)} &amp; x_{2}^{(1)} &amp; \dots &amp; x_{n}^{(1)} \\<br>x_{1}^{(2)} &amp; x_{2}^{(2)} &amp; \dots &amp; x_{n}^{(2)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>x_{1}^{(m)} &amp; x_{2}^{(m)} &amp; \dots  &amp; x_{n}^{(m)}<br>\end{matrix} \right]<br>$$</p>
+<p>$$<br>X &#x3D;<br>\left[ \begin{matrix}<br>(\boldsymbol{x}^{(1)})^{T} \\<br>(\boldsymbol{x}^{(2)})^{T} \\<br>\vdots               \\<br>(\boldsymbol{x}^{(m)})^{T}<br>\end{matrix} \right]<br>&#x3D;<br>\left[ \begin{matrix}<br>x_{1}^{(1)} &amp; x_{2}^{(1)} &amp; \dots &amp; x_{n}^{(1)} \\<br>x_{1}^{(2)} &amp; x_{2}^{(2)} &amp; \dots &amp; x_{n}^{(2)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>x_{1}^{(m)} &amp; x_{2}^{(m)} &amp; \dots  &amp; x_{n}^{(m)}<br>\end{matrix} \right]<br>$$</p>
 <p>對應的標籤為 $m$ 筆資料、每筆資料都有 $p$ 個特徵（最後一層神經元數量也會為 $p$）：</p>
-<p>$$<br>Y =<br>\left[ \begin{matrix}<br>(\boldsymbol{y}^{(1)})^{T} \\<br>(\boldsymbol{y}^{(2)})^{T} \\<br>\vdots               \\<br>(\boldsymbol{y}^{(m)})^{T}<br>\end{matrix} \right]<br>=<br>\left[ \begin{matrix}<br>y_{1}^{(1)} &amp; y_{2}^{(1)} &amp; \dots &amp; y_{p}^{(1)} \\<br>y_{1}^{(2)} &amp; y_{2}^{(2)} &amp; \dots &amp; y_{p}^{(2)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>y_{1}^{(m)} &amp; y_{2}^{(m)} &amp; \dots  &amp; y_{p}^{(m)}<br>\end{matrix} \right]<br>$$</p>
+<p>$$<br>Y &#x3D;<br>\left[ \begin{matrix}<br>(\boldsymbol{y}^{(1)})^{T} \\<br>(\boldsymbol{y}^{(2)})^{T} \\<br>\vdots               \\<br>(\boldsymbol{y}^{(m)})^{T}<br>\end{matrix} \right]<br>&#x3D;<br>\left[ \begin{matrix}<br>y_{1}^{(1)} &amp; y_{2}^{(1)} &amp; \dots &amp; y_{p}^{(1)} \\<br>y_{1}^{(2)} &amp; y_{2}^{(2)} &amp; \dots &amp; y_{p}^{(2)} \\<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>y_{1}^{(m)} &amp; y_{2}^{(m)} &amp; \dots  &amp; y_{p}^{(m)}<br>\end{matrix} \right]<br>$$</p>
 <p>則我們可以將成本函數寫完整：</p>
-<p>$$<br>Cost(\Theta)<br>= \frac{1}{2m} \sum\limits_{i=1}^m (Y - \hat{Y})^{2}<br>= \frac{1}{2m} \sum\limits_{i=1}^m (Y - h_{\Theta}(X))^{2}<br>$$</p>
-<p>$$<br>= \frac{1}{2m} \sum\limits_{i=1}^m<br>(\left[y_{j}^{(i)}\right] - \left[ h_{\Theta}(X)^{(i)}_{j} \right]  )^{2}<br>$$</p>
-<p>我們關注的是，當權重 $\Theta$ 改變時，成本 $Cost(\Theta)$ 的變化，<br>假設我們激活函數為 Sigmoid 函數 $\phi(z) = \frac{1}{1 + e ^{-z}}$</p>
+<p>$$<br>Cost(\Theta)<br>&#x3D; \frac{1}{2m} \sum\limits_{i&#x3D;1}^m (Y - \hat{Y})^{2}<br>&#x3D; \frac{1}{2m} \sum\limits_{i&#x3D;1}^m (Y - h_{\Theta}(X))^{2}<br>$$</p>
+<p>$$<br>&#x3D; \frac{1}{2m} \sum\limits_{i&#x3D;1}^m<br>(\left[y_{j}^{(i)}\right] - \left[ h_{\Theta}(X)^{(i)}_{j} \right]  )^{2}<br>$$</p>
+<p>我們關注的是，當權重 $\Theta$ 改變時，成本 $Cost(\Theta)$ 的變化，<br>假設我們激活函數為 Sigmoid 函數 $\phi(z) &#x3D; \frac{1}{1 + e ^{-z}}$</p>
 <p>接下來，我們要處理每一層的誤差。</p>
 <h2 id="Sigmoid-函數微分"><a href="#Sigmoid-函數微分" class="headerlink" title="Sigmoid 函數微分"></a>Sigmoid 函數微分</h2><p>在開始之前，我們先處理激活函數的微分，這個部分在後面會使用到。</p>
-<p>$$<br>\phi(z) = \frac{1}{1 + e ^{-z}}<br>$$</p>
+<p>$$<br>\phi(z) &#x3D; \frac{1}{1 + e ^{-z}}<br>$$</p>
 <p>對 $z$ 偏微分有：</p>
-<p>$$<br>\frac{\partial \phi(z)}{\partial z}<br> = \frac{\partial}{\partial z} \left( \frac{1}{1 + e ^{-z}} \right)<br> = \frac{\partial (1 + e ^{-z})^{-1}}{\partial (1 + e ^{-z})} \frac{\partial (1 + e ^{-z})}{\partial z}<br> = \left[ -(1 + e ^{-z})^{-2} \right] \left[ -e^{-z} \right]<br>$$<br>$$<br> = \left[ (1 + e ^{-z})^{-1} \right] \left[ (1 + e ^{-z})^{-1}e^{-z} \right]<br> = \phi(z) \left( \frac{e^{-z}}{1 + e ^{-z}} + \frac{1}{1 + e ^{-z}} - \frac{1}{1 + e ^{-z}} \right)<br>$$<br>$$<br> = \phi(z) \left( \frac{1 + e^{-z}}{1 + e ^{-z}} - \phi(z) \right)<br> = \phi(z) \left( 1 - \phi(z) \right)<br>$$</p>
-<h2 id="輸出層的誤差"><a href="#輸出層的誤差" class="headerlink" title="輸出層的誤差"></a>輸出層的誤差</h2><p>在接下去之前，我們把符號定義清楚，先前的討論中，我們得到結論是：<br>$$<br>h_{\Theta}(X) = \phi(X\Theta^{(1)}\Theta^{(2)} \dots \Theta^{(L)})<br>$$</p>
+<p>$$<br>\frac{\partial \phi(z)}{\partial z}<br> &#x3D; \frac{\partial}{\partial z} \left( \frac{1}{1 + e ^{-z}} \right)<br> &#x3D; \frac{\partial (1 + e ^{-z})^{-1}}{\partial (1 + e ^{-z})} \frac{\partial (1 + e ^{-z})}{\partial z}<br> &#x3D; \left[ -(1 + e ^{-z})^{-2} \right] \left[ -e^{-z} \right]<br>$$<br>$$<br> &#x3D; \left[ (1 + e ^{-z})^{-1} \right] \left[ (1 + e ^{-z})^{-1}e^{-z} \right]<br> &#x3D; \phi(z) \left( \frac{e^{-z}}{1 + e ^{-z}} + \frac{1}{1 + e ^{-z}} - \frac{1}{1 + e ^{-z}} \right)<br>$$<br>$$<br> &#x3D; \phi(z) \left( \frac{1 + e^{-z}}{1 + e ^{-z}} - \phi(z) \right)<br> &#x3D; \phi(z) \left( 1 - \phi(z) \right)<br>$$</p>
+<h2 id="輸出層的誤差"><a href="#輸出層的誤差" class="headerlink" title="輸出層的誤差"></a>輸出層的誤差</h2><p>在接下去之前，我們把符號定義清楚，先前的討論中，我們得到結論是：<br>$$<br>h_{\Theta}(X) &#x3D; \phi(X\Theta^{(1)}\Theta^{(2)} \dots \Theta^{(L)})<br>$$</p>
 <p><img src="https://i.imgur.com/zOAQra2.png" alt="圖 3、輸出層的誤差"></p>
-<p>如果僅考慮一筆資料的情況，即 $ X = (\boldsymbol{x}^{(1)})^{T}$<br>參考圖 3 所示，接著定義：<br>$$<br>a^{(1)} = X\Theta^{(1)} = (\boldsymbol{x}^{(1)})^{T}\Theta^{(1)} \\<br>a^{(2)} = a^{(1)}\Theta^{(2)} \\<br>\vdots \\<br>a^{(L)} = a^{(L-1)}\Theta^{(L)}<br>$$</p>
-<p>不難發現，第 $l$ 層的第 $k$ 個神經元的輸出為 $a_{k}^{(l)}$<br>另外總輸出為 $h_{\Theta}(X) = \phi(a^{(L)})$<br>同理，第 $k$ 個神經元的輸出為 $\phi(a_{k}^{(L)})$ </p>
+<p>如果僅考慮一筆資料的情況，即 $ X &#x3D; (\boldsymbol{x}^{(1)})^{T}$<br>參考圖 3 所示，接著定義：<br>$$<br>a^{(1)} &#x3D; X\Theta^{(1)} &#x3D; (\boldsymbol{x}^{(1)})^{T}\Theta^{(1)} \\<br>a^{(2)} &#x3D; a^{(1)}\Theta^{(2)} \\<br>\vdots \\<br>a^{(L)} &#x3D; a^{(L-1)}\Theta^{(L)}<br>$$</p>
+<p>不難發現，第 $l$ 層的第 $k$ 個神經元的輸出為 $a_{k}^{(l)}$<br>另外總輸出為 $h_{\Theta}(X) &#x3D; \phi(a^{(L)})$<br>同理，第 $k$ 個神經元的輸出為 $\phi(a_{k}^{(L)})$ </p>
 <p>我們觀察第 $L-1$ 層的第 $i$ 個神經元連接到第 $L$ 層第 $j$ 個神經元的權重為 $\Theta_{ij}^{(L)}$<br>所以我們對 $Cost(\Theta)$ 的特定神經元做偏微分有：</p>
-<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{ij}^{(L)}}<br> = \frac{1}{2}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2} }{\partial \Theta_{ij}^{(L)}}<br>$$<br>$$<br> = \frac{1}{2}<br> \frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2} }{\partial y_{j} - \phi(a_{j}^{(L)})}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \Theta_{ij}^{(L)}}<br>$$<br>$$<br>= \frac{1}{2}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2} }{\partial y_{j} - \phi(a_{j}^{(L)})}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial \Theta_{ij}^{(L)}}<br>$$<br>$$<br>=<br>\frac{1}{2}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}}<br>\frac{\partial a_{j}^{(L)}}{\partial \Theta_{ij}^{(L)}}<br>$$</p>
+<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{ij}^{(L)}}<br> &#x3D; \frac{1}{2}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2} }{\partial \Theta_{ij}^{(L)}}<br>$$<br>$$<br> &#x3D; \frac{1}{2}<br> \frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2} }{\partial y_{j} - \phi(a_{j}^{(L)})}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \Theta_{ij}^{(L)}}<br>$$<br>$$<br>&#x3D; \frac{1}{2}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2} }{\partial y_{j} - \phi(a_{j}^{(L)})}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial \Theta_{ij}^{(L)}}<br>$$<br>$$<br>&#x3D;<br>\frac{1}{2}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}}<br>\frac{\partial a_{j}^{(L)}}{\partial \Theta_{ij}^{(L)}}<br>$$</p>
 <p>然後我們逐項討論，第一乘項是：</p>
-<p>$$<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))} = 2(y_{j} - \phi(a_{j}^{(L)}))<br>$$</p>
-<p>$$<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})} = -1<br>$$</p>
+<p>$$<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))} &#x3D; 2(y_{j} - \phi(a_{j}^{(L)}))<br>$$</p>
+<p>$$<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})} &#x3D; -1<br>$$</p>
 <p>使用 Sigmoid 偏微分的結果：</p>
-<p>$$<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}} = \phi(a_{j}^{(L)}) \left( 1 - \phi(a_{j}^{(L)}) \right)<br>$$</p>
+<p>$$<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}} &#x3D; \phi(a_{j}^{(L)}) \left( 1 - \phi(a_{j}^{(L)}) \right)<br>$$</p>
 <p>然後根據先前連接的定義，即前一層第 $k$ 個（任意的）神經元的輸出，<br>經過權重 $\Theta_{kj}^{(L)}$ 都可以連到輸出層第 $j$ 個神經元：</p>
-<p>$$<br>\frac{\partial a_{j}^{(L)}}{\partial \Theta_{ij}^{(L)}} =<br>\frac{\partial}{\partial \Theta_{ij}^{(L)}} \left( \sum\limits_{k} \phi(a_{k}^{(L-1)})\Theta_{kj}^{(L)} \right) =<br>\phi(a_{i}^{(L-1)})<br>$$</p>
+<p>$$<br>\frac{\partial a_{j}^{(L)}}{\partial \Theta_{ij}^{(L)}} &#x3D;<br>\frac{\partial}{\partial \Theta_{ij}^{(L)}} \left( \sum\limits_{k} \phi(a_{k}^{(L-1)})\Theta_{kj}^{(L)} \right) &#x3D;<br>\phi(a_{i}^{(L-1)})<br>$$</p>
 <div class="note info">
-            <p>當 $k = i$ 時，那條權重才會影響，微分後才有項被保留</p>
+            <p>當 $k &#x3D; i$ 時，那條權重才會影響，微分後才有項被保留</p>
           </div>
+
 <p>則輸出層的誤差為：</p>
-<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{ij}^{(L)}}<br>= \frac{1}{2} \left[ 2(y_{j} - \phi(a_{j}^{(L)})) (-1) \phi(a_{j}^{(L)}) \left(1 - \phi(a_{j}^{(L)}) \right) \phi(a_{i}^{(L-1)}) \right]<br>$$<br>$$<br>= (y_{j} - \phi(a_{j}^{(L)})) (-1) \phi(a_{j}^{(L)}) \left(1 - \phi(a_{j}^{(L)}) \right) \phi(a_{i}^{(L-1)})<br>$$<br>$$<br>= (\phi(a_{j}^{(L)}) - y_{j}) \phi(a_{j}^{(L)}) \left(1 - \phi(a_{j}^{(L)}) \right) \phi(a_{i}^{(L-1)})<br>$$</p>
+<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{ij}^{(L)}}<br>&#x3D; \frac{1}{2} \left[ 2(y_{j} - \phi(a_{j}^{(L)})) (-1) \phi(a_{j}^{(L)}) \left(1 - \phi(a_{j}^{(L)}) \right) \phi(a_{i}^{(L-1)}) \right]<br>$$<br>$$<br>&#x3D; (y_{j} - \phi(a_{j}^{(L)})) (-1) \phi(a_{j}^{(L)}) \left(1 - \phi(a_{j}^{(L)}) \right) \phi(a_{i}^{(L-1)})<br>$$<br>$$<br>&#x3D; (\phi(a_{j}^{(L)}) - y_{j}) \phi(a_{j}^{(L)}) \left(1 - \phi(a_{j}^{(L)}) \right) \phi(a_{i}^{(L-1)})<br>$$</p>
 <p>然後我們定義最後一層（即第 $L$ 層）第 $j$ 個神經元的的誤差為：</p>
-<p>$$<br>\delta_{j}^{(L)} =<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}}<br>$$<br>$$<br> = (\phi(a_{j}^{(L)}) - y_{j}) \phi(a_{j}^{(L)}) \left(1 - \phi(a_{j}^{(L)}) \right)<br>$$</p>
+<p>$$<br>\delta_{j}^{(L)} &#x3D;<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}}<br>$$<br>$$<br> &#x3D; (\phi(a_{j}^{(L)}) - y_{j}) \phi(a_{j}^{(L)}) \left(1 - \phi(a_{j}^{(L)}) \right)<br>$$</p>
 <p>所以可以表示為：</p>
-<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{ij}^{(L)}} = \delta_{j}^{(L)} \phi(a_{i}^{(L-1)})<br>$$</p>
+<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{ij}^{(L)}} &#x3D; \delta_{j}^{(L)} \phi(a_{i}^{(L-1)})<br>$$</p>
 <h2 id="隱藏層的誤差"><a href="#隱藏層的誤差" class="headerlink" title="隱藏層的誤差"></a>隱藏層的誤差</h2><p>有了輸出層的經驗，隱藏層便不會太過困難。</p>
 <p><img src="https://i.imgur.com/wPg7VqS.png" alt="圖 4、隱藏層的誤差"></p>
 <p>觀察圖 4 的內容，我們接下來要討論倒數第 2 層（即 $L-1$ 層）的誤差，<br>很顯然地，一樣是對成本函數做偏微分。</p>
 <p>不難發現，最後一層所有的誤差都傳遞到了隱藏層中，<br>可以視作多變數函數的全微分，所以有：</p>
-<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{st}^{(L-1)}}<br>=<br>\frac{1}{2} \sum\limits_{j} \left[<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}}<br>\right]<br>\frac{\partial a_{j}^{(L)}}{\partial\Theta_{st}^{(L-1)}}<br>$$</p>
+<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{st}^{(L-1)}}<br>&#x3D;<br>\frac{1}{2} \sum\limits_{j} \left[<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}}<br>\right]<br>\frac{\partial a_{j}^{(L)}}{\partial\Theta_{st}^{(L-1)}}<br>$$</p>
 <p>直至這一步都是幾乎一樣的，接下來拆開最後一項。</p>
-<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{st}^{(L-1)}}<br>=<br>\frac{1}{2} \sum\limits_{j} \left[<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}}<br>\right]<br>\frac{\partial a_{j}^{(L)}}{\partial\Theta_{st}^{(L-1)}}<br>$$<br>$$<br>=<br>\frac{1}{2} \sum\limits_{j} \left[<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}}<br>\right]<br>\frac{\partial \sum\limits_{k} \left( \phi(a_{k}^{(L-1)}) \Theta_{kj}^{(L)} \right)}{\partial a_{i}^{(L-1)}}<br>\frac{\partial a_{i}^{(L-1)}}{\partial\Theta_{st}^{(L-1)}}<br>$$<br>$$<br>=<br>\frac{1}{2} \sum\limits_{j} \delta_{j}^{(L)}<br>\frac{\partial \sum\limits_{k} \left( \phi(a_{k}^{(L-1)}) \Theta_{kj}^{(L)} \right)}{\partial a_{i}^{(L-1)}}<br>\frac{\partial a_{i}^{(L-1)}}{\partial\Theta_{st}^{(L-1)}}<br>$$</p>
+<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{st}^{(L-1)}}<br>&#x3D;<br>\frac{1}{2} \sum\limits_{j} \left[<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}}<br>\right]<br>\frac{\partial a_{j}^{(L)}}{\partial\Theta_{st}^{(L-1)}}<br>$$<br>$$<br>&#x3D;<br>\frac{1}{2} \sum\limits_{j} \left[<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))^{2}}{\partial (y_{j} - \phi(a_{j}^{(L)}))}<br>\frac{\partial (y_{j} - \phi(a_{j}^{(L)}))}{\partial \phi(a_{j}^{(L)})}<br>\frac{\partial \phi(a_{j}^{(L)})}{\partial a_{j}^{(L)}}<br>\right]<br>\frac{\partial \sum\limits_{k} \left( \phi(a_{k}^{(L-1)}) \Theta_{kj}^{(L)} \right)}{\partial a_{i}^{(L-1)}}<br>\frac{\partial a_{i}^{(L-1)}}{\partial\Theta_{st}^{(L-1)}}<br>$$<br>$$<br>&#x3D;<br>\frac{1}{2} \sum\limits_{j} \delta_{j}^{(L)}<br>\frac{\partial \sum\limits_{k} \left( \phi(a_{k}^{(L-1)}) \Theta_{kj}^{(L)} \right)}{\partial a_{i}^{(L-1)}}<br>\frac{\partial a_{i}^{(L-1)}}{\partial\Theta_{st}^{(L-1)}}<br>$$</p>
 <p>逐項討論，這裡用了激活函數的結果，<br>注意偏微分，當 $k \neq i$ 的項都被視為常數：</p>
-<p>$$<br>\frac{\partial \sum\limits_{k} \left( \phi(a_{k}^{(L-1)}) \Theta_{kj}^{(L)} \right)}{\partial a_{i}^{(L-1)}}<br>= \frac{\partial \phi(a_{i}^{(L-1)}) \Theta_{ij}^{(L)}}{\partial a_{i}^{(L-1)}}<br>$$<br>$$<br>= \frac{\partial \phi(a_{i}^{(L-1)})}{\partial a_{i}^{(L-1)}} \Theta_{ij}^{(L)} + \phi(a_{i}^{(L-1)}) \frac{\partial \Theta_{ij}^{(L)}}{\partial a_{i}^{(L-1)}}<br>= \Theta_{ij}^{(L)} \phi(a_{i}^{(L-1)}) \left( 1 - \phi(a_{i}^{(L-1)})\right)<br>$$</p>
-<p>最後一項，跟輸出層的時候一樣（觀察圖 3 可以得到 $t = i$）<br>所以只有 $k = s$ 的時候才有值：</p>
-<p>$$<br>\frac{\partial a_{i}^{(L-1)}}{\partial\Theta_{st}^{(L-1)}} =<br>\frac{\partial}{\partial \Theta_{st}^{(L-1)}} \left( \sum\limits_{k} \phi(a_{k}^{(L-2)})\Theta_{ki}^{(L-1)} \right) =<br>\frac{\partial}{\partial \Theta_{st}^{(L-1)}} \left( \sum\limits_{k} \phi(a_{k}^{(L-2)})\Theta_{kt}^{(L-1)} \right) =<br>\phi(a_{s}^{(L-2)})<br>$$</p>
+<p>$$<br>\frac{\partial \sum\limits_{k} \left( \phi(a_{k}^{(L-1)}) \Theta_{kj}^{(L)} \right)}{\partial a_{i}^{(L-1)}}<br>&#x3D; \frac{\partial \phi(a_{i}^{(L-1)}) \Theta_{ij}^{(L)}}{\partial a_{i}^{(L-1)}}<br>$$<br>$$<br>&#x3D; \frac{\partial \phi(a_{i}^{(L-1)})}{\partial a_{i}^{(L-1)}} \Theta_{ij}^{(L)} + \phi(a_{i}^{(L-1)}) \frac{\partial \Theta_{ij}^{(L)}}{\partial a_{i}^{(L-1)}}<br>&#x3D; \Theta_{ij}^{(L)} \phi(a_{i}^{(L-1)}) \left( 1 - \phi(a_{i}^{(L-1)})\right)<br>$$</p>
+<p>最後一項，跟輸出層的時候一樣（觀察圖 3 可以得到 $t &#x3D; i$）<br>所以只有 $k &#x3D; s$ 的時候才有值：</p>
+<p>$$<br>\frac{\partial a_{i}^{(L-1)}}{\partial\Theta_{st}^{(L-1)}} &#x3D;<br>\frac{\partial}{\partial \Theta_{st}^{(L-1)}} \left( \sum\limits_{k} \phi(a_{k}^{(L-2)})\Theta_{ki}^{(L-1)} \right) &#x3D;<br>\frac{\partial}{\partial \Theta_{st}^{(L-1)}} \left( \sum\limits_{k} \phi(a_{k}^{(L-2)})\Theta_{kt}^{(L-1)} \right) &#x3D;<br>\phi(a_{s}^{(L-2)})<br>$$</p>
 <p>同樣地，我們做個總整理：</p>
-<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{st}^{(L-1)}}<br>=<br>\frac{1}{2} \sum\limits_{j} \delta_{j}^{(L)}<br>\frac{\partial \sum\limits_{k} \left( \phi(a_{k}^{(L-1)}) \Theta_{kj}^{(L)} \right)}{\partial a_{i}^{(L-1)}}<br>\frac{\partial a_{i}^{(L-1)}}{\partial\Theta_{st}^{(L-1)}}<br>$$<br>$$<br>=<br>\frac{1}{2} \sum\limits_{j} \delta_{j}^{(L)}<br>\Theta_{ij}^{(L)} \phi(a_{i}^{(L-1)}) \left( 1 - \phi(a_{i}^{(L-1)}) \right) \phi(a_{s}^{(L-2)})<br>$$</p>
-<p>重新定義第 $L-1$ 層第 $t = i$ 個神經元的的誤差為：</p>
-<p>$$<br>\delta_{t}^{(L-1)} = \left[<br>\left( \sum\limits_{j} \delta_{j}^{(L)} \Theta_{ij}^{(L)} \right)<br>\phi(a_{i}^{(L-1)}) \left( 1 - \phi(a_{i}^{(L-1)}) \right)<br>\right]<br>$$</p>
+<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{st}^{(L-1)}}<br>&#x3D;<br>\frac{1}{2} \sum\limits_{j} \delta_{j}^{(L)}<br>\frac{\partial \sum\limits_{k} \left( \phi(a_{k}^{(L-1)}) \Theta_{kj}^{(L)} \right)}{\partial a_{i}^{(L-1)}}<br>\frac{\partial a_{i}^{(L-1)}}{\partial\Theta_{st}^{(L-1)}}<br>$$<br>$$<br>&#x3D;<br>\frac{1}{2} \sum\limits_{j} \delta_{j}^{(L)}<br>\Theta_{ij}^{(L)} \phi(a_{i}^{(L-1)}) \left( 1 - \phi(a_{i}^{(L-1)}) \right) \phi(a_{s}^{(L-2)})<br>$$</p>
+<p>重新定義第 $L-1$ 層第 $t &#x3D; i$ 個神經元的的誤差為：</p>
+<p>$$<br>\delta_{t}^{(L-1)} &#x3D; \left[<br>\left( \sum\limits_{j} \delta_{j}^{(L)} \Theta_{ij}^{(L)} \right)<br>\phi(a_{i}^{(L-1)}) \left( 1 - \phi(a_{i}^{(L-1)}) \right)<br>\right]<br>$$</p>
 <p>所以可以表示為：</p>
-<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{st}^{(L-1)}} = \frac{1}{2} \delta_{t}^{(L-1)} \phi(a_{s}^{(L-2)})<br>$$</p>
+<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{st}^{(L-1)}} &#x3D; \frac{1}{2} \delta_{t}^{(L-1)} \phi(a_{s}^{(L-2)})<br>$$</p>
 <p>我們可以對任意權重 $\Theta_{ab}^{(c)}$ 同理推論出：</p>
-<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{ab}^{(c)}} = \frac{1}{2} \delta_{b}^{(c)} \phi(a_{a}^{(c-1)})<br>$$</p>
+<p>$$<br>\frac{\partial Cost(\Theta) }{\partial\Theta_{ab}^{(c)}} &#x3D; \frac{1}{2} \delta_{b}^{(c)} \phi(a_{a}^{(c-1)})<br>$$</p>
 <div class="note info">
             <p>從這裡可以發現 $\delta$ 是可以重複利用的，而且誤差是由最後一層，層層向前傳遞。</p>
           </div>
+
     </div>
 
     
@@ -455,7 +469,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#神經網路簡介"><span class="nav-number">2.</span> <span class="nav-text">神經網路簡介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前向傳播演算法"><span class="nav-number">3.</span> <span class="nav-text">前向傳播演算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反向傳播演算法"><span class="nav-number">4.</span> <span class="nav-text">反向傳播演算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sigmoid-函數微分"><span class="nav-number">4.1.</span> <span class="nav-text">Sigmoid 函數微分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#輸出層的誤差"><span class="nav-number">4.2.</span> <span class="nav-text">輸出層的誤差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隱藏層的誤差"><span class="nav-number">4.3.</span> <span class="nav-text">隱藏層的誤差</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A5%9E%E7%B6%93%E7%B6%B2%E8%B7%AF%E7%B0%A1%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">神經網路簡介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E5%90%91%E5%82%B3%E6%92%AD%E6%BC%94%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">前向傳播演算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E5%82%B3%E6%92%AD%E6%BC%94%E7%AE%97%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">反向傳播演算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sigmoid-%E5%87%BD%E6%95%B8%E5%BE%AE%E5%88%86"><span class="nav-number">4.1.</span> <span class="nav-text">Sigmoid 函數微分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BC%B8%E5%87%BA%E5%B1%A4%E7%9A%84%E8%AA%A4%E5%B7%AE"><span class="nav-number">4.2.</span> <span class="nav-text">輸出層的誤差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%B1%E8%97%8F%E5%B1%A4%E7%9A%84%E8%AA%A4%E5%B7%AE"><span class="nav-number">4.3.</span> <span class="nav-text">隱藏層的誤差</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -471,7 +485,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -485,16 +499,16 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/tinytsunami" title="GitHub → https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/tinytsunami" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
         <a href="mailto:z27619273@gmail.com" title="E-Mail → mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;profile.php?id&#x3D;100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
       </span>
   </div>
 
@@ -505,7 +519,7 @@
     </div>
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
-          <a href="https://blog.eevee.tw/" title="https://blog.eevee.tw/" rel="noopener" target="_blank">Yctseng's Blog</a>
+          <a href="https://blog.eevee.tw/" title="https:&#x2F;&#x2F;blog.eevee.tw&#x2F;" rel="noopener" target="_blank">Yctseng's Blog</a>
         </li>
     </ul>
   </div>
@@ -529,13 +543,13 @@
 <div class="copyright">
   
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-bomb"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
   </div>
 
         
@@ -557,9 +571,17 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -568,7 +590,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

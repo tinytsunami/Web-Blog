@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#536F87">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 6.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
@@ -18,22 +18,22 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。">
-<meta name="keywords" content="技術, 獨立遊戲">
 <meta property="og:type" content="article">
 <meta property="og:title" content="馬可爾夫決策過程 Markov Decision Process">
 <meta property="og:url" content="https://www.tinytsunami.info/markov-decision-process/index.html">
 <meta property="og:site_name" content="羊羽手札">
 <meta property="og:description" content="這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://i.imgur.com/8g4n6Sv.png">
-<meta property="og:updated_time" content="2020-08-11T04:09:25.767Z">
+<meta property="article:published_time" content="2019-03-28T00:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-12T08:40:49.063Z">
+<meta property="article:author" content="Tinytusnami">
+<meta property="article:tag" content="技術, 獨立遊戲">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="馬可爾夫決策過程 Markov Decision Process">
-<meta name="twitter:description" content="這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。">
 <meta name="twitter:image" content="https://i.imgur.com/8g4n6Sv.png">
 
 <link rel="canonical" href="https://www.tinytsunami.info/markov-decision-process/">
@@ -223,7 +223,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-08-11 04:09:25" itemprop="dateModified" datetime="2020-08-11T04:09:25Z">2020-08-11</time>
+                <time title="修改時間：2022-02-12 08:40:49" itemprop="dateModified" datetime="2022-02-12T08:40:49Z">2022-02-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,7 +231,7 @@
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/人工智慧/" itemprop="url" rel="index"><span itemprop="name">人工智慧</span></a>
+                  <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E6%85%A7/" itemprop="url" rel="index"><span itemprop="name">人工智慧</span></a>
                 </span>
             </span>
 
@@ -246,14 +246,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，<br>從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。<br><a id="more"></a></p>
+        <p>這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，<br>從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。</p>
+<span id="more"></span>
+
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前半年太忙一直沒時間更新 Blog，現在終於有時間寫新文章了 XD</p>
 <p>強化學習（reinforcement learning）一直是非常有趣的主題，跟遊戲設計搭配更是如此。<br>我曾經在 RPG Maker MV 中使用手刻的 3 層全連接神經網路來做 ARPG（動作 RPG）怪物的 AI 設計，<br>雖然效果不是很理想，不過確實可以觀察到怪物可以學習到一些玩家的攻擊模式並且迴避。</p>
 <p>全連接神經網路在分類上是屬於監督學習，而本篇著重於強化學習，<br>強化學習是不透過標籤（label），系統直接由環境中取得資訊來學習的 AI 系統。</p>
 <p>當時初學時，關於 Q 學習的部分其實看不太懂，我後來發現有一系列的途徑去理解，<br>一開始是自己閱讀《人工智能：一種現代的方法》，好不容易看懂（筆者數學不好……），<br>後來在 Udacity 的強化學習課程，又做了一次整理才明白。</p>
 <div class="note info">
-            <p>關於課程請至 <a href="https://www.udacity.com/course/reinforcement-learning--ud600" target="_blank" rel="noopener">Udacity 的課程資訊</a></p>
+            <p>關於課程請至 <a target="_blank" rel="noopener" href="https://www.udacity.com/course/reinforcement-learning--ud600">Udacity 的課程資訊</a></p>
           </div>
+
 <p>我認為的最佳學習途徑：</p>
 <ul>
 <li>馬可爾夫決策過程（Markov Decision Process, MDP）</li>
@@ -264,11 +267,13 @@
 <p>其中，前兩部分是序列式決策問題（sequential decision problem）的入門，<br>第三部分 Q 學習是關於序列決策的變體，最後深度 Q 網路則是將 Q 學習結合神經網路所誕生的算法。</p>
 <p>本篇是第一部分，重點擺在討論馬可爾夫決策過程與問題建模，<br>至於策略、效用與貝爾曼方程將在下一篇文章解決。</p>
 <div class="note success">
-            <p>這是 DQN 的系列文章，下一篇是 <a href="/value-iteration/" title="價值迭代 Value Iteration">價值迭代 Value Iteration</a></p>
+            <p>這是 DQN 的系列文章，下一篇是 <a href="#">Post not found: value-iteration</a></p>
           </div>
+
 <div class="note info">
             <p>於 2019.05.13 更新了部分數學符號的表示</p>
           </div>
+
 <h1 id="馬可爾夫決策"><a href="#馬可爾夫決策" class="headerlink" title="馬可爾夫決策"></a>馬可爾夫決策</h1><p>馬可爾夫決策由下列部分組成：</p>
 <ul>
 <li>狀態集合 $S$</li>
@@ -280,6 +285,7 @@
 <div class="note info">
             <p>動作函數，通常被說是「動作集合」，但在書中公式表達像是「回傳集合的函數」，故在此以函數說明。</p>
           </div>
+
 <h1 id="玩具問題"><a href="#玩具問題" class="headerlink" title="玩具問題"></a>玩具問題</h1><p>筆者的經驗是，初學見到這些符號會水土不服，<br>所以可以先過渡到幾個其他的玩具問題（toy problem）來理解馬可爾夫決策的過程。<br>順便練習把問題定義清楚。</p>
 <h2 id="地圖尋路"><a href="#地圖尋路" class="headerlink" title="地圖尋路"></a>地圖尋路</h2><p>這是《人工智能：一種現代的方法》第 17.1 節序列式決策出現的玩具問題。</p>
 <p>地圖大小寬度為 3、長度為 4，位置 $(2, 2)$ 是一堵牆，<br>寶藏在 $(4, 3)$，陷阱在 $(4, 2)$。電腦從 $(1, 1)$ 開始，每次移動 1 格，移動會消耗 0.04 分，<br>目標是透過探索地圖，找到一個最佳策略來獲得高分。</p>
@@ -287,26 +293,29 @@
 <p><img src="https://i.imgur.com/8g4n6Sv.png" alt="圖 1、基本玩具問題"></p>
 <p>對於這個問題來說，建模的四個部分分別為：</p>
 <ul>
-<li>狀態集合，即座標集合 $S = \{(x, y)| x \in \{1, 2, 3\}, y \in \{1, 2, 3, 4\} \}$</li>
-<li>動作函數，即在某一座標可以執行的動作 $MOVE: S \mapsto A$ 其中 $A = \{\text{up}, \text{left}, \text{right}, \text{down}\}$</li>
+<li>狀態集合，即座標集合 $S &#x3D; \{(x, y)| x \in \{1, 2, 3\}, y \in \{1, 2, 3, 4\} \}$</li>
+<li>動作函數，即在某一座標可以執行的動作 $MOVE: S \mapsto A$ 其中 $A &#x3D; \{\text{up}, \text{left}, \text{right}, \text{down}\}$</li>
 <li>轉移模型，即在某座標、執行某動作後，轉移到下個狀態的機率 $P(s_{t+1}|s_{t}, a_{t})$ 其中 $s_{t}, s_{t+1} \in S$ 且 $a_{t} \in A$</li>
-<li>回報函數，每個位置的得分 $SCORE(s) = SCORE(x, y)$</li>
+<li>回報函數，每個位置的得分 $SCORE(s) &#x3D; SCORE(x, y)$</li>
 </ul>
 <p>下面給出一段淺白的描述作為例子。</p>
-<p>目前在某一個座標 $x = 1$ 且 $y = 3$，所以我的「狀態」是 $s = (1, 3) \in S$<br>在這個狀態下，我可以執行的動作為 $MOVE(1, 3) = \text{up}, \text{left}, \text{right}, \text{down}$<br>也就是上下左右；如果此時我選擇 $a = \text{right} \in A$ 即向右移動。</p>
+<p>目前在某一個座標 $x &#x3D; 1$ 且 $y &#x3D; 3$，所以我的「狀態」是 $s &#x3D; (1, 3) \in S$<br>在這個狀態下，我可以執行的動作為 $MOVE(1, 3) &#x3D; \text{up}, \text{left}, \text{right}, \text{down}$<br>也就是上下左右；如果此時我選擇 $a &#x3D; \text{right} \in A$ 即向右移動。</p>
 <div class="note info">
             <p>注意這裡的動作函數 $MOVE$ 是「一對多映射」，正因如此，玩家才在某些狀態，可以選擇多種動作。</p>
           </div>
-<p>若動作「一定會成功」則轉移模型為：$P((2, 3)|(1, 3), \text{right}) = 100\%$<br>至於環境的回報（得分）是：</p>
+
+<p>若動作「一定會成功」則轉移模型為：$P((2, 3)|(1, 3), \text{right}) &#x3D; 100\%$<br>至於環境的回報（得分）是：</p>
 
 $SCORE(s) = \left\{\begin{array}{l}
 +1 && \text{if } s = (4, 3) \\
 -1 && \text{if } s = (4, 2) \\
 -0.04 && \text{otherwise}
 \end{array}\right .$
-<br><br><div class="note info">
+<br/>
+<div class="note info">
             <p>書中的轉移模型是不確定的。舉例來說，你決定往上移動，只有 80% 的機會成功之類的。</p>
           </div>
+
 <h2 id="簡化的二十一點"><a href="#簡化的二十一點" class="headerlink" title="簡化的二十一點"></a>簡化的二十一點</h2><p>為了更理解「轉移模型」的部分，筆者再針對簡化過後的二十一點（Black Jack）建模，<br>這個簡化過後的規則如下：</p>
 <ul>
 <li>牌面 1、2、3、4、5 每種牌都有無限多張且抽到每一種的機率相等</li>
@@ -319,14 +328,17 @@ $SCORE(s) = \left\{\begin{array}{l}
 <li>所有牌都是明牌（玩家可觀察）</li>
 <li>莊家先抽牌</li>
 </ul>
-<p>如果你覺得規則理解有點困難，請嘗試玩玩看：<br><iframe scrolling="no" width="100%" height="200px" src="//jsfiddle.net/d6bues10/embedded/result,js,html,css/dark" frameborder="0" allowfullscreen></iframe></p>
+<p>如果你覺得規則理解有點困難，請嘗試玩玩看：</p>
+<iframe scrolling="no" width="100%" height="200px" src="https://jsfiddle.net/d6bues10/embedded/result,js,html,css/dark" frameborder="0" loading="lazy" allowfullscreen></iframe>
+
 <div class="note info">
             <p>因為還沒介紹完策略，暫時不將完整的 AI 放出來，這裡的電腦僅是單純的邏輯模擬。</p>
           </div>
+
 <p>對於這個問題來說，建模的四個部分分別為：</p>
 <ul>
-<li>狀態集合，即各種手牌 $s$ 及允許抽牌標誌 $t$ 的集合 $S = \{s = (c, t) | c \subseteq \{1, 2, 3, 4, 5\},  t \in \{1, 0\}\}$</li>
-<li>動作函數，即每回合可以執行的動作 $ACTION: S \mapsto A$ 其中 $A = \{\text{draw}, \text{pass}\}$</li>
+<li>狀態集合，即各種手牌 $s$ 及允許抽牌標誌 $t$ 的集合 $S &#x3D; \{s &#x3D; (c, t) | c \subseteq \{1, 2, 3, 4, 5\},  t \in \{1, 0\}\}$</li>
+<li>動作函數，即每回合可以執行的動作 $ACTION: S \mapsto A$ 其中 $A &#x3D; \{\text{draw}, \text{pass}\}$</li>
 <li>轉移模型，即抽牌後，轉移到下個狀態的機率 $P(s_{t+1}|s_{t}, a_{t})$ 其中 $s_{t}, s_{t+1} \in S, a_{t} \in A$</li>
 <li>回報函數，即一局遊戲的牌面數字 $POINT(s), s \in S$</li>
 </ul>
@@ -336,7 +348,13 @@ $ACTION(s) = ACTION(c, t) = \left\{\begin{array}{l}
 \text{draw}, \text{pass} && \text{if } t = 1 \text{ and } \sum\limits_{x \in c}x \leq 10 \\
 \text{pass} && \text{if }  t = 0 \text{ or } \sum\limits_{x \in c}x > 10 \\
 \end{array}\right .$
-<br><br>然後轉移模型此時便不是「確定」的，轉移到不同的狀態是透過機率，<br>比方說目前我有手牌且可抽牌 $s = (\{1, 2, 3\}, 1)$ 考慮動作函數有 $ACTION(c, t) = \text{draw}, \text{pass}$<br>所以轉移模型，有兩種動作可以選擇：<br><br>若選擇不抽牌，那下回合一定保持原來的手牌，但抽牌標誌變成 0。<br>$P((\{1, 2, 3\}, 0)|(\{1, 2, 3\}, 1), \text{pass}) = 100\%$<br><br>若選擇抽牌，那下回合增加手牌（每種機率相等），抽牌標誌不變。<br>$P((\{1, 2, 3, 1\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 1）<br>$P((\{1, 2, 3, 2\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 2）<br>$P((\{1, 2, 3, 3\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 3）<br>$P((\{1, 2, 3, 4\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 4）<br>$P((\{1, 2, 3, 5\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) = 20\%$（抽到點數 5）<br><br>不難發現，對於某一種動作，機率和必為 $1$。<br><br>回報函數為牌面點數和，點數和越高越好，而超過 10 點則給予 0 值：<br><br>
+<br/>
+<p>然後轉移模型此時便不是「確定」的，轉移到不同的狀態是透過機率，<br>比方說目前我有手牌且可抽牌 $s &#x3D; (\{1, 2, 3\}, 1)$ 考慮動作函數有 $ACTION(c, t) &#x3D; \text{draw}, \text{pass}$<br>所以轉移模型，有兩種動作可以選擇：</p>
+<p>若選擇不抽牌，那下回合一定保持原來的手牌，但抽牌標誌變成 0。<br>$P((\{1, 2, 3\}, 0)|(\{1, 2, 3\}, 1), \text{pass}) &#x3D; 100%$</p>
+<p>若選擇抽牌，那下回合增加手牌（每種機率相等），抽牌標誌不變。<br>$P((\{1, 2, 3, 1\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) &#x3D; 20%$（抽到點數 1）<br>$P((\{1, 2, 3, 2\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) &#x3D; 20%$（抽到點數 2）<br>$P((\{1, 2, 3, 3\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) &#x3D; 20%$（抽到點數 3）<br>$P((\{1, 2, 3, 4\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) &#x3D; 20%$（抽到點數 4）<br>$P((\{1, 2, 3, 5\}, 1)|(\{1, 2, 3\}, 1), \text{draw}) &#x3D; 20%$（抽到點數 5）</p>
+<p>不難發現，對於某一種動作，機率和必為 $1$。</p>
+<p>回報函數為牌面點數和，點數和越高越好，而超過 10 點則給予 0 值：</p>
+
 $POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
 \sum\limits_{x \in c}x && \text{if } \sum\limits_{x \in c}x \leq 10 \\
 0 && \text{if } \sum\limits_{x \in c}x > 10 \\
@@ -423,7 +441,7 @@ $POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#馬可爾夫決策"><span class="nav-number">2.</span> <span class="nav-text">馬可爾夫決策</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#玩具問題"><span class="nav-number">3.</span> <span class="nav-text">玩具問題</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#地圖尋路"><span class="nav-number">3.1.</span> <span class="nav-text">地圖尋路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#簡化的二十一點"><span class="nav-number">3.2.</span> <span class="nav-text">簡化的二十一點</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A6%AC%E5%8F%AF%E7%88%BE%E5%A4%AB%E6%B1%BA%E7%AD%96"><span class="nav-number">2.</span> <span class="nav-text">馬可爾夫決策</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%A9%E5%85%B7%E5%95%8F%E9%A1%8C"><span class="nav-number">3.</span> <span class="nav-text">玩具問題</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%B0%E5%9C%96%E5%B0%8B%E8%B7%AF"><span class="nav-number">3.1.</span> <span class="nav-text">地圖尋路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B0%A1%E5%8C%96%E7%9A%84%E4%BA%8C%E5%8D%81%E4%B8%80%E9%BB%9E"><span class="nav-number">3.2.</span> <span class="nav-text">簡化的二十一點</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -439,7 +457,7 @@ $POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -453,16 +471,16 @@ $POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/tinytsunami" title="GitHub → https://github.com/tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/tinytsunami" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tinytsunami" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
         <a href="mailto:z27619273@gmail.com" title="E-Mail → mailto:z27619273@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https://www.facebook.com/profile.php?id=100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+        <a href="https://www.facebook.com/profile.php?id=100000736195394" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;profile.php?id&#x3D;100000736195394" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+        <a href="https://www.youtube.com/channel/UCtqp9w_uA_LohDm0YXNWqSA" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCtqp9w_uA_LohDm0YXNWqSA" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
       </span>
   </div>
 
@@ -473,7 +491,7 @@ $POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
     </div>
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
-          <a href="https://blog.eevee.tw/" title="https://blog.eevee.tw/" rel="noopener" target="_blank">Yctseng's Blog</a>
+          <a href="https://blog.eevee.tw/" title="https:&#x2F;&#x2F;blog.eevee.tw&#x2F;" rel="noopener" target="_blank">Yctseng's Blog</a>
         </li>
     </ul>
   </div>
@@ -497,13 +515,13 @@ $POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
 <div class="copyright">
   
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-bomb"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Tinytusnami</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
   </div>
 
         
@@ -525,9 +543,17 @@ $POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -536,7 +562,9 @@ $POINT(s) = POINT(c, t) = \left\{\begin{array}{l}
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

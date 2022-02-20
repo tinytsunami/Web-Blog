@@ -1208,7 +1208,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #6bdfff;
+  background: #7942ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2823,11 +2823,9 @@ code {
 /* Body BG */
 body {
   background: url("/images/background.png");
-  transition: all 1.2s;
 }
 .darkmode--activated body {
   background: url("/images/background-dark.png");
-  transition: all 1.2s;
 }
 hr {
   background-image: repeating-linear-gradient(90deg, #ddd, #ddd 4px, transparent 4px, transparent 8px);

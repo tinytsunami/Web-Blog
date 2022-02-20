@@ -1208,7 +1208,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #7942ff;
+  background: #d628ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2733,6 +2733,13 @@ html.darkmode--activated:root {
 .darkmode-layer--expanded {
   background: rgba(0,0,0,0) !important;
   transform-origin: center !important;
+}
+/* Head Image */
+.darkmode--activated .site-author-image {
+  opacity: 1;
+}
+.darkmode--activated .site-author-image:hover {
+  opacity: 1;
 }
 /* Searcher */
 .search-popup #search-result {

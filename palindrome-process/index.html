@@ -897,7 +897,7 @@ P_{i, j} = P_{i + 1, j - 1} && \text{if } S_{i} = S_{j}, |i - j| > 1 \\
     </div>
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
-          <a href="https://blog.eevee.tw/" title="https:&#x2F;&#x2F;blog.eevee.tw&#x2F;" rel="noopener" target="_blank">Yctseng's Blog</a>
+          <a href="https://blog.eevee.tw/" title="https:&#x2F;&#x2F;blog.eevee.tw&#x2F;" rel="noopener" target="_blank">Cyris's Blog</a>
         </li>
     </ul>
   </div>
@@ -1086,11 +1086,15 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
 
   const callback = function() {
     let html = document.getElementsByTagName('html')[0];
+    let head = document.getElementsByClassName('site-author-image')[0];
+
     if (window.darkmode.isActivated()) {  
       html.setAttribute("class", "darkmode--activated");
+      head.setAttribute("src", "/images/head-dark.jpg");
     }
     else {
       html.removeAttribute("class");
+      head.setAttribute("src", "/images/head.jpg");
     }
   };
 

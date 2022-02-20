@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#536F87">
+<meta name="theme-color" content="hsl(210deg 20% 25%)">
 <meta name="generator" content="Hexo 6.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#536F87">
+  <link rel="mask-icon" href="/images/logo.svg" color="hsl(210deg 20% 25%)">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="這篇文章是《人工智能：一種現代的方法》及 Udacity 上的強化學習課程筆記及其他內容的整理，從馬可爾夫決策過程、價值迭代、策略迭代、Q 學習，最後到深度 Q 網路的思路。">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://i.imgur.com/3LjuaW5.png">
 <meta property="og:image" content="https://i.imgur.com/Jof8bqT.png">
 <meta property="article:published_time" content="2019-05-18T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-12T08:41:16.335Z">
+<meta property="article:modified_time" content="2022-02-19T18:14:33.567Z">
 <meta property="article:author" content="Tinytusnami">
 <meta property="article:tag" content="技術, 獨立遊戲">
 <meta name="twitter:card" content="summary">
@@ -84,7 +84,7 @@
   </style>
 </noscript>
 
-</head>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -125,6 +125,11 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -227,7 +232,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2022-02-12 08:41:16" itemprop="dateModified" datetime="2022-02-12T08:41:16Z">2022-02-12</time>
+                <time title="修改時間：2022-02-19 18:14:33" itemprop="dateModified" datetime="2022-02-19T18:14:33Z">2022-02-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,7 +260,7 @@
 
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>這篇文章是上一篇文章《馬可爾夫決策過程 Markov Decision Process》的續篇，<br>如果沒有基礎或想看過那篇文章，可以先去看看。</p>
 <div class="note success">
-            <p>這是 DQN 的系列文章，上一篇是 <a href="#">Post not found: markov-decision-process</a></p>
+            <p>這是 DQN 的系列文章，上一篇是 <a href="/markov-decision-process/" title="馬可爾夫決策過程 Markov Decision Process">馬可爾夫決策過程 Markov Decision Process</a></p>
           </div>
 
 <p>上一篇文章中，我們設計好了馬可爾夫決策過程的模型，但尚未提及如何解決問題。<br>為了解決序列式決策問題，本篇將會提到一個關鍵演算法「價值迭代」。</p>
@@ -346,7 +351,19 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
 </li>
 <li><p>可以執行的動作為 $A(s_{t}) &#x3D; A(c_{t}, f_{t}) &#x3D; \text{draw, pass}$</p>
 </li>
-<li><p>執行抽牌動作 $a &#x3D; \text{draw}$ 的話，期望值有：<br>$P((\{1, 3, 5, 1\}, 1)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 20% \cdot U(\{1, 3, 5, 1\}, 1) &#x3D; 2$<br>（由於接下來 $s_{t+2}$ 都超過 10 點，選擇 PASS 為最大，所以不必計算 $U(s_{t+2})$ 的值。）<br>$P((\{1, 3, 5, 2\}, 1)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 0$（超過 10 點）<br>$P((\{1, 3, 5, 3\}, 1)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 0$（超過 10 點）<br>$P((\{1, 3, 5, 4\}, 1)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 0$（超過 10 點）<br>$P((\{1, 3, 5, 5\}, 1)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 0$（超過 10 點）<br>$P((\{1, 3, 5, 1\}, 0)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 0$（再抽牌，超過 10 點）<br>$P((\{1, 3, 5, 2\}, 0)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 0% \cdot U(s_{t+1}) &#x3D; 0$（不能抽牌）<br>$P((\{1, 3, 5, 3\}, 0)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 0% \cdot U(s_{t+1}) &#x3D; 0$（不能抽牌）<br>$P((\{1, 3, 5, 4\}, 0)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 0% \cdot U(s_{t+1}) &#x3D; 0$（不能抽牌）<br>$P((\{1, 3, 5, 5\}, 0)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 0% \cdot U(s_{t+1}) &#x3D; 0$（不能抽牌）</p>
+<li><p>執行抽牌動作 $a &#x3D; \text{draw}$ 的話，期望值有：</p>
+<ul>
+<li>$P((\{1, 3, 5, 1\}, 1)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 20% \cdot U(\{1, 3, 5, 1\}, 1) &#x3D; 2$<br/><br> （由於接下來 $s_{t+2}$ 都超過 10 點，選擇 PASS 為最大，所以不必計算 $U(s_{t+2})$ 的值。）</li>
+<li>$P((\{1, 3, 5, 2\}, 1)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 0$（超過 10 點）</li>
+<li>$P((\{1, 3, 5, 3\}, 1)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 0$（超過 10 點）</li>
+<li>$P((\{1, 3, 5, 4\}, 1)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 0$（超過 10 點）</li>
+<li>$P((\{1, 3, 5, 5\}, 1)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 0$（超過 10 點）</li>
+<li>$P((\{1, 3, 5, 1\}, 0)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 20% \cdot U(s_{t+1}) &#x3D; 0$（再抽牌，超過 10 點）</li>
+<li>$P((\{1, 3, 5, 2\}, 0)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 0% \cdot U(s_{t+1}) &#x3D; 0$（不能抽牌）</li>
+<li>$P((\{1, 3, 5, 3\}, 0)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 0% \cdot U(s_{t+1}) &#x3D; 0$（不能抽牌）</li>
+<li>$P((\{1, 3, 5, 4\}, 0)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 0% \cdot U(s_{t+1}) &#x3D; 0$（不能抽牌）</li>
+<li>$P((\{1, 3, 5, 5\}, 0)|(\{1, 3, 5\}, 1), \text{draw})U(s_{t+1}) &#x3D; 0% \cdot U(s_{t+1}) &#x3D; 0$（不能抽牌）</li>
+</ul>
 </li>
 <li><p>執行停止動作 $a &#x3D; \text{pass}$ 的話，期望值有：<br>$P((\{1, 3, 5\}, 0)|(\{1, 3, 5\}, 1), \text{pass})U(s_{t+1}) &#x3D; 100% \cdot U(s_{t+1}) &#x3D; 9$（接下來不能抽牌）<br>$P((\{1, 3, 5\}, 1)|(\{1, 3, 5\}, 1), \text{pass})U(s_{t+1}) &#x3D; 0% \cdot U(s_{t+1}) &#x3D; 0$（PASS 後，能繼續抽牌的機率為 0）</p>
 </li>
@@ -374,28 +391,55 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
             <p>$U$ 跟 $U’$ 是兩個大小為 $|S|$ 的向量</p>
           </div>
 
-<p>不難發現，價值迭代不斷更新 $U(s)$ 向量去計算每個狀態的效用，<br>而中止條件是 $\delta &lt; \epsilon (1 - \gamma) &#x2F; \gamma$ 其中 $\delta &#x3D; \max\limits_{s}|U’(s) - U(s)|$</p>
+<p>不難發現，價值迭代不斷更新 $U(s)$ 向量去計算每個狀態的效用，<br>而中止條件是 </p>
+<p>$$\delta &lt; \epsilon (1 - \gamma) &#x2F; \gamma$ 其中 $\delta &#x3D; \max\limits_{s}|U’(s) - U(s)|$$</p>
 <p>要理解終止條件，我們要來討論貝爾曼方程的收斂，先定義兩個內容：</p>
 <ul>
-<li>貝爾曼算子 $B$ 相當於執行 $R(s) + \gamma\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U(s’)$</li>
-<li>最大范數 $\|U\|&#x3D;\max\limits_{s}|U(s)|$ 即向量中最大的值</li>
+<li>貝爾曼算子 $B$ 相當於執行：</li>
 </ul>
+<p>$$R(s) + \gamma\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U(s’)$$</p>
+<ul>
+<li>以及，最大范數 $\|U\|$：</li>
+</ul>
+<p>$$\|U\|&#x3D;\max\limits_{s}|U(s)|$$</p>
+<p>即向量中最大的值</p>
 <p>那麼，兩個效用的最大距離為 $\|U - U’\| &#x3D; \max\limits_{s}|U’(s) - U(s)|$ 即演算法中的 $\delta$</p>
 <p>接下來，考慮第 $t+1$ 次迭代的距離為 $\|U_{t+1} - U_{t+1}’\|$<br>考慮演算法中第 4 步，即 $U_{t+1} \leftarrow BU_{t}$，可以發現 $U_{t+1}$ 為 $BU_{t}$<br>故 $\|U_{t+1} - U_{t+1}’\| &#x3D; \|BU_{t} - BU_{t}’\|$</p>
-<p>因為 $\|BU_{t} - BU_{t}’\| &#x3D; \|R(s) + \gamma\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}(s’) - [R(s) + \gamma\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}’(s’)]\|$<br>$&#x3D; \|\gamma\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}(s’) - \gamma\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}’(s’)\|$<br>$&#x3D; \gamma \|\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}(s’) - \max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}’(s’)\|$<br>$\leq \gamma \|\max\limits_{s}U_{t}(s’) - \max\limits_{s}U_{t}’(s’)\|$<br>（「選擇某個動作達到的最大效用」不會高於「遍歷所有狀態得到的最大效用」）</p>
-<p>簡單觀察 $|\max\limits_{a}f(a) - \max\limits_{a}g(a)| \leq \max\limits_{a}|f(a) - g(a)|$<br>在 $\max\limits_{a}|f(a) - g(a)|$ 中，若 $f(a)$ 為最大值，即 $f(a) &#x3D; \max\limits_{a}f(a)$<br>同樣的 $a$ 對於 $g(a)$ 來說，可能不滿足 $g(a) &#x3D; \max\limits_{a}g(a)$，所以有上面那個結果（書中習題 17.6(a) 的內容）</p>
-<p>又 $\|U - U’\| &#x3D; \max\limits_{s}|U’(s) - U(s)|$<br>所以 $\|BU_{t} - BU_{t}’\| \leq \gamma \|\max\limits_{s}U_{t}(s’) - \max\limits_{s}U_{t}’(s’)\| \leq \max\limits_{s}|U’(s) - U(s)| &#x3D; \|U - U’\|$<br>可得 $\|BU_{t} - BU_{t}’\| \leq |U_{t} - U_{t}’|$</p>
-<p>考慮效用的極值：<br>$U_{h}([s_{0}, s_{1}, s_{2}, …]) &#x3D; R(s_0) + \gamma R(s_1) + \gamma^{2} R(s_2) + …$<br>$\leq \max\limits_{s}R(s) + \gamma \max\limits_{s}R(s) + \gamma^{2} \max\limits_{s}R(s) + … &#x3D; \frac{\max\limits_{s}R(s)}{1-\gamma}$（由於 $\gamma &lt; 1$ 使用等比級數公式）</p>
-<p>若有負回報 $R(s) \leq 0$ 同理，則有 $U_{max} &#x3D; \pm\frac{\max\limits_{s}R(s)}{1-\gamma}$</p>
+<p>因為<br>$$\|BU_{t} - BU_{t}’\| &#x3D; \|R(s) + \gamma\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}(s’) - [R(s) + \gamma\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}’(s’)]\|$$<br>$$&#x3D; \|\gamma\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}(s’) - \gamma\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}’(s’)\|$$<br>$$&#x3D; \gamma \|\max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}(s’) - \max\limits_{a \in A(s)}\sum\limits_{s’}P(s’|s_{t}, a)U_{t}’(s’)\|$$<br>$$\leq \gamma \|\max\limits_{s}U_{t}(s’) - \max\limits_{s}U_{t}’(s’)\|$$</p>
+<div class="note info">
+            <p>「選擇某個動作達到的最大效用」不會高於「遍歷所有狀態得到的最大效用」</p>
+          </div>
+
+<p>簡單觀察 </p>
+<p>$$|\max\limits_{a}f(a) - \max\limits_{a}g(a)| \leq \max\limits_{a}|f(a) - g(a)|$$</p>
+<p>在 $\max\limits_{a}|f(a) - g(a)|$ 中，若 $f(a)$ 為最大值，即 $f(a) &#x3D; \max\limits_{a}f(a)$<br>同樣的 $a$ 對於 $g(a)$ 來說，可能不滿足 $g(a) &#x3D; \max\limits_{a}g(a)$，所以有上面那個結果（書中習題 17.6(a) 的內容）</p>
+<p>又 </p>
+<p>$$\|U - U’\| &#x3D; \max\limits_{s}|U’(s) - U(s)|$$</p>
+<p>所以 </p>
+<p>$$\|BU_{t} - BU_{t}’\| \leq \gamma \|\max\limits_{s}U_{t}(s’) - \max\limits_{s}U_{t}’(s’)\| \leq \max\limits_{s}|U’(s) - U(s)| &#x3D; \|U - U’\|$$</p>
+<p>可得 </p>
+<p>$$\|BU_{t} - BU_{t}’\| \leq |U_{t} - U_{t}’|$$</p>
+<p>考慮效用的極值：</p>
+<p>$$U_{h}([s_{0}, s_{1}, s_{2}, …]) &#x3D; R(s_0) + \gamma R(s_1) + \gamma^{2} R(s_2) + …$$</p>
+<p>$$\leq \max\limits_{s}R(s) + \gamma \max\limits_{s}R(s) + \gamma^{2} \max\limits_{s}R(s) + … &#x3D; \frac{\max\limits_{s}R(s)}{1-\gamma}$$</p>
+<p>（由於 $\gamma &lt; 1$ 使用等比級數公式）</p>
+<p>若有負回報 $R(s) \leq 0$ 同理，則有：</p>
+<p>$$U_{max} &#x3D; \pm\frac{\max\limits_{s}R(s)}{1-\gamma}$$</p>
 <div class="note info">
             <p>這個步驟透漏了一個訊息，當 $\gamma &#x3D; 1$ 時，很可能貝爾曼方程不會收斂。</p>
           </div>
 
-<p>透過最大、小值範圍，不難推導出 $\|U_{0} - U_{t}’\| \leq \frac{2\max\limits_{s}R(s)}{1-\gamma}$<br>若 $N$ 次迭代的誤差不超過 $\epsilon$，又每一次誤差降低 $\gamma$ 倍，則 $\gamma^{N}\frac{2\max\limits_{s}R(s)}{1-\gamma}\leq \epsilon$</p>
-<p>解出 $N$：<br>$\gamma^{N}\frac{2\max\limits_{s}R(s)}{1-\gamma}\leq \epsilon$<br>$\gamma^{N}2\max\limits_{s}R(s) \leq \epsilon(1-\gamma)$<br>$\gamma^{N} \leq \frac{\epsilon(1-\gamma)}{2\max\limits_{s}R(s)}$<br>$N \leq log_{\gamma}(\frac{\epsilon(1-\gamma)}{2\max\limits_{s}R(s)})$<br>$N \leq log(\frac{\epsilon(1-\gamma)}{2\max\limits_{s}R(s)})&#x2F;log(\gamma)$（換底公式）</p>
+<p>透過最大、小值範圍，不難推導出 $\|U_{0} - U_{t}’\| \leq \frac{2\max\limits_{s}R(s)}{1-\gamma}$</p>
+<p>若 $N$ 次迭代的誤差不超過 $\epsilon$，又每一次誤差降低 $\gamma$ 倍，則 $\gamma^{N}\frac{2\max\limits_{s}R(s)}{1-\gamma}\leq \epsilon$</p>
+<p>解出 $N$：<br>$$\gamma^{N}\frac{2\max\limits_{s}R(s)}{1-\gamma}\leq \epsilon$$<br>$$\gamma^{N}2\max\limits_{s}R(s) \leq \epsilon(1-\gamma)$$<br>$$\gamma^{N} \leq \frac{\epsilon(1-\gamma)}{2\max\limits_{s}R(s)}$$<br>$$N \leq log_{\gamma}(\frac{\epsilon(1-\gamma)}{2\max\limits_{s}R(s)})$$<br>$$N \leq log(\frac{\epsilon(1-\gamma)}{2\max\limits_{s}R(s)})&#x2F;log(\gamma)$$（換底公式）</p>
 <p>則 $N$ 至多迭代 $\lceil log(\frac{\epsilon(1-\gamma)}{2\max\limits_{s}R(s)})&#x2F;log(\gamma) \rceil$ 次，<br>這是一整個系統的迭代上界，若我們只考慮一步：</p>
-<p>$\gamma\frac{2\max\limits_{s}R(s)}{1-\gamma}\leq \epsilon$<br>$2\gamma\max\limits_{s}R(s) \leq \epsilon(1-\gamma)$<br>$2\max\limits_{s}R(s) \leq \frac{\epsilon(1-\gamma)}{\gamma}$</p>
-<p>另外由於 $\|U_{t+1} - U_{t}\| &#x3D; \|U_{t} - U_{t+1}\| \leq \|U_{0} - U_{t}’\| $<br>所以 $\|U_{t+1} - U_{t}\| \leq \|U_{0} - U_{t}’\| \leq 2\max\limits_{s}R(s) \leq \frac{\epsilon(1-\gamma)}{\gamma}$<br>可得 $\|U_{t+1} - U_{t}\| &#x3D; \max\limits_{s}|U’(s) - U(s)| &#x3D; \delta \leq \frac{\epsilon(1-\gamma)}{\gamma}$ 為中止條件</p>
+<p>$$\gamma\frac{2\max\limits_{s}R(s)}{1-\gamma}\leq \epsilon$$<br>$$2\gamma\max\limits_{s}R(s) \leq \epsilon(1-\gamma)$$<br>$$2\max\limits_{s}R(s) \leq \frac{\epsilon(1-\gamma)}{\gamma}$$</p>
+<p>另外由於 </p>
+<p>$$\|U_{t+1} - U_{t}\| &#x3D; \|U_{t} - U_{t+1}\| \leq \|U_{0} - U_{t}’\| $$</p>
+<p>所以 </p>
+<p>$$\|U_{t+1} - U_{t}\| \leq \|U_{0} - U_{t}’\| \leq 2\max\limits_{s}R(s) \leq \frac{\epsilon(1-\gamma)}{\gamma}$$</p>
+<p>可得中止條件為：</p>
+<p>$$\|U_{t+1} - U_{t}\| &#x3D; \max\limits_{s}|U’(s) - U(s)| &#x3D; \delta \leq \frac{\epsilon(1-\gamma)}{\gamma}$$</p>
 <h1 id="問題解決"><a href="#問題解決" class="headerlink" title="問題解決"></a>問題解決</h1><p>接下來，我們來看實際解決問題時，價值迭代是如何運作的，<br>雖然表面上價值迭代計算每個狀態的效用，然後選擇動作朝著效用較大的方向前進，<br>但有時狀態顯示的效用並不能協助我們做出較佳的決策。</p>
 <h2 id="地圖巡路"><a href="#地圖巡路" class="headerlink" title="地圖巡路"></a>地圖巡路</h2><p>這是書中玩具問題，再加上一點修改而成；<br>具體來說，我們的移動是確定的，導致期望值的部分是確定的。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">/* 宣告變數 */</span></span><br><span class="line"><span class="keyword">const</span> up = <span class="number">0</span>, down = <span class="number">1</span>, left = <span class="number">2</span>, right = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">let</span> A = [up, down, left, right];                        <span class="comment">// 動作 A</span></span><br><span class="line"><span class="keyword">let</span> U = <span class="title class_">Array</span>.<span class="title function_">from</span>(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, <span class="function">() =&gt;</span>                   <span class="comment">// 效用</span></span><br><span class="line">        <span class="title class_">Array</span>.<span class="title function_">from</span>(&#123;<span class="attr">length</span>: <span class="number">4</span>&#125;, <span class="function">() =&gt;</span> <span class="number">0</span>));              <span class="comment">// 大小 width = 4, height = 3</span></span><br><span class="line"><span class="keyword">let</span> <span class="title class_">Ut</span> = <span class="title class_">Array</span>.<span class="title function_">from</span>(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, <span class="function">() =&gt;</span>                  <span class="comment">// 效用暫存</span></span><br><span class="line">         <span class="title class_">Array</span>.<span class="title function_">from</span>(&#123;<span class="attr">length</span>: <span class="number">4</span>&#125;, <span class="function">() =&gt;</span> <span class="number">0</span>));             <span class="comment">// 大小同效用 U</span></span><br><span class="line"><span class="keyword">let</span> D = <span class="title class_">Array</span>.<span class="title function_">from</span>(&#123;<span class="attr">length</span>: <span class="number">3</span>&#125;, <span class="function">() =&gt;</span>                   <span class="comment">// 決策表</span></span><br><span class="line">         <span class="title class_">Array</span>.<span class="title function_">from</span>(&#123;<span class="attr">length</span>: <span class="number">4</span>&#125;, <span class="function">() =&gt;</span> <span class="number">0</span>));             <span class="comment">// 大小同效用 U</span></span><br><span class="line"><span class="keyword">let</span> epsilon = <span class="number">0.01</span>;                                     <span class="comment">// 迭代停止參數</span></span><br><span class="line"><span class="keyword">let</span> gamma = <span class="number">0.9</span>;                                        <span class="comment">// 折扣因子</span></span><br><span class="line"><span class="keyword">let</span> delta;                                              <span class="comment">// 迭代差</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 回報函數 */</span></span><br><span class="line"><span class="keyword">let</span> R = <span class="keyword">function</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span>(x == <span class="number">3</span> &amp;&amp; y == <span class="number">0</span>) &#123;                                <span class="comment">// 終點</span></span><br><span class="line">    <span class="keyword">return</span> +<span class="number">1</span>;</span><br><span class="line">  &#125;<span class="keyword">else</span> <span class="keyword">if</span>(x == <span class="number">3</span> &amp;&amp; y == <span class="number">1</span>) &#123;                          <span class="comment">// 陷阱</span></span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  &#125;<span class="keyword">else</span> <span class="keyword">if</span>(x == <span class="number">1</span> &amp;&amp; y == <span class="number">1</span>) &#123;                          <span class="comment">// 牆（不評分）</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">0.04</span>;                                         <span class="comment">// 其他狀態</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 動作的期望值 */</span></span><br><span class="line"><span class="keyword">let</span> <span class="title class_">Exp</span> = <span class="keyword">function</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> exp = [];</span><br><span class="line">  <span class="keyword">if</span>(x &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    exp.<span class="title function_">push</span>(<span class="number">1.0</span> * U[y][x - <span class="number">1</span>]);                        <span class="comment">// 向左移動</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(x &lt; <span class="number">3</span>) &#123;</span><br><span class="line">    exp.<span class="title function_">push</span>(<span class="number">1.0</span> * U[y][x + <span class="number">1</span>]);                        <span class="comment">// 向右移動</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(y &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    exp.<span class="title function_">push</span>(<span class="number">1.0</span> * U[y - <span class="number">1</span>][x]);                        <span class="comment">// 向上移動</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(y &lt; <span class="number">2</span>) &#123;</span><br><span class="line">    exp.<span class="title function_">push</span>(<span class="number">1.0</span> * U[y + <span class="number">1</span>][x]);                        <span class="comment">// 向下移動</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> exp;                                           <span class="comment">// 回傳期望值</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 演算法主體 */</span></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> y = <span class="number">0</span>; y &lt; <span class="number">3</span>; y++) &#123;                         <span class="comment">// 複製效用暫存</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> x = <span class="number">0</span>; x &lt; <span class="number">4</span>; x++) &#123;</span><br><span class="line">      U[y][x] = <span class="title class_">Ut</span>[y][x];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  delta = <span class="number">0</span>;                                            <span class="comment">// 初始化迭代差</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> y = <span class="number">0</span>; y &lt; <span class="number">3</span>; y++) &#123;                         <span class="comment">// 對所有狀態</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> x = <span class="number">0</span>; x &lt; <span class="number">4</span>; x++) &#123;  </span><br><span class="line">      <span class="keyword">if</span>((x == <span class="number">3</span> &amp;&amp; y == <span class="number">0</span>) ||                          <span class="comment">// 終點的效用固定</span></span><br><span class="line">         (x == <span class="number">3</span> &amp;&amp; y == <span class="number">1</span>) ||                          <span class="comment">// 陷阱的效用固定</span></span><br><span class="line">         (x == <span class="number">1</span> &amp;&amp; y == <span class="number">1</span>)) &#123;                          <span class="comment">// 牆的效用固定</span></span><br><span class="line">        <span class="title class_">Ut</span>[y][x] = <span class="title function_">R</span>(x, y);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;                                            <span class="comment">// 其他狀態的效用</span></span><br><span class="line">        <span class="keyword">let</span> exp = <span class="title class_">Exp</span>(x, y);</span><br><span class="line">        <span class="title class_">Ut</span>[y][x] = <span class="title function_">R</span>(x, y) + gamma * <span class="title class_">Math</span>.<span class="title function_">max</span>(...exp);  <span class="comment">// 貝爾曼方程</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (<span class="title class_">Math</span>.<span class="title function_">abs</span>(<span class="title class_">Ut</span>[y][x] - U[y][x]) &gt; delta) &#123;       <span class="comment">// 計算最大迭代差</span></span><br><span class="line">        delta = <span class="title class_">Math</span>.<span class="title function_">abs</span>(<span class="title class_">Ut</span>[y][x] - U[y][x]);           <span class="comment">// 儲存迭代差</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">while</span> (delta &gt;= epsilon * (<span class="number">1</span> - gamma) / gamma);       <span class="comment">// 中止條件</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 在 Console 輸出表格 */</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">table</span>(U);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
@@ -538,14 +582,14 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
   </nav>
@@ -716,6 +760,26 @@ $R(s) = R(c, f) = \left\{\begin{array}{l}
     
 
   
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: '32px',
+  left: 'unset',
+  time: '1s',
+  mixColor: '#111',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#333',
+  buttonColorLight: '#eee',
+  saveInCookies: true,
+  label: '',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
@@ -735,6 +799,36 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
+</script>
+<script>
+(function() {
+
+  const callback = function() {
+    let html = document.getElementsByTagName('html')[0];
+    if (window.darkmode.isActivated()) {  
+      html.setAttribute("class", "darkmode--activated");
+    }
+    else {
+      html.removeAttribute("class");
+    }
+  };
+
+  const config = { attributes: true, childList: false, subtree: false};
+
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for(const mutation of mutationsList) {
+      if (mutation.type === 'attributes') {
+        if (mutation.attributeName === 'class') {
+          callback();
+        }
+      }
+    }
+  });
+
+  observer.observe(document.body, config);
+
+  callback();
+})();
 </script>
 
 </body>

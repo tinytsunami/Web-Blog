@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#536F87">
+<meta name="theme-color" content="hsl(210deg 20% 25%)">
 <meta name="generator" content="Hexo 6.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#536F87">
+  <link rel="mask-icon" href="/images/logo.svg" color="hsl(210deg 20% 25%)">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="總之一個因緣際會複習微積分，所以寫下這篇文章。本篇文章部分要仰賴一些先備知識：">
@@ -29,7 +29,7 @@
 <meta property="og:description" content="總之一個因緣際會複習微積分，所以寫下這篇文章。本篇文章部分要仰賴一些先備知識：">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2017-05-22T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-12T08:40:30.122Z">
+<meta property="article:modified_time" content="2022-02-20T10:33:46.970Z">
 <meta property="article:author" content="Tinytusnami">
 <meta property="article:tag" content="技術, 獨立遊戲">
 <meta name="twitter:card" content="summary">
@@ -78,7 +78,7 @@
   </style>
 </noscript>
 
-</head>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -119,6 +119,11 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -221,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2022-02-12 08:40:30" itemprop="dateModified" datetime="2022-02-12T08:40:30Z">2022-02-12</time>
+                <time title="修改時間：2022-02-20 10:33:46" itemprop="dateModified" datetime="2022-02-20T10:33:46Z">2022-02-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,30 +256,30 @@
 <p>（證明可以參考：<a target="_blank" rel="noopener" href="http://mathtrain.jp/sinc/">sinx&#x2F;xについて覚えておくべき２つのこと</a>）</p>
 <p>題外話，在 tutor 板上出現過為什麼不可以用羅必達法則（l’H&amp;ocirc;pital’s Rule）證明的問題。<br>有興趣可以自己前去觀看：<a target="_blank" rel="noopener" href="https://www.ptt.cc/man/tutor/DFC5/D338/D20E/M.1174228073.A.6B3.html">[討論] limsinx&#x2F;x＝1 when x&amp;rarr;0</a></p>
 <p>另一個部分是：</p>
-<p>$\displaystyle{ \lim_{\theta&amp;nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} &#x3D; 0 }$</p>
+<p>$\displaystyle{ \lim_{\theta \to 0} \frac{cos(\theta) - 1}{\theta} &#x3D; 0 }$</p>
 <p>推倒如下。</p>
-<p>$\displaystyle{ \lim_{\theta&amp;nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} &#x3D; \lim_{\theta&amp;nbsp;\to 0} \frac{cos(\theta) - 1}{\theta} \cdot \frac{cos(\theta) + 1}{cos(\theta) + 1}}$</p>
-<p>$\displaystyle{ &#x3D; \lim_{\theta&amp;nbsp;\to 0} \frac{cos^{2}(\theta) - 1^{2}}{\theta [cos(\theta) + 1]} &#x3D; \lim_{\theta&amp;nbsp;\to 0} \frac{-sin^{2}(\theta)}{\theta [cos(\theta) + 1]}}$</p>
-<p>$\displaystyle{ &#x3D; - \lim_{\theta&amp;nbsp;\to 0} \frac{sin(\theta)}{\theta}\frac{sin(\theta)}{cos(\theta) + 1} &#x3D; - \{ \lim_{\theta&amp;nbsp;\to 0} \frac{sin(\theta)}{\theta} \cdot \lim_{\theta&amp;nbsp;\to 0} \frac{sin(\theta)}{cos(\theta) + 1} \} }$</p>
-<p>$\displaystyle{ &#x3D; - \{ 1&amp;nbsp;\cdot \frac{0}{1 + 1} \} &#x3D; 0 }$&amp;nbsp;</p>
+<p>$\displaystyle{ \lim_{\theta \to 0} \frac{cos(\theta) - 1}{\theta} &#x3D; \lim_{\theta \to 0} \frac{cos(\theta) - 1}{\theta} \cdot \frac{cos(\theta) + 1}{cos(\theta) + 1}}$</p>
+<p>$\displaystyle{ &#x3D; \lim_{\theta \to 0} \frac{cos^{2}(\theta) - 1^{2}}{\theta [cos(\theta) + 1]} &#x3D; \lim_{\theta \to 0} \frac{-sin^{2}(\theta)}{\theta [cos(\theta) + 1]}}$</p>
+<p>$\displaystyle{ &#x3D; - \lim_{\theta \to 0} \frac{sin(\theta)}{\theta}\frac{sin(\theta)}{cos(\theta) + 1} &#x3D; - { \lim_{\theta \to 0} \frac{sin(\theta)}{\theta} \cdot \lim_{\theta \to 0} \frac{sin(\theta)}{cos(\theta) + 1} }}$</p>
+<p>$\displaystyle{ &#x3D; - { 1 \cdot \frac{0}{1 + 1} } &#x3D; 0 }$ </p>
 <h1 id="sin-x-正弦"><a href="#sin-x-正弦" class="headerlink" title="sin(x) 正弦"></a>sin(x) 正弦</h1><p>利用微分定義推導：</p>
 <p>$\displaystyle{ \frac{d}{dx} sin(x) &#x3D; \lim_{h \to 0} \frac{sin(x + h) - sin(x)}{h} }$</p>
-<p>$\displaystyle{ &#x3D; \lim_{h&amp;nbsp;\to 0} \frac{sin(x)cos(h) + cos(x)sin(h) - sin(x)}{h} \text{（※ 正弦和角公式）} }$</p>
-<p>$\displaystyle{ &#x3D; \lim_{h&amp;nbsp;\to 0} \frac{sin(x)cos(h) - sin(x) + cos(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ &#x3D; \lim_{h&amp;nbsp;\to 0} \frac{sin(x)&amp;nbsp;[cos(h) - 1]}{h} + \lim_{h&amp;nbsp;\to 0} \frac{cos(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ &#x3D; sin(x) \cdot \lim_{h&amp;nbsp;\to 0} \frac{cos(h) - 1}{h} + cos(x) \cdot&amp;nbsp;\lim_{h&amp;nbsp;\to 0} \frac{sin(h)}{h} }$</p>
-<p>$\displaystyle{ &#x3D; sin(x) \cdot 0&amp;nbsp;+ cos(x) \cdot 1 &#x3D; cos(x) }$</p>
+<p>$\displaystyle{ &#x3D; \lim_{h \to 0} \frac{sin(x)cos(h) + cos(x)sin(h) - sin(x)}{h} \text{（※ 正弦和角公式）} }$</p>
+<p>$\displaystyle{ &#x3D; \lim_{h \to 0} \frac{sin(x)cos(h) - sin(x) + cos(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ &#x3D; \lim_{h \to 0} \frac{sin(x) [cos(h) - 1]}{h} + \lim_{h \to 0} \frac{cos(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ &#x3D; sin(x) \cdot \lim_{h \to 0} \frac{cos(h) - 1}{h} + cos(x) \cdot \lim_{h \to 0} \frac{sin(h)}{h} }$</p>
+<p>$\displaystyle{ &#x3D; sin(x) \cdot 0 + cos(x) \cdot 1 &#x3D; cos(x) }$</p>
 <h1 id="cos-x-餘弦"><a href="#cos-x-餘弦" class="headerlink" title="cos(x) 餘弦"></a>cos(x) 餘弦</h1><p>利用微分定義推導：</p>
 <p>$\displaystyle{ \frac{d}{dx} cos(x) &#x3D; \lim_{h \to 0} \frac{cos(x + h) - cos(x)}{h} }$</p>
-<p>$\displaystyle{ &#x3D; \lim_{h&amp;nbsp;\to 0} \frac{cos(x)cos(h) - sin(x)sin(h) - cos(x)}{h} \text{（※ 餘弦和角公式）} }$</p>
-<p>$\displaystyle{ &#x3D; \lim_{h&amp;nbsp;\to 0} \frac{cos(x)cos(h) -&amp;nbsp;cos(x) -&amp;nbsp;sin(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ &#x3D; \lim_{h&amp;nbsp;\to 0} \frac{cos(x) [cos(h) - 1]}{h} - \lim_{h&amp;nbsp;\to 0}&amp;nbsp;\frac{sin(x)sin(h)}{h} }$</p>
-<p>$\displaystyle{ &#x3D; cos(x) \cdot \lim_{h&amp;nbsp;\to 0} \frac{cos(h) - 1}{h} - sin(x) \cdot&amp;nbsp;\lim_{h&amp;nbsp;\to 0}&amp;nbsp;\frac{sin(h)}{h} }$</p>
-<p>$\displaystyle{ &#x3D; cos(x) \cdot 0&amp;nbsp;- sin(x) \cdot 1 &#x3D; - sin(x) }$</p>
+<p>$\displaystyle{ &#x3D; \lim_{h \to 0} \frac{cos(x)cos(h) - sin(x)sin(h) - cos(x)}{h} \text{（※ 餘弦和角公式）} }$</p>
+<p>$\displaystyle{ &#x3D; \lim_{h \to 0} \frac{cos(x)cos(h) - cos(x) - sin(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ &#x3D; \lim_{h \to 0} \frac{cos(x) [cos(h) - 1]}{h} - \lim_{h \to 0} \frac{sin(x)sin(h)}{h} }$</p>
+<p>$\displaystyle{ &#x3D; cos(x) \cdot \lim_{h \to 0} \frac{cos(h) - 1}{h} - sin(x) \cdot \lim_{h \to 0} \frac{sin(h)}{h} }$</p>
+<p>$\displaystyle{ &#x3D; cos(x) \cdot 0 - sin(x) \cdot 1 &#x3D; - sin(x) }$</p>
 <h1 id="tan-x-正切"><a href="#tan-x-正切" class="headerlink" title="tan(x) 正切"></a>tan(x) 正切</h1><p>由 $tan(x) &#x3D; \frac{sin(x)}{cos(x)}$ 開始：</p>
 <p>$\frac{d}{dx} tan(x) &#x3D; \frac{d}{dx} \frac{sin(x)}{cos(x)}$</p>
-<p>$ &#x3D; \frac{\frac{d}{dx}sin(x) \cdot&amp;nbsp;cos(x) - sin(x) \cdot \frac{d}{dx}cos(x)}{cos^{2}(x)} \text{（※ 微分除法公式）}$</p>
-<p>$ &#x3D; \frac{cos(x) \cdot&amp;nbsp;cos(x) - sin(x) \cdot [-sin(x)]}{cos^{2}(x)} &#x3D; \frac{cos^{2}(x) +&amp;nbsp;sin^{2}(x)}{cos^{2}(x)}$</p>
+<p>$ &#x3D; \frac{\frac{d}{dx}sin(x) \cdot cos(x) - sin(x) \cdot \frac{d}{dx}cos(x)}{cos^{2}(x)} \text{（※ 微分除法公式）}$</p>
+<p>$ &#x3D; \frac{cos(x) \cdot cos(x) - sin(x) \cdot [-sin(x)]}{cos^{2}(x)} &#x3D; \frac{cos^{2}(x) + sin^{2}(x)}{cos^{2}(x)}$</p>
 <p>$ &#x3D; \frac{1}{cos^{2}(x)} &#x3D; sec^{2}(x)$</p>
 <p>（※ 使用了 $sin^{2}(x) + cos^{2}(x) &#x3D; 1$ 這條式子，證明請參考：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=91Jxfu4FntM">sin^2+cos^2&#x3D;1</a>）</p>
 <h1 id="csc-x-餘割"><a href="#csc-x-餘割" class="headerlink" title="csc(x) 餘割"></a>csc(x) 餘割</h1><p>由 $csc(x) &#x3D; \frac{1}{sin(x)}$ 開始：</p>
@@ -291,7 +296,7 @@
 <p>$\frac{d}{dx} cot(x) &#x3D; \frac{d}{dx} \frac{cos(x)}{sin(x)}$</p>
 <p>$ &#x3D; \frac{\frac{d}{dx}cos(x) \cdot sin(x) - cos(x) \cdot \frac{d}{dx} sin(x)}{sin^{2}(x)} \text{（※ 微分除法公式）}$</p>
 <p>$ &#x3D; \frac{[-sin(x)] \cdot sin(x) - cos(x) \cdot cos(x)}{sin^{2}(x)} &#x3D; \frac{ - sin^{2}(x) - cos^{2}(x)}{sin^{2}(x)}$</p>
-<p>$ &#x3D; - \{\frac{sin^{2}(x) +&amp;nbsp;cos^{2}(x)}{sin^{2}(x)}\}&amp;nbsp;&#x3D; - \frac{1}{sin^{2}(x)} &#x3D; -csc^{2}(x)$</p>
+<p>$ &#x3D; - {\frac{sin^{2}(x) + cos^{2}(x)}{sin^{2}(x)}} &#x3D; - \frac{1}{sin^{2}(x)} &#x3D; -csc^{2}(x)$</p>
 <p>（※ 跟 $tan(x)$ 一樣使用了 $sin^{2}(x) + cos^{2}(x) &#x3D; 1$ 這條式子，證明請參考上面的資料。）</p>
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>可以發現一些手法，除了 $sin(x)$ 以及 $cos(x)$ 要從定義來之外，<br>其他的有兩兩對應的步驟，像是 $tan(x)$ 跟 $cot(x)$ 就很類似、而 $csc(x)$ 跟 $sec(x)$ 也很相像。</p>
 
@@ -391,14 +396,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
   </nav>
@@ -569,6 +574,26 @@
     
 
   
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: '32px',
+  left: 'unset',
+  time: '1s',
+  mixColor: '#111',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#333',
+  buttonColorLight: '#eee',
+  saveInCookies: true,
+  label: '',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
@@ -588,6 +613,36 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
+</script>
+<script>
+(function() {
+
+  const callback = function() {
+    let html = document.getElementsByTagName('html')[0];
+    if (window.darkmode.isActivated()) {  
+      html.setAttribute("class", "darkmode--activated");
+    }
+    else {
+      html.removeAttribute("class");
+    }
+  };
+
+  const config = { attributes: true, childList: false, subtree: false};
+
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for(const mutation of mutationsList) {
+      if (mutation.type === 'attributes') {
+        if (mutation.attributeName === 'class') {
+          callback();
+        }
+      }
+    }
+  });
+
+  observer.observe(document.body, config);
+
+  callback();
+})();
 </script>
 
 </body>

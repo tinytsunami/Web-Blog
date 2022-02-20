@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#536F87">
+<meta name="theme-color" content="hsl(210deg 20% 25%)">
 <meta name="generator" content="Hexo 6.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#536F87">
+  <link rel="mask-icon" href="/images/logo.svg" color="hsl(210deg 20% 25%)">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="之前在弄演算法題目的時候，曾經遇過迴文類的問題，當時並沒有很了解問題的本質跟相關算法，所以都是窮舉。然而有些超時、有些則否。 後來的某一天又碰到這類的問題，誘發我去把相關的算法看了幾遍。這篇文章算是從中衍伸的筆記。">
@@ -28,13 +28,29 @@
 <meta property="og:site_name" content="羊羽手札">
 <meta property="og:description" content="之前在弄演算法題目的時候，曾經遇過迴文類的問題，當時並沒有很了解問題的本質跟相關算法，所以都是窮舉。然而有些超時、有些則否。 後來的某一天又碰到這類的問題，誘發我去把相關的算法看了幾遍。這篇文章算是從中衍伸的筆記。">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/nHa3cFa.png">
+<meta property="og:image" content="https://i.imgur.com/tfCrpQK.png">
+<meta property="og:image" content="https://i.imgur.com/7SZausI.png">
+<meta property="og:image" content="https://i.imgur.com/FNDjVzx.png">
+<meta property="og:image" content="https://i.imgur.com/w0qvUvc.png">
+<meta property="og:image" content="https://i.imgur.com/lqoxeMM.png">
+<meta property="og:image" content="https://i.imgur.com/DWPcioH.png">
+<meta property="og:image" content="https://i.imgur.com/oFrlWBu.png">
+<meta property="og:image" content="https://i.imgur.com/HxHNCdO.png">
+<meta property="og:image" content="https://i.imgur.com/XBMucHa.png">
+<meta property="og:image" content="https://i.imgur.com/nQpuNnT.png">
+<meta property="og:image" content="https://i.imgur.com/PV6Rhy6.png">
+<meta property="og:image" content="https://i.imgur.com/vWWUxuQ.png">
+<meta property="og:image" content="https://i.imgur.com/oxOiQd8.png">
+<meta property="og:image" content="https://i.imgur.com/7WElE0N.png">
+<meta property="og:image" content="https://i.imgur.com/HorUIoW.png">
 <meta property="og:image" content="https://i.imgur.com/jNptBcw.png">
 <meta property="article:published_time" content="2017-11-05T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-12T08:41:12.362Z">
+<meta property="article:modified_time" content="2022-02-20T10:30:43.875Z">
 <meta property="article:author" content="Tinytusnami">
 <meta property="article:tag" content="技術, 獨立遊戲">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/jNptBcw.png">
+<meta name="twitter:image" content="https://i.imgur.com/nHa3cFa.png">
 
 <link rel="canonical" href="https://www.tinytsunami.info/palindrome-process/">
 
@@ -80,7 +96,7 @@
   </style>
 </noscript>
 
-</head>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -121,6 +137,11 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -223,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2022-02-12 08:41:12" itemprop="dateModified" datetime="2022-02-12T08:41:12Z">2022-02-12</time>
+                <time title="修改時間：2022-02-20 10:30:43" itemprop="dateModified" datetime="2022-02-20T10:30:43Z">2022-02-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -262,35 +283,35 @@
 <table>
 <thead>
 <tr>
-<th>字串</th>
-<th>位置</th>
-<th>類型</th>
+<th align="left">字串</th>
+<th align="left">位置</th>
+<th align="center">類型</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>QuickBrown</td>
-<td>The<span style="background-color: #ffff99;">QuickBrown</span>FoxJumpsOverTheLazyDog</td>
-<td>子字串、也是子序列</td>
+<td align="left">QuickBrown</td>
+<td align="left">The<code>QuickBrown</code>FoxJumpsOverTheLazyDog</td>
+<td align="center">子字串、也是子序列</td>
 </tr>
 <tr>
-<td>LazyDog</td>
-<td>TheQuickBrownFoxJumpsOverThe<span style="background-color: #ffff99;">LazyDog</span></td>
-<td>子字串、也是子序列</td>
+<td align="left">LazyDog</td>
+<td align="left">TheQuickBrownFoxJumpsOverThe<code>LazyDog</code></td>
+<td align="center">子字串、也是子序列</td>
 </tr>
 <tr>
-<td>QuickFox</td>
-<td>The<span style="background-color: #ffff99;">Quick</span>Brown<span style="background-color: #ffff99;">Fox</span>JumpsOverTheLazyDog</td>
-<td>子序列</td>
+<td align="left">QuickFox</td>
+<td align="left">The<code>Quick</code>Brown<code>Fox</code>JumpsOverTheLazyDog</td>
+<td align="center">子序列</td>
 </tr>
 <tr>
-<td>BrownDog</td>
-<td>TheQuick<span style="background-color: #ffff99;">Brown</span>FoxJumpsOverTheLazy<span style="background-color: #ffff99;">Dog</span></td>
-<td>子序列</td>
+<td align="left">BrownDog</td>
+<td align="left">TheQuick<code>Brown</code>FoxJumpsOverTheLazy<code>Dog</code></td>
+<td align="center">子序列</td>
 </tr>
 <tr>
-<td>LazyFox</td>
-<td>TheQuickBrownFoxJumpsOverTheLazyDog</td>
-<td>不是子字串或子序列</td>
+<td align="left">LazyFox</td>
+<td align="left">TheQuickBrownFoxJumpsOverTheLazyDog</td>
+<td align="center">不是子字串或子序列</td>
 </tr>
 </tbody></table>
 <div class="note info">
@@ -307,26 +328,26 @@
 <p>迴文檢測的邏輯不難，不過還是解釋一下。</p>
 <p>字串能夠分成兩種：偶數字串、奇數字串。<br>如果是偶數時，長度除以二，會剛好是一半；然而是奇數的話，除以二會是一半捨去小數。</p>
 <p>簡單的例子：</p>
-<p>當 text &#x3D; “abcd” 時，長度為 4 則 half &#x3D; 2 這樣的話，<br>註標 i &#x3D; 0, 1 而同時註標 j &#x3D; 3, 2 形成依序比對字串前後兩邊的字元是否相等。</p>
-<p>如果 text &#x3D; “abcba” 時，長度為 5 則 half &#x3D; 2 這樣的話，<br>註標 i &#x3D; 0, 1 而同時 註標 j &#x3D; 4, 3 可以發現剛好奇數中間的字元並不需要比對。</p>
-<p>接著，我們需要得到所有的子字串，在 std::string 中有 substr 函數可以使用。<br>那要取得所有的子字串，則需要註標 a 表示子字串開頭的位置，而註標 b 表示結束的位置，<br>對於所有的 a, b 有 a &lt;&#x3D; b 的關係：</p>
+<p>當字串為 <code>abcd</code> 時，長度為 $4$ 則一半為 $\lfloor 4 \rfloor &#x3D; 2$ 這樣的話，<br/><br>註標 <code>i = 0, 1</code> 而同時註標 <code>j = 3, 2</code> 形成依序比對字串前後兩邊的字元是否相等。</p>
+<p>如果字串為 <code>abcba</code> 時，長度為 $5$ 則  $\lfloor 5 \rfloor &#x3D; 2$ 這樣的話，<br/><br>註標 <code>i = 0, 1</code> 而同時 註標 <code>j = 4, 3</code> 可以發現剛好奇數中間的字元並不需要比對。</p>
+<p>接著，我們需要得到所有的子字串，在 <code>std::string</code> 中有 <code>substr</code> 函數可以使用。<br>那要取得所有的子字串，則需要註標 $a$ 表示子字串開頭的位置，而註標 $b$ 表示結束的位置，<br>對於所有的 $a$ 及 $b$ 有 $a \leq b$ 的關係：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> a = <span class="number">0</span>; a &lt; str.<span class="built_in">length</span>(); a++)        <span class="comment">// 子字串開始位置的註標</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> b = a; b &lt; str.<span class="built_in">length</span>(); b++)    <span class="comment">// 子字串結束位置的註標</span></span><br><span class="line">    &#123;</span><br><span class="line">        tmp = str.<span class="built_in">substr</span>(a, (b - a + <span class="number">1</span>));     <span class="comment">// 從開始位置，取對應長度</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">checkPalindrome</span>(tmp)) ...;         <span class="comment">// 檢查迴文，並處理</span></span><br><span class="line">    &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p>這樣我們問題就解決了。</p>
 <p>不過仔細想想，我們其實並不需要另外合成字串，<br>直接在原字串比對就好，我們修正檢測：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">// 迴文檢測（使用參考）</span></span><br><span class="line"><span class="comment">// 傳入字串的參考、開始位置、結束位置</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">checkPalindrome</span><span class="params">(string &amp;text, <span class="type">int</span> a, <span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> len = b - a + <span class="number">1</span>;                     <span class="comment">// 取得子字串長度</span></span><br><span class="line">    <span class="type">int</span> half = len / <span class="number">2</span>;                      <span class="comment">// 取的一半的長度</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; half; i++)           <span class="comment">// 註標 i 表示取前後多少字元</span></span><br><span class="line">        <span class="keyword">if</span>(text[a + i] != text[b - i])       <span class="comment">// 從前面取 i 個及從後面取 i 個比對</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;                    <span class="comment">// 如果不符則傳回</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;                             <span class="comment">// 確實為迴文</span></span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
-<p>直接傳入參考以避免生成一堆子字串，<br>利用母字串的註標 a, b 取得子字串的長度運算即可。</p>
-<h2 id="複雜度"><a href="#複雜度" class="headerlink" title="複雜度"></a>複雜度</h2><p>在分析之前，我們從例子著手。<br>比方說，當原字串為 “abc” 其長度為 3 則存在子字串：</p>
-<p>substr(“abc”) &#x3D; {“”, “a”, “ab”, “abc”, “b”, “bc”, “c”}</p>
+<p>直接傳入參考以避免生成一堆子字串，<br>利用母字串的註標 $a$ 與 $b$ 取得子字串的長度運算即可。</p>
+<h2 id="複雜度"><a href="#複雜度" class="headerlink" title="複雜度"></a>複雜度</h2><p>在分析之前，我們從例子著手。<br>比方說，當原字串為 <code>abc</code> 其長度為 $3$ 則存在子字串：</p>
+<p>substr(<code>abc</code>) &#x3D; {<code>空字串</code>, <code>a</code>, <code>ab</code>, <code>abc</code>, <code>b</code>, <code>bc</code>, <code>c</code>}</p>
 <div class="note warning">
-            <p>注意：其實包含空字串在內也是子字串；只是我們不需要，所以沒有實做出來。</p>
+            <p>其實包含空字串在內也是子字串；只是我們不需要，所以沒有實做出來。</p>
           </div>
 
-<p>可以發現，子字串的數量為 3 + 2 + 1 + 1 &#x3D; 7 個，如果不含空字串則是 3 + 2 + 1 &#x3D; 6 個，<br>於是我們大概可以假設如下：</p>
+<p>可以發現，子字串的數量為 $3 + 2 + 1 + 1 &#x3D; 7$ 個，如果不含空字串則是 $3 + 2 + 1 &#x3D; 6$ 個，<br>於是我們大概可以假設如下：</p>
 <p>長度為 $n$ 的原字串，不含空字串的話，有 $\sum\limits_{x&#x3D;1}^n x &#x3D; \frac{1}{2}(1+n)n$ 個子字串。</p>
 <p>假設只是從觀察中發現，實際推算看看是否正確：</p>
-<p>設原字串的長度為 $n$ 的話，<br>註標 a 的範圍在 $[0, n-1]$ 而註標 b 的範圍在 $[a, n-1]$</p>
+<p>設原字串的長度為 $n$ 的話，<br>註標 $a$ 的範圍在 $[0, n-1]$ 而註標 $b$ 的範圍在 $[a, n-1]$</p>
 <p>因為子字串的數量就是所有註標匹配的數量：</p>
 <p>$\sum\limits_{a &#x3D; 0}^{n - 1} \sum\limits_{b &#x3D; a}^{n - 1} 1$</p>
 <p>後面的取和直接算有幾個，得到：</p>
@@ -370,7 +391,7 @@ $= \frac{1}{2} \sum\limits_{a = 0}^{n - 1} \{ \frac{1}{2}[(n - 1) + a](n - a) - 
           </div>
 
 <h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><div class="note info">
-            <p>本演示的最糟測資是所有子字串都是回文的情況，也就是單個字元構成的字串。</p>
+            <p>本演示的最糟測資是所有子字串都是迴文的情況，也就是單個字元構成的字串。</p>
           </div>
 
 <iframe scrolling="no" width="100%" height="230px" src="https://jsfiddle.net/3d7z04uh/embedded/result,js,html,css/dark" frameborder="0" loading="lazy" allowfullscreen></iframe>
@@ -380,53 +401,46 @@ $= \frac{1}{2} \sum\limits_{a = 0}^{n - 1} \{ \frac{1}{2}[(n - 1) + a](n - a) - 
 <li>字元間插入字符，使原字串都變成奇數長度</li>
 <li>依序掃描字元、長度，找到最長的迴文</li>
 </ul>
-<p>關於步驟 1 的部份，實際上是這樣的：<br>假設有 “abcdcpa” 改變成 “#a#b#c#d#c#p#a#” （其中的 # 是任意字符）</p>
-<p>數數看，我們插入了多少字元呢？如果把尾巴的 # 拿走的話：</p>
+<p>關於步驟 1 的部份，實際上是這樣的：<br>假設有 <code>abcdcpa</code> 改變成 <code>#a#b#c#d#c#p#a#</code> （其中的 <code>#</code> 是任意字符）</p>
+<p>數數看，我們插入了多少字元呢？如果把尾巴的 <code>#</code> 拿走的話：</p>
 <ul>
-<li>“abcdcpa”</li>
-<li>“#a#b#c#d#c#p#a” + “#”</li>
-<li>“#a #b #c #d #c #p #a” + “#”</li>
+<li><code>abcdcpa</code></li>
+<li><code>#a#b#c#d#c#p#a</code> + <code>#</code></li>
+<li><code>#a #b #c #d #c #p #a</code> + <code>#</code></li>
 </ul>
-<p>在長度為 n 的字串中，<br>我們插入了 n 個 # 並在尾巴多加了一個 # 使得長度變成 2n + 1<br>考慮長度為 n 的字串，其中 n 可能為偶數、或著奇數：</p>
+<p>在長度為 $n$ 的字串中，我們插入了 $n$ 個 <code>#</code> 並在尾巴多加了一個 <code>#</code> 使得長度變成 $2n + 1$<br/><br>考慮長度為 $n$ 的字串，其中 $n$ 可能為偶數、或著奇數：</p>
 <ul>
-<li>如果 n 為偶數，則 2n 也是偶數，那 2n + 1 為奇數</li>
-<li>如果 n 為奇數，則 2n 變成偶數，那 2n + 1 為奇數</li>
+<li>如果 $n$ 為偶數，則 $2n$ 也是偶數，那 $2n + 1$ 為奇數</li>
+<li>如果 $n$ 為奇數，則 $2n$ 變成偶數，那 $2n + 1$ 為奇數</li>
 </ul>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment">// 插入符號到字元間</span></span><br><span class="line"><span class="function">string <span class="title">insertSign</span><span class="params">(string str, <span class="type">char</span> sign)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    string nstr;                          <span class="comment">// 建立新字串</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; str.<span class="built_in">length</span>(); i++) <span class="comment">// 遍歷原字串</span></span><br><span class="line">    &#123;</span><br><span class="line">        nstr += sign;                     <span class="comment">// 加上符號</span></span><br><span class="line">        nstr += str[i];                   <span class="comment">// 插入字元到新字串</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nstr + sign;                   <span class="comment">// 新字串尾巴補上符號</span></span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="built_in">insertSign</span>(<span class="string">&quot;ABC&quot;</span>, \<span class="string">&#x27;#\&#x27;</span>);                   <span class="comment">// 調用時：&quot;#A#B#C#&quot;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
-<p>能理解這個部份的話，我們進入算法核心：<br>如果我們字串比對由左至右來處理的話，一直到：</p>
-<table style="height: 83px; width: 437px;"><tr><th style="width: 97.6px;">String</th><td style="width: 14px; ">#</td><td style="width: 14px; text-align: center;">a</td><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">b</td><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">a</td><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">c</td><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">a</td><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">b</td><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">e</td><td style="width: 14px; text-align: center;">#</td></tr><tr><th style="width: 97.6px;">Index</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="width: 14px; text-align: center;">2</td><td style="width: 14px; text-align: center;">3</td><td style="width: 14px; text-align: center;">4</td><td style="width: 14px; text-align: center;">5</td><td style="width: 14px; text-align: center;">6</td><td style="width: 14px; text-align: center;">7</td><td style="width: 14px; text-align: center;">8</td><td style="width: 14px; text-align: center;">9</td><td style="width: 14px; text-align: center;">10</td><td style="width: 14px; text-align: center;">11</td><td style="width: 14px; text-align: center;">12</td><td style="width: 14px; text-align: center;">13</td><td style="width: 14px; text-align: center;">14</td></tr><tr><th style="width: 97.6px;">Palindrome</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">3</td><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">5</td><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">?</td><td style="width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td></tr></table>
-
-<p>問號處應該填入多少呢？我們利用已知的資料做猜測，<br>下面表格，橘色的部份就是已知區域最大的迴文：</p>
-<table style="height: 83px; width: 437px;"><tr><th style="width: 97.6px;">String</th><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">b</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">c</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">b</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">e</td><td style="width: 14px; text-align: center;">#</td></tr><tr><th style="width: 97.6px;">Index</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">2</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">4</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">5</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">6</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">7</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">8</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">9</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">10</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">11</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">12</td><td style="width: 14px; text-align: center;">13</td><td style="width: 14px; text-align: center;">14</td></tr><tr><th style="width: 97.6px;">Palindrome</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">5</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">?</td><td style="background-color: #ffdd99; width: 14px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 14px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td></tr></table>
-   
-<p>我們可以合理猜測，正因為左右淡橘色以深橘色（Index &#x3D; 7）對稱，<br>在 a 處（Index &#x3D; 9）的 Palindrome 會與左邊的 a 處（Index &#x3D; 5）相等。</p>
-<table style="height: 83px; width: 437px;"><tr><th style="width: 97.6px;">String</th><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">b</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">c</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">b</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">e</td><td style="width: 14px; text-align: center;">#</td></tr><tr><th style="width: 97.6px;">Index</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">2</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">4</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">5</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">6</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">7</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">8</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">9</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">10</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">11</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">12</td><td style="width: 14px; text-align: center;">13</td><td style="width: 14px; text-align: center;">14</td></tr><tr><th style="width: 97.6px;">Palindrome</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">5</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">?</td><td style="background-color: #ffdd99; width: 14px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 14px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td></tr></table>
-   
-<p>換句話說，我們會認為它等於 1（因為左邊的 Palindrome &#x3D; 1）</p>
-<table style="height: 83px; width: 437px;"><tr><th style="width: 97.6px;">String</th><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">b</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">c</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">b</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">e</td><td style="width: 14px; text-align: center;">#</td></tr><tr><th style="width: 97.6px;">Index</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">2</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">4</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">5</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">6</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">7</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">8</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">9</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">10</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">11</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">12</td><td style="width: 14px; text-align: center;">13</td><td style="width: 14px; text-align: center;">14</td></tr><tr><th style="width: 97.6px;">Palindrome</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">5</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;"><span style="color: #339966;"><strong>1</strong></span></td><td style="background-color: #ffdd99; width: 14px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 14px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td></tr></table>
-
+<p>能理解這個部份的話，我們進入算法核心：<br>如果我們字串比對由左至右來處理的話，一直到圖 1 的問號處：</p>
+<p><img src="https://i.imgur.com/nHa3cFa.png" alt="圖 1、用已知資料推測問號處的值"></p>
+<p>問號處應該填入多少呢？我們利用已知的資料做推測，<br>圖 2 橘色的部份就是已知區域最大的迴文：</p>
+<p><img src="https://i.imgur.com/tfCrpQK.png" alt="圖 2、已經有的資料值（橘色）"></p>
+<p>我們可以合理推測，正因為左右淡橘色以深橘色（Index &#x3D; $7$）對稱，<br>在 <code>a</code> 處（Index &#x3D; $9$）的 Palindrome 會與左邊的綠色 <code>a</code> 處（Index &#x3D; $5$）相等，如圖 3。</p>
+<p><img src="https://i.imgur.com/7SZausI.png" alt="圖 3、透過已知值（綠色）推測問號處的值"></p>
+<p>換句話說，我們會認為它等於 $1$（因為左邊的 Palindrome &#x3D; $1$）如圖 4：</p>
+<p><img src="https://i.imgur.com/FNDjVzx.png" alt="圖 4、推測出問號處的值（綠色框為該位置的迴文範圍）"></p>
 <p>我們接下來看第二種情況：</p>
-<table style="height: 83px; width: 437px;"><tr><th style="width: 97.6px;">String</th><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">b</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">c</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">b</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">e</td><td style="width: 14px; text-align: center;">#</td></tr><tr><th style="width: 97.6px;">Index</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">2</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">4</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">5</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">6</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">7</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">8</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">9</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">10</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">11</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">12</td><td style="width: 14px; text-align: center;">13</td><td style="width: 14px; text-align: center;">14</td></tr><tr><th style="width: 97.6px;">Palindrome</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffaa55; width: 14px; text-align: center;">5</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 14px; text-align: center;">?</td><td style="background-color: #ffdd99; width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td><td style="width: 14px; text-align: center;"> </td></tr></table>
-
+<p><img src="https://i.imgur.com/w0qvUvc.png" alt="圖 5、不能直接推測的情況"></p>
 <div class="note danger">
-            <p>錯誤的推測：這邊的 b 處（Index &#x3D; 11）會跟左邊的 b 處（Index &#x3D; 3）相等。</p>
+            <p>錯誤的推測：這邊的 <code>b</code> 處（Index &#x3D; $11$）會跟左邊的 <code>b</code> 處（Index &#x3D; $3$）相等。</p>
           </div>
 
-<p>因為左邊的 b 處（Index &#x3D; 3）紀錄的迴文長度，<br>向左延伸超出了 c 處（Index &#x3D; 7）所紀錄的保證範圍：</p>
-<table style="height: 83px; width: 437px;"><tr><th style="width: 97.6px;">String</th><td style="width: 14px; text-align: center;">#</td><td style="width: 14px; text-align: center;">a</td><td style="background-color: #ffffff; width: 14px; text-align: center;">#</td><td style="background-color: #ffffff; width: 14px; text-align: center;">b</td><td style="background-color: #ffffff; width: 14px; text-align: center;">#</td><td style="background-color: #ffffff; width: 14px; text-align: center;">a</td><td style="background-color: #ffffff; width: 14px; text-align: center;">#</td><td style="background-color: #ffffff; width: 14px; text-align: center;">c</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">#</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">a</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">#</td><td style="background-color: #ffaaaa; width: 14px; text-align: center;">b</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">#</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">e</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">#</td></tr><tr><th style="width: 97.6px;">Index</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="background-color: #ffffff; width: 14px; text-align: center;">2</td><td style="background-color: #ffffff; width: 14px; text-align: center;">3</td><td style="background-color: #ffffff; width: 14px; text-align: center;">4</td><td style="background-color: #ffffff; width: 14px; text-align: center;">5</td><td style="background-color: #ffffff; width: 14px; text-align: center;">6</td><td style="background-color: #ffffff; width: 14px; text-align: center;">7</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">8</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">9</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">10</td><td style="background-color: #ffaaaa; width: 14px; text-align: center;">11</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">12</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">13</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">14</td></tr><tr><th style="width: 97.6px;">Palindrome</th><td style="width: 14px; text-align: center;">0</td><td style="width: 14px; text-align: center;">1</td><td style="background-color: #ffffff; width: 14px; text-align: center;">0</td><td style="background-color: #ffffff; width: 14px; text-align: center;">3</td><td style="background-color: #ffffff; width: 14px; text-align: center;">0</td><td style="background-color: #ffffff; width: 14px; text-align: center;">1</td><td style="background-color: #ffffff; width: 14px; text-align: center;">0</td><td style="background-color: #ffffff; width: 14px; text-align: center;">5</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">0</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">1</td><td style="background-color: #ffdddd; width: 14px; text-align: center;">0</td><td style="background-color: #ffaaaa; width: 14px; text-align: center;"><strong><span style="color: #ff0000;">3</span></strong></td><td style="background-color: #ffdddd; width: 14px; text-align: center;"> </td><td style="background-color: #ffdddd; width: 14px; text-align: center;"> </td><td style="background-color: #ffdddd; width: 14px; text-align: center;"> </td></tr></table>
-
-<p>既然一直到 # 處（Index &#x3D; 12）都跟左邊對稱的話，<br>右邊的 b 處（Index &#x3D; 11）、搭配左邊的 b 處（Index &#x3D; 3）紀錄的數字，<br>可以得到：12 - 11 &#x3D; 1 &lt; 3</p>
-<p>也就是說，雖然左邊提供資訊為 3 的迴文長度，<br>但 c 處（Index &#x3D; 7）只保證至少有 1 的迴文長度。</p>
+<p>因為左邊的 <code>b</code> 處（Index &#x3D; $3$）紀錄的迴文長度，<br>向左延伸超出了 <code>c</code> 處（Index &#x3D; $7$）所紀錄的保證範圍，如圖 6：</p>
+<p><img src="https://i.imgur.com/lqoxeMM.png" alt="圖 6、錯誤的推測值（紅色框為 $b$ 的迴文範圍）"></p>
+<p>既然一直到 <code>#</code> 處（Index &#x3D; $12$）都跟左邊對稱的話，<br>右邊的 <code>b</code> 處（Index &#x3D; $11$）、搭配左邊的 <code>b</code> 處（Index &#x3D; $3$）紀錄的數字，<br>可以得到 $12 - 11 &#x3D; 1 &lt; 3$</p>
+<p>也就是說，雖然左邊提供資訊為 3 的迴文長度，<br>但 <code>c</code> 處（Index &#x3D; $7$）只保證至少有 1 的迴文長度。</p>
 <p>可以觀察出一個結論：  </p>
 <ul>
 <li>我們必須紀錄目前保護範圍到哪裡</li>
 <li>如果延伸沒有超過保護範圍，則直接填入左邊對稱的數字</li>
 <li>如果延伸超過了保護範圍，則利用左邊對稱的數字做保守估計</li>
 </ul>
-<p>我們把表格用變數表示可以理解的更清楚：</p>
-<table style="height: 111px; width: 437px;"><tr><th style="width: 105.6px; text-align: center;">S<sub>x</sub></th><td style="width: 14.4px; text-align: center;">#</td><td style="width: 15.2px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">b</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">#</td><td style="background-color: #ffaa55; width: 15.2px; text-align: center;">c</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">a</td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;">#</td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;">b</td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;">#</td><td style="background-color: #ffffff; width: 16.8px; text-align: center;">e</td><td style="background-color: #ffffff; width: 17.6px; text-align: center;">#</td></tr><tr><th style="width: 105.6px; text-align: center;">P<sub>x</sub></th><td style="width: 14.4px; text-align: center;">0</td><td style="width: 15.2px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">0</td><td style="background-color: #ffaa55; width: 15.2px; text-align: center;">5</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;">?</td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;"> </td><td style="background-color: #ffffff; width: 16.8px; text-align: center;"> </td><td style="background-color: #ffffff; width: 17.6px; text-align: center;"> </td></tr><tr><th style="width: 105.6px; text-align: center;">x</th><td style="width: 14.4px; text-align: center;">0</td><td style="width: 15.2px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">2</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">4</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">5</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">6</td><td style="background-color: #ffaa55; width: 15.2px; text-align: center;">7</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">8</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">9</td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;">10</td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;">11</td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;">12</td><td style="background-color: #ffffff; width: 16.8px; text-align: center;">13</td><td style="background-color: #ffffff; width: 17.6px; text-align: center;">14</td></tr><tr><th style="width: 105.6px; text-align: center;">Variable</th><td style="width: 14.4px; text-align: center;"> </td><td style="width: 15.2px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;">j</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;"> </td><td style="background-color: #ffaa55; width: 15.2px; text-align: center;">k</td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 15.2px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;"> </td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;">i</td><td style="background-color: #ffdd99; width: 16.8px; text-align: center;"> </td><td style="background-color: #ffffff; width: 16.8px; text-align: center;"> </td><td style="background-color: #ffffff; width: 17.6px; text-align: center;"> </td></tr></table>
-
+<p>我們用變數表示可以理解的更清楚，如圖 7 所示：</p>
+<p><img src="https://i.imgur.com/DWPcioH.png" alt="圖 7、變數表示"></p>
 <p>觀察之後的結論：</p>
 <ul>
 <li>若以 $k$ 為對稱，則對應於 $i$ 的 $j &#x3D; k - (i - k) &#x3D; 2k - i$</li>
@@ -457,13 +471,13 @@ $= \frac{1}{2} \sum\limits_{a = 0}^{n - 1} \{ \frac{1}{2}[(n - 1) + a](n - a) - 
 
 <p>迴文子序列的暴力破解比子字串更糟糕，<br>原因在於，子序列的條件比子字串更寬鬆， 以至於任意長度字串的子序列數量極多。</p>
 <p>窮舉的邏輯跟子字串是一樣的：找到所有的子序列，並且檢測迴文。<br>跟子字串不一樣的地方是：沒辦法利用傳入字串參考及兩個註標來解決生成一堆子序列。</p>
-<p>以 ABCD 三個字元為例：</p>
+<p>以 <code>ABCD</code> 三個字元為例：</p>
 <ul>
-<li>長度為 0 時，存在 1 個子序列：&amp;Oslash;</li>
-<li>長度為 1 時，存在 4 個子序列：A, B, C, D</li>
-<li>長度為 2 時，存在 6 個子序列：AB, AC, AD, BC, BD, CD</li>
-<li>長度為 3 時，存在 4 個子序列：ABC, ABD, ACD, BCD</li>
-<li>長度為 4 時，存在 1 個子序列：ABCD</li>
+<li>長度為 $0$ 時，存在 $1$ 個子序列：<code>ø</code></li>
+<li>長度為 $1$ 時，存在 $4$ 個子序列：<code>A</code>, <code>B</code>, <code>C</code>, <code>D</code></li>
+<li>長度為 $2$ 時，存在 $6$ 個子序列：<code>AB</code>, <code>AC</code>, <code>AD</code>, <code>BC</code>, <code>BD</code>, <code>CD</code></li>
+<li>長度為 $3$ 時，存在 $4$ 個子序列：<code>ABC</code>, <code>ABD</code>, <code>ACD</code>, <code>BCD</code></li>
+<li>長度為 $4$ 時，存在 $1$ 個子序列：<code>ABCD</code></li>
 </ul>
 <p>不難發現，其實存在的關係跟排列組合中的組合有關，<br>當原字串長度為 $n$ 時，子序列的數量是：</p>
 <p>$\sum\limits_{k &#x3D; 0}^{n}\binom{n}{k}$</p>
@@ -472,9 +486,130 @@ $= \frac{1}{2} \sum\limits_{a = 0}^{n - 1} \{ \frac{1}{2}[(n - 1) + a](n - a) - 
 <p>$\therefore \sum\limits_{k &#x3D; 0}^{4}\binom{4}{k}$</p>
 <p>$\sum\limits_{k &#x3D; 0}^{4}\binom{4}{k} &#x3D; \binom{4}{0} + \binom{4}{1} + \binom{4}{2} + \binom{4}{3} + \binom{4}{4}$</p>
 <p>$&#x3D; 1+4+6+4+1 &#x3D; 16$</p>
-<p>從另一角度看，子序列的問題其實就是這堆字取任意個有多少種取法，<br>以 “ABCD” 來說，以 0 表示不取、以 1 表示有取到的話：</p>
-<table style="height: 229px; width: 283px;"><tr><th style="width: 20px;">A</th><th style="width: 20px;">B</th><th style="width: 20px;">C</th><th style="width: 20px;">D</th><th>Subsequence</th></tr><tr><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td style="width: 68px;">&Oslash;</td></tr><tr style="text-align: center;"><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td>D </td></tr><tr style="text-align: center;"><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td>C </td></tr><tr style="text-align: center;"><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td>CD </td></tr><tr style="text-align: center;"><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td>B </td></tr><tr style="text-align: center;"><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td>BD </td></tr><tr style="text-align: center;"><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td>BC </td></tr><tr style="text-align: center;"><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td>BCD </td></tr><tr style="text-align: center;"><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td>A </td></tr><tr style="text-align: center;"><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td>AD </td></tr><tr style="text-align: center;"><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td>AC </td></tr><tr style="text-align: center;"><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td>ACD </td></tr><tr style="text-align: center;"><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td style="width: 20px;">0</td><td>AB </td></tr><tr style="text-align: center;"><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td style="width: 20px;">1</td><td>ABD </td></tr><tr style="text-align: center;"><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td style="width: 20px;">0</td><td>ABC </td></tr><tr><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td style="width: 20px;">1</td><td style="width: 68px;">ABCD </td></tr></table>
-
+<p>從另一角度看，子序列的問題其實就是這堆字取任意個有多少種取法，<br>以 <code>ABCD</code> 來說，以 $0$ 表示不取、以 $1$ 表示有取到的話：</p>
+<table>
+<thead>
+<tr>
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">C</th>
+<th align="center">D</th>
+<th align="center">Subsequence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center"><code>ø</code></td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center"><code>D</code></td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center"><code>C</code></td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center"><code>CD</code></td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center"><code>B</code></td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center"><code>BD</code></td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center"><code>BC</code></td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center"><code>BCD</code></td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center"><code>A</code></td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center"><code>AD</code></td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center"><code>AC</code></td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center"><code>ACD</code></td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center"><code>AB</code></td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center"><code>ABD</code></td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center"><code>ABC</code></td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center"><code>ABCD</code></td>
+</tr>
+</tbody></table>
 <p>同時它也長的像二進位的真值表，<br>更進一步的解釋了：$\sum\limits_{k &#x3D; 0}^{n}\binom{k}{n} &#x3D; 2^{n}$</p>
 <p>要證明這件事情，我們得從二項式定理開始：<br>$(x + y)^{n} &#x3D; \sum\limits_{k &#x3D; 0}^{n} x^{k}y^{(n - k)}\binom{k}{n}$</p>
 <p>只要令 $x &#x3D; 1, y &#x3D; 1$ 則：<br>$(1 + 1)^{n} &#x3D; \sum\limits_{k &#x3D; 0}^{n} 1^{k}1^{(n - k)}\binom{k}{n} &#x3D; 2^{n}$</p>
@@ -497,35 +632,32 @@ $= \frac{1}{2} \sum\limits_{a = 0}^{n - 1} \{ \frac{1}{2}[(n - 1) + a](n - a) - 
 <iframe scrolling="no" width="100%" height="230px" src="https://jsfiddle.net/qu8j1nda/embedded/result,js,html,css/dark" frameborder="0" loading="lazy" allowfullscreen></iframe>
 
 <h1 id="迴文子序列：策略"><a href="#迴文子序列：策略" class="headerlink" title="迴文子序列：策略"></a>迴文子序列：策略</h1><p>由於子序列數量實在增長的很快，有沒有其他方法呢？<br>使用動態規劃可以有效解決這個問題：</p>
-<table style="width: 298px;"><tr><th style="width: 46.4px;">String</th><td style="background-color: #ffdddd; width: 15px; text-align: center;">A</td><td style="width: 15px; text-align: center;">?</td><td style="width: 15px; text-align: center;">?</td><td style="width: 15px; text-align: center;">?</td><td style="background-color: #ffdddd; width: 15px; text-align: center;">C</td></tr><tr><th style="width: 46.4px;">Index</th><td style="background-color: #ffdddd; width: 15px; text-align: center;">0</td><td style="width: 15px; text-align: center;">1</td><td style="width: 15px; text-align: center;">2</td><td style="width: 15px; text-align: center;">3</td><td style="background-color: #ffdddd; width: 15px; text-align: center;">4</td></tr></table>
-
-<p>考慮上表，也就是一個長度為 5 的字串。</p>
-<p>透過註標 0 及註標 4 的字元不相等這件事情，<br>我們可以肯定的說，最長迴文子序列的長度不會是 5</p>
-<p>那麼，有沒有可能長度為 4 呢？<br>如果已知註標 0 及註標 4 的字元不相等，且長度為 4 此事為真，<br>則註標 3 可能為 A 或者註標 1 為 C</p>
-<table style="width: 298px;"><tr><th style="width: 46.4px;">String</th><td style="background-color: #ffdd99; width: 15px; text-align: center;">A</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">?</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">?</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">A</td><td style="width: 15px; text-align: center;">C</td></tr><tr><th style="width: 46.4px;">Index</th><td style="background-color: #ffdd99; width: 15px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">2</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">3</td><td style="width: 15px; text-align: center;">4</td></tr></table>
-
-<p>或</p>
-<table style="width: 298px;"><tr><th style="width: 46.4px;">String</th><td style="width: 15px; text-align: center;">A</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">C</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">?</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">?</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">C</td></tr><tr><th style="width: 46.4px;">Index</th><td style="width: 15px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">2</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">4</td></tr></table>
-
-<p>因為我們還不知道註標 3 及註標 1 的字元，我們可以肯定的是：<br>最長迴文子序列應該是「註標 0 到註標 3」或「註標 1 到註標 4」其中一個較大的。</p>
-<table style="width: 298px;"><tr><th style="width: 46.4px;">String</th><td style="width: 15px; text-align: center;">A</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">C</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">A</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">A</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">C</td></tr><tr><th style="width: 46.4px;">Index</th><td style="width: 15px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">2</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">4</td></tr></table>
-
-<p>上表顯示出一種可能：<br>「註標 0 到註標 3」的最長迴文子序列長度為 3<br>「註標 1 到註標 4」的最長迴文子序列長度為 4<br>則「註標 0 到註標 4」的最長迴文子序列長度就會是 4 </p>
-<p>我們觀察了第一種字元不相等的情況，那如果相等呢？</p>
-<table style="width: 298px;"><tr><th style="width: 46.4px;">String</th><td style="background-color: #ffdd99; width: 15px; text-align: center;">A</td><td style="width: 15px; text-align: center;">?</td><td style="width: 15px; text-align: center;">?</td><td style="width: 15px; text-align: center;">?</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">A</td></tr><tr><th style="width: 46.4px;">Index</th><td style="background-color: #ffdd99; width: 15px; text-align: center;">0</td><td style="width: 15px; text-align: center;">1</td><td style="width: 15px; text-align: center;">2</td><td style="width: 15px; text-align: center;">3</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">4</td></tr></table>
-
-<p>此時我們可以肯定，至少最長迴文子序列為 2<br>記得子字串、子序列的差異，這邊暗示如果註標 1 到註標 3 的字元通通不取，<br>則子序列為 “AA” 就是長度為 2 的迴文。</p>
-<p>一旦字元相等，我們就保證長度至少為 2 還要在加上「註標 1 到註標 3」最長的長度。  </p>
-<p>考慮下表的情況，由於註標 0 及註標 4 字元相等，<br>則保證長度為 2 + 「註標 1 到註標 3 最長迴文子序列的長度」<br>這個情況下，長度就是 2 + 3 &#x3D; 5</p>
-<table style="width: 298px;"><tr><th style="width: 46.4px;">String</th><td style="width: 15px; text-align: center;">A</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">B</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">?</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">B</td><td style="width: 15px; text-align: center;">A</td></tr><tr><th style="width: 46.4px;">Index</th><td style="width: 15px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">2</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">3</td><td style="width: 15px; text-align: center;">4</td></tr></table>
-
-<p>如果實際下去比對，還有兩種情況：<br>其一是「註標 2 到註標 2 最長迴文子序列的長度」<br>由於只有一個字元，當註標相同時，必為 1</p>
-<table style="width: 298px;"><tr><th style="width: 46.4px;">String</th><td style="width: 15px; text-align: center;">A</td><td style="width: 15px; text-align: center;">B</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">C</td><td style="width: 15px; text-align: center;">B</td><td style="width: 15px; text-align: center;">A</td></tr><tr><th style="width: 46.4px;">Index</th><td style="width: 15px; text-align: center;">0</td><td style="width: 15px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">2</td><td style="width: 15px; text-align: center;">3</td><td style="width: 15px; text-align: center;">4</td></tr></table>
-
-<p>最後一種情形是「註標 1 到註標 2 最長迴文子序列的長度」<br>在碰到兩個字元相等時，根據上面的想法：<br>會變成 2 + 「註標 2 到註標 1 最長迴文子序列的長度」</p>
-<p>很顯然地，「註標 2 到註標 1 最長迴文子序列的長度」是不被接受的，<br>這種情況只能給出長度 2 當作答案：</p>
-<table style="width: 298px;"><tr><th style="width: 46.4px;">String</th><td style="width: 15px; text-align: center;">A</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">B</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">B</td><td style="width: 15px; text-align: center;">D</td><td style="width: 15px; text-align: center;">C</td></tr><tr><th style="width: 46.4px;">Index</th><td style="width: 15px; text-align: center;">0</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">1</td><td style="background-color: #ffdd99; width: 15px; text-align: center;">2</td><td style="width: 15px; text-align: center;">3</td><td style="width: 15px; text-align: center;">4</td></tr></table>
-
+<p><img src="https://i.imgur.com/oFrlWBu.png" alt="圖 8、長度為 $5$ 的字串"></p>
+<p>考慮圖 8，也就是一個長度為 $5$ 的字串。</p>
+<p>透過註標 $0$ 及註標 $4$ 的字元不相等這件事情，<br>我們可以肯定的說，最長迴文子序列的長度不會是 $5$</p>
+<p>那麼，有沒有可能長度為 $4$ 呢？<br>如果已知註標 $0$ 及註標 $4$ 的字元不相等，且長度為 $4$ 此事為真，<br>則註標 $3$ 可能為 <code>A</code>，即圖 9 的情況：</p>
+<p><img src="https://i.imgur.com/HxHNCdO.png" alt="圖 9、註標 $3$ 可能為 A 的情況"></p>
+<p>或註標 $1$ 為 <code>C</code>，即圖 10 的情況：</p>
+<p><img src="https://i.imgur.com/XBMucHa.png" alt="圖 10、註標 $1$ 可能為 C 的情況"></p>
+<p>因為我們還不知道註標 $3$ 及註標 $1$ 的字元，我們可以肯定的是：<br>最長迴文子序列應該是「註標 $0$ 到註標 $3$」或「註標 $1$ 到註標 $4$」其中一個較長的。</p>
+<p><img src="https://i.imgur.com/nQpuNnT.png" alt="圖 11、「最長的」迴文子序列一定是「長度較長的」那一個"></p>
+<p>圖 11 顯示出一個肯定的答案：</p>
+<ul>
+<li>「註標 $0$ 到註標 $3$」的最長迴文子序列長度為 $3$  </li>
+<li>「註標 $1$ 到註標 $4$」的最長迴文子序列長度為 $4$  </li>
+<li>則「註標 $0$ 到註標 $4$」的最長迴文子序列長度就會是 $4$</li>
+</ul>
+<p>我們觀察了第一種字元不相等的情況，那如果相等呢？參考圖 12：</p>
+<p><img src="https://i.imgur.com/PV6Rhy6.png" alt="圖 12、最長迴文子序列至少為 $2$"></p>
+<p>此時我們可以肯定，至少最長迴文子序列為 $2$<br>記得子字串、子序列的差異，這邊暗示如果註標 $1$ 到註標 $3$ 的字元通通不取，<br>則子序列為 <code>AA</code> 就是長度為 $2$ 的迴文。</p>
+<p>一旦字元相等，我們就保證長度至少為 $2$ 還要在加上「註標 $1$ 到註標 $3$」最長的長度。  </p>
+<p>考慮圖 13 的情況，由於註標 $0$ 及註標 $4$ 字元相等，<br>則保證長度為 $2$ + 「註標 $1$ 到註標 $3$ 最長迴文子序列的長度」<br>這個情況下，長度就是 $2 + 3 &#x3D; 5$</p>
+<p><img src="https://i.imgur.com/vWWUxuQ.png" alt="圖 13、最長迴文子序列長度為 $2 + 3 = 5$"></p>
+<p>如果實際下去比對，還有兩種情況：  </p>
+<p>其一是「註標 $2$ 到註標 $2$ 最長迴文子序列的長度」<br>由於只有一個字元，當註標相同時，必為 $1$，參考圖 14：</p>
+<p><img src="https://i.imgur.com/oxOiQd8.png" alt="圖 14、只有一個字元的情況"></p>
+<p>最後一種情形是「註標 $1$ 到註標 $2$ 最長迴文子序列的長度」在碰到兩個字元相等時<br>很顯然地，這種情況只能給出長度 $2$ 當作答案，參考圖 15：</p>
+<p><img src="https://i.imgur.com/7WElE0N.png" alt="圖 15、只有一個字元的情況"></p>
 <p>根據上述一些推理，可以得到一些結論。</p>
 <p>假設：</p>
 <ul>
@@ -556,29 +688,61 @@ P_{i, j} = P_{i + 1, j - 1} && \text{if } S_{i} = S_{j}, |i - j| > 1 \\
 \end{array}\right .$
 </li>
 </ul>
-<p>看一個實際的例子，參考下表：<br>（例子已將可能的四種情況納入，表格內的 $P_{i, j}$ 將寫為 Pij）</p>
-<table style="width: 298px;"><tr><th style="width: 46.4px;">String</th><td style="width: 15px; text-align: center;">A</td><td style="width: 15px; text-align: center;">B</td><td style="width: 15px; text-align: center;">A</td><td style="width: 15px; text-align: center;">C</td><td style="width: 15px; text-align: center;">C</td></tr><tr><th style="width: 46.4px;">Index</th><td style="width: 15px; text-align: center;">0</td><td style="width: 15px; text-align: center;">1</td><td style="width: 15px; text-align: center;">2</td><td style="width: 15px; text-align: center;">3</td><td style="width: 15px; text-align: center;">4</td></tr></table>
-
+<p>看一個簡單的例子，參考下圖 16（例子已將可能的四種情況納入）：  </p>
+<p><img src="https://i.imgur.com/HorUIoW.png" alt="圖 16、簡單的例子"></p>
 <p>我們的目標是找到 $P_{0, 4}$<br>由於 $S_{0} \neq S_{4}$ 且 $i \neq j$ 所以：</p>
-<p>$P_{0, 4} &#x3D; max(P_{1, 4}, P_{0, 3})$（規則一）</p>
-<p>對於 $P_{1, 4}$ 的部份：<br>$P_{1, 4} &#x3D; max(P_{2, 4}, P_{1, 3})$（規則一）<br>$P_{2, 4} &#x3D; max(P_{3, 4}, P_{2, 3})$（規則一）<br>$P_{1, 3} &#x3D; max(P_{2, 3}, P_{1, 2})$（規則一）<br>$P_{3, 4} &#x3D; 2$（規則四 $\because S_{3} &#x3D; S_{4}, |3 - 4| &#x3D; 1$）<br>$P_{2, 3} &#x3D; max(P_{3, 3}, P_{2, 2}) &#x3D; 1$（規則一）<br>$P_{1, 2} &#x3D; max(P_{2, 2}, P_{1, 1}) &#x3D; 1$（規則一）<br>$P_{1, 1} &#x3D; P_{2, 2} &#x3D; P_{3, 3} &#x3D; 1$（規則三）</p>
-<p>對於 $P_{0, 3}$ 的部份：<br>$P_{0, 3} &#x3D; max(P_{1, 3}, P_{0, 2})$（規則一）<br>$P_{1, 3} &#x3D; max(P_{2, 3}, P_{1, 2})$（規則一）<br>$P_{2, 3} &#x3D; max(P_{3, 3}, P_{2, 2}) &#x3D; 1$（規則一）<br>$P_{1, 2} &#x3D; max(P_{2, 2}, P_{1, 1}) &#x3D; 1$（規則一）<br>$P_{1, 1} &#x3D; P_{2, 2} &#x3D; P_{3, 3} &#x3D; 1$（規則三）<br>$P_{0, 2} &#x3D; 2 + P_{1, 1} &#x3D; 3$（規則二）</p>
+<ul>
+<li>$P_{0, 4} &#x3D; max(P_{1, 4}, P_{0, 3})$（規則一）</li>
+</ul>
+<p>對於 $P_{1, 4}$ 的部份：</p>
+<ul>
+<li>$P_{1, 4} &#x3D; max(P_{2, 4}, P_{1, 3})$（規則一）</li>
+<li>$P_{2, 4} &#x3D; max(P_{3, 4}, P_{2, 3})$（規則一）</li>
+<li>$P_{1, 3} &#x3D; max(P_{2, 3}, P_{1, 2})$（規則一）</li>
+<li>$P_{3, 4} &#x3D; 2$（規則四 $\because S_{3} &#x3D; S_{4}, |3 - 4| &#x3D; 1$）</li>
+<li>$P_{2, 3} &#x3D; max(P_{3, 3}, P_{2, 2}) &#x3D; 1$（規則一）</li>
+<li>$P_{1, 2} &#x3D; max(P_{2, 2}, P_{1, 1}) &#x3D; 1$（規則一）</li>
+<li>$P_{1, 1} &#x3D; P_{2, 2} &#x3D; P_{3, 3} &#x3D; 1$（規則三）</li>
+</ul>
+<p>對於 $P_{0, 3}$ 的部份：</p>
+<ul>
+<li>$P_{0, 3} &#x3D; max(P_{1, 3}, P_{0, 2})$（規則一）</li>
+<li>$P_{1, 3} &#x3D; max(P_{2, 3}, P_{1, 2})$（規則一）</li>
+<li>$P_{2, 3} &#x3D; max(P_{3, 3}, P_{2, 2}) &#x3D; 1$（規則一）</li>
+<li>$P_{1, 2} &#x3D; max(P_{2, 2}, P_{1, 1}) &#x3D; 1$（規則一）</li>
+<li>$P_{1, 1} &#x3D; P_{2, 2} &#x3D; P_{3, 3} &#x3D; 1$（規則三）</li>
+<li>$P_{0, 2} &#x3D; 2 + P_{1, 1} &#x3D; 3$（規則二）</li>
+</ul>
 <p>所以 $P_{0, 4} &#x3D; 3$</p>
 <p>程式碼的部份，利用遞迴可以輕易達成：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">...                                                  <span class="comment">// 初始化或輸入</span></span><br><span class="line"><span class="type">int</span> **p = <span class="keyword">new</span> <span class="type">int</span>* [str.<span class="built_in">length</span>()];                   <span class="comment">// 建立儲存表</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; str.<span class="built_in">length</span>(); i++)</span><br><span class="line">&#123;</span><br><span class="line">    p[i] = <span class="keyword">new</span> <span class="type">int</span> [str.<span class="built_in">length</span>()];</span><br><span class="line">    <span class="built_in">memset</span>(p[i], <span class="number">-1</span>, <span class="built_in">sizeof</span>(p[i]));                  <span class="comment">// 初始化儲存表為 -1</span></span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="comment">// 動態規劃找最長迴文子序列</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">LPS</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(p[i][j] &gt; <span class="number">0</span>) <span class="keyword">return</span> p[i][j];                  <span class="comment">// 若有儲存則直接使用</span></span><br><span class="line">    <span class="keyword">if</span>(i == j)                                       <span class="comment">// 若只有一字元</span></span><br><span class="line">        p[i][j] = <span class="number">1</span>;                                 <span class="comment">// 長度為 1</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(i + <span class="number">1</span> == j &amp;&amp; str[i] == str[j])          <span class="comment">// 只有兩字元，且兩字元一樣</span></span><br><span class="line">        p[i][j] = <span class="number">2</span>;                                 <span class="comment">// 長度為 2</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(i != j &amp;&amp; str[i] == str[j])              <span class="comment">// 首、尾字元相等</span></span><br><span class="line">        p[i][j] = <span class="built_in">LPS</span>(s, i + <span class="number">1</span>, j - <span class="number">1</span>) + <span class="number">2</span>;          <span class="comment">// 長度至少為 2 還要加上內部的最大長度</span></span><br><span class="line">    <span class="keyword">else</span> <span class="comment">//(i != j &amp;&amp; str[i] != str[j])              // 首、尾字元相異</span></span><br><span class="line">        p[i][j] = <span class="built_in">max</span>(<span class="built_in">LPS</span>(i + <span class="number">1</span>, j), <span class="built_in">LPS</span>(i, j - <span class="number">1</span>)); <span class="comment">// 長度為刪除首、尾字元其一後的最大長度</span></span><br><span class="line">    <span class="keyword">return</span> p[i][j];                                  <span class="comment">// 回傳長度</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">LPS</span>(<span class="number">0</span>, str.<span class="built_in">length</span>() - <span class="number">1</span>);                            <span class="comment">// 調用時</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <div class="note warning">
-            <p>調用時，因為傳入值為註標，第二個參數應為「str.length() - 1」而非「str.length()」。</p>
+            <p>調用時，因為傳入值為註標，第二個參數應為 <code>str.length() - 1</code> 而非 <code>str.length()</code></p>
           </div>
 
 <h2 id="複雜度-3"><a href="#複雜度-3" class="headerlink" title="複雜度"></a>複雜度</h2><p>如果採用遞迴的方法處理（即沒紀錄重複計算的部份），<br>這個算法的複雜度也相當高：</p>
-<p>僅考慮最糟情況，也就是不斷計算 $P_{i, j} &#x3D; max(P_{i + 1, j}, P_{i, j - 1})$ 的狀況，<br>令長度 $n &#x3D; j - i + 1$ 則有 $T(n) &#x3D; 2T(n - 1), \forall n \in N^{0}$ 的遞迴式。</p>
-<p>透過猜測複雜度來解遞迴式的方法：<br>我們先猜測複雜度為 $O(n^{2})$</p>
-<p>假設 $\forall c &gt; 0, T(n) &#x3D; 2T(n - 1), T(n - 1) \leq c(n - 1)^{2}$<br>則 $T(n) &#x3D; 2T(n - 1) \leq 2c(n - 1)^{2} \leq cn^{2}$<br>有 $2cn^{2} - 4cn + 1 \leq cn^{2}$</p>
+<p>僅考慮最糟情況，也就是不斷計算 $P_{i, j} &#x3D; max(P_{i + 1, j}, P_{i, j - 1})$ 的狀況。</p>
+<p>令長度 $n &#x3D; j - i + 1$ 則有遞迴式：</p>
+<p>$$T(n) &#x3D; 2T(n - 1), \forall n \in N^{0}$$ </p>
+<p>透過猜測複雜度來解遞迴式的方法，我們先猜測複雜度為 $O(n^{2})$，假設：</p>
+<p>$$\forall c &gt; 0,\quad T(n) &#x3D; 2T(n - 1),\quad T(n - 1) \leq c(n - 1)^{2}$$</p>
+<p>結合兩個條件：</p>
+<p>$$T(n) &#x3D; 2T(n - 1) \leq 2c(n - 1)^{2} \leq cn^{2}$$</p>
+<p>經過整理後有：</p>
+<p>$$2cn^{2} - 4cn + 1 \leq cn^{2}$$</p>
 <p>假設不成立，顯然 $T(n) &gt; O(n^{2})$</p>
-<p>這次改假設為 $T(n) &#x3D; O(2^{n})$<br>假設 $\forall c &gt; 0, T(n) &#x3D; 2T(n - 1), T(n - 1) \leq c2^{(n - 1)}$<br>則 $T(n) &#x3D; 2T(n - 1) \leq 2c(2)^{n - 1} \leq c2^{n}$<br>有 $c2^{n} \leq c2^{n}$ 假設成立，<br>且可知道對於 $c &#x3D; 1$ 只要 $n_{0} &#x3D; 1$ 就有 $T(n) &#x3D; O(2^{n})$</p>
+<hr>
+<p>這次改假設為 $T(n) &#x3D; O(2^{n})$</p>
+<p>假設 </p>
+<p>$$\forall c &gt; 0,\quad T(n) &#x3D; 2T(n - 1),\quad T(n - 1) \leq c2^{(n - 1)}$$</p>
+<p>結合兩個條件：</p>
+<p>$$T(n) &#x3D; 2T(n - 1) \leq 2c(2)^{n - 1} \leq c2^{n}$$</p>
+<p>滿足：</p>
+<p>$$c2^{n} \leq c2^{n}$$</p>
+<p>假設成立，且可知道對於 $c &#x3D; 1$ 只要 $n_{0} &#x3D; 1$ 就有 $T(n) &#x3D; O(2^{n})$</p>
 <div class="note warning">
-            <p>注意！完整的遞迴式原先應標記在 $n \leq k$ 的情況下 $T(n) &#x3D; O(1)$<br>故此處隱含了當 $n$ 足夠小，則複雜度為 $O(1)$ 的概念，<br>此外從式中可知 $n_{0} &#x3D; 0$ 時 $T(n_{0} - 1) &#x3D; T(-1)$ 是未定義的。</p>
+            <p>完整的遞迴式原先應標記在 $n \leq k$ 的情況下 $T(n) &#x3D; O(1)$<br/><br>故此處隱含了當 $n$ 足夠小，則複雜度為 $O(1)$ 的概念，<br/><br>此外從式中可知 $n_{0} &#x3D; 0$ 時 $T(n_{0} - 1) &#x3D; T(-1)$ 是未定義的。</p>
           </div>
 
 <p>做最後一步確認，透過遞迴樹如圖 1：  </p>
@@ -587,7 +751,7 @@ P_{i, j} = P_{i + 1, j - 1} && \text{if } S_{i} = S_{j}, |i - j| > 1 \\
 <p>若經紀錄，則會避開重複計算的節點（如上例中的 $P_{1, 1}, P_{2, 2}, P_{3, 3}$）<br>相當於在二維陣列中填表，且只需要填入 $i \leq j$ 的部份即可。</p>
 <p>此時，最糟情況下，每次填入都須依賴 $P_{i, j}, i &#x3D; j$ 的值（對角線）<br>但，至多也只需要填入 $\frac{1}{2} n^{2}$ 個位置，則複雜度為 $O(n^{2})$</p>
 <h2 id="演示-3"><a href="#演示-3" class="headerlink" title="演示"></a>演示</h2><div class="note info">
-            <p>取得最長序列的方法，可以改變 p[i][j] 同時記錄長度及序列；本演示即是如此。</p>
+            <p>取得最長序列的方法，可以改變 <code>p[i][j]</code> 同時記錄長度及序列；本演示即是如此。</p>
           </div>
 
 <iframe scrolling="no" width="100%" height="230px" src="https://jsfiddle.net/o28vt6cc/embedded/result,js,html,css/dark" frameborder="0" loading="lazy" allowfullscreen></iframe>
@@ -699,14 +863,14 @@ P_{i, j} = P_{i + 1, j - 1} && \text{if } S_{i} = S_{j}, |i - j| > 1 \\
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
   </nav>
@@ -877,6 +1041,26 @@ P_{i, j} = P_{i + 1, j - 1} && \text{if } S_{i} = S_{j}, |i - j| > 1 \\
     
 
   
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: '32px',
+  left: 'unset',
+  time: '1s',
+  mixColor: '#111',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#333',
+  buttonColorLight: '#eee',
+  saveInCookies: true,
+  label: '',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
@@ -896,6 +1080,36 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
+</script>
+<script>
+(function() {
+
+  const callback = function() {
+    let html = document.getElementsByTagName('html')[0];
+    if (window.darkmode.isActivated()) {  
+      html.setAttribute("class", "darkmode--activated");
+    }
+    else {
+      html.removeAttribute("class");
+    }
+  };
+
+  const config = { attributes: true, childList: false, subtree: false};
+
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for(const mutation of mutationsList) {
+      if (mutation.type === 'attributes') {
+        if (mutation.attributeName === 'class') {
+          callback();
+        }
+      }
+    }
+  });
+
+  observer.observe(document.body, config);
+
+  callback();
+})();
 </script>
 
 </body>

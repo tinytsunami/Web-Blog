@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#536F87">
+<meta name="theme-color" content="hsl(210deg 20% 25%)">
 <meta name="generator" content="Hexo 6.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#536F87">
+  <link rel="mask-icon" href="/images/logo.svg" color="hsl(210deg 20% 25%)">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -18,7 +18,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"www.tinytsunami.info","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="這次的主題是影像濾波（image filter）。 這也是大學影像處理課的內容，基本的東西已經寫過了，原先考慮到加入一些其他新東西，可是後來想說不要把文章複雜化，所以新東西可能之後才會發。">
@@ -28,21 +28,21 @@
 <meta property="og:site_name" content="羊羽手札">
 <meta property="og:description" content="這次的主題是影像濾波（image filter）。 這也是大學影像處理課的內容，基本的東西已經寫過了，原先考慮到加入一些其他新東西，可是後來想說不要把文章複雜化，所以新東西可能之後才會發。">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://i.imgur.com/LWebOJs.png">
-<meta property="og:image" content="https://i.imgur.com/6WTrdrh.png">
+<meta property="og:image" content="https://i.imgur.com/naVLmQK.png">
+<meta property="og:image" content="https://i.imgur.com/kQbriZT.png">
 <meta property="og:image" content="https://i.imgur.com/mGqhnpg.png">
 <meta property="og:image" content="https://i.imgur.com/yu7R0R9.png">
 <meta property="og:image" content="https://i.imgur.com/Gpzy1P3.png">
 <meta property="og:image" content="https://i.imgur.com/yAxd9OO.png">
-<meta property="og:image" content="https://i.imgur.com/jFmVRrX.png">
-<meta property="og:image" content="https://i.imgur.com/a5fvkC7.png">
-<meta property="og:image" content="https://i.imgur.com/08jwiew.png">
+<meta property="og:image" content="https://i.imgur.com/mIttFB5.png">
+<meta property="og:image" content="https://i.imgur.com/3CBMICm.png">
+<meta property="og:image" content="https://i.imgur.com/DgqiZSQ.png">
 <meta property="article:published_time" content="2020-08-02T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-12T08:41:18.232Z">
+<meta property="article:modified_time" content="2022-02-19T18:21:02.144Z">
 <meta property="article:author" content="Tinytusnami">
 <meta property="article:tag" content="技術, 獨立遊戲">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/LWebOJs.png">
+<meta name="twitter:image" content="https://i.imgur.com/naVLmQK.png">
 
 <link rel="canonical" href="https://www.tinytsunami.info/Image-Filter/">
 
@@ -88,7 +88,7 @@
   </style>
 </noscript>
 
-</head>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -129,6 +129,11 @@
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -231,7 +236,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2022-02-12 08:41:18" itemprop="dateModified" datetime="2022-02-12T08:41:18Z">2022-02-12</time>
+                <time title="修改時間：2022-02-19 18:21:02" itemprop="dateModified" datetime="2022-02-19T18:21:02Z">2022-02-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,7 +264,7 @@
 <span id="more"></span>
 
 <div class="note success">
-            <p>請參閱 <a href="#">Post not found: ming-chuan-university-homework</a> 的「影像處理課程」部分。</p>
+            <p>請參閱 <a href="/ming-chuan-university-homework/" title="我的大學作業整理">我的大學作業整理</a> 的「影像處理課程」部分。</p>
           </div>
 
 <h1 id="相關名詞"><a href="#相關名詞" class="headerlink" title="相關名詞"></a>相關名詞</h1><p>在開始之前，可能要釐清一些相似的概念，<br>包括我自己也是，下面 4 件事情很容易混淆：</p>
@@ -300,7 +305,7 @@
 <h1 id="均值濾波器"><a href="#均值濾波器" class="headerlink" title="均值濾波器"></a>均值濾波器</h1><p>相似地，若輸出為 $h(x, y)$ 數學上的定義為：</p>
 <p>$$<br>h(x, y)<br>&#x3D; \frac{\text{cor}(f(x, y), g(x, y))}{\sum\limits_{i&#x3D;-a}^{a} \sum\limits_{j&#x3D;-b}^{b} f(i, j)}<br>&#x3D; \frac{\sum\limits_{i&#x3D;-a}^{a} \sum\limits_{j&#x3D;-b}^{b} f(i, j) \cdot g(x + i, y + j)}{\sum\limits_{i&#x3D;-a}^{a} \sum\limits_{j&#x3D;-b}^{b} f(i, j)}<br>$$</p>
 <p>看起來很難懂，其實就是拿著濾波器掃描圖片，然後被濾波器蓋住的地方，就平均一下。</p>
-<p><img src="https://i.imgur.com/LWebOJs.png" alt="圖 1、均值濾波器"></p>
+<p><img src="https://i.imgur.com/naVLmQK.png" alt="圖 1、均值濾波器"></p>
 <p>參考圖 1 的例子，濾波器放在左上角，經過計算：</p>
 <p>$$<br>\sum\limits_{i&#x3D;-1}^{1} \sum\limits_{j&#x3D;-1}^{1} f(i, j) &#x3D; 9<br>$$</p>
 <p>所以把對應的格子乘以權重（這邊為 $1$）加起來，然後除以 $9$ 就可以了：</p>
@@ -313,7 +318,7 @@
 
 <h1 id="中值濾波器"><a href="#中值濾波器" class="headerlink" title="中值濾波器"></a>中值濾波器</h1><p>中值濾波器只是在濾波器的範圍內找最大輸出：</p>
 <p>$$<br>h(x, y) &#x3D; \max\limits_{i, j \in \{-1, 0, 1\}} g(x + i, y + j)<br>$$</p>
-<p><img src="https://i.imgur.com/6WTrdrh.png" alt="圖 2、中值濾波器"></p>
+<p><img src="https://i.imgur.com/kQbriZT.png" alt="圖 2、中值濾波器"></p>
 <p>中值濾波器的一個功能是，在圖片遭受胡椒鹽雜訊（Salt-and-pepper noise）時，<br>則可以透過中值濾波器修復，參考圖 3 的原圖：</p>
 <p><img src="https://i.imgur.com/mGqhnpg.png" alt="圖 3、未受胡椒鹽雜訊汙染的圖像圖"></p>
 <p>當遭受胡椒鹽雜訊干擾，呈現圖 4 的樣子：</p>
@@ -360,7 +365,7 @@
 <p>$$ f(x, y) + c[\nabla^2 f(x, y)] &#x3D; f(x, y) + c [\nabla \cdot \nabla f(x, y)]$$<br>$$ &#x3D; f(x, y) + c[\frac{\partial^2 f(x, y)}{\partial x^2} + \frac{\partial^2 f(x, y)}{\partial y^2}]$$<br>$$ &#x3D; f(x, y) + c[f(x+1, y) - 2f(x, y) + f(x-1, y) + f(x, y+1) - 2f(x, y) + f(x, y-1)] $$<br>$$ &#x3D; f(x, y) + c[f(x+1, y) + f(x-1, y) + f(x, y+1) + f(x, y-1) - 4f(x, y)] $$<br>$$ &#x3D; (1 - 4c)f(x, y) + cf(x+1, y) + cf(x-1, y) + cf(x, y+1) + cf(x, y-1)$$</p>
 <p>當 $c &#x3D; -1$ 時，濾波器可參考圖 7 所示，式子為：</p>
 <p>$$5f(x, y) + f(x+1, y) + f(x-1, y) + f(x, y+1) + f(x, y-1)$$</p>
-<p><img src="https://i.imgur.com/jFmVRrX.png" alt="圖 7、銳化濾波器"></p>
+<p><img src="https://i.imgur.com/mIttFB5.png" alt="圖 7、銳化濾波器"></p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 設定變數 */</span></span><br><span class="line"><span class="keyword">let</span> i, j, k, p, q;          <span class="comment">// 用於迴圈的註標</span></span><br><span class="line"><span class="keyword">let</span> sum;                    <span class="comment">// 用於加總圖片濾波器的總和</span></span><br><span class="line"><span class="keyword">let</span> index;                  <span class="comment">// 用於計算實際圖片的像素的位置</span></span><br><span class="line"><span class="keyword">let</span> c = -<span class="number">1</span>;                 <span class="comment">// 參考公式，任意常數（常為 -1）</span></span><br><span class="line"><span class="keyword">let</span> filter = [              <span class="comment">// 參考公式，濾波器</span></span><br><span class="line">    [<span class="number">0</span>, c, <span class="number">0</span>],</span><br><span class="line">    [c, <span class="number">1</span> - <span class="number">4</span> * c, c],</span><br><span class="line">    [<span class="number">0</span>, c, <span class="number">0</span>]</span><br><span class="line">];</span><br><span class="line"><span class="keyword">let</span> w = imgData.<span class="property">width</span>;      <span class="comment">// 圖片的寬度</span></span><br><span class="line"><span class="keyword">let</span> h = imgData.<span class="property">height</span>;     <span class="comment">// 圖片的長度</span></span><br><span class="line"><span class="keyword">let</span> fw = <span class="number">3</span>;                 <span class="comment">// 濾波器的寬度</span></span><br><span class="line"><span class="keyword">let</span> fh = <span class="number">3</span>;                 <span class="comment">// 濾波器的長度</span></span><br><span class="line"><span class="keyword">let</span> fs = <span class="number">9</span>;                 <span class="comment">// 濾波器的大小</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 建立圖片副本 */</span></span><br><span class="line"><span class="keyword">let</span> newData = imageContext.<span class="title function_">createImageData</span>(w, h);</span><br><span class="line">newData.<span class="property">data</span>.<span class="title function_">set</span>(imgData.<span class="property">data</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 計算濾波器中心，在圖片上的位置 */</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; (w - fw - <span class="number">1</span>); i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">1</span>; j &lt; (h - fh - <span class="number">1</span>); j++) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 計算圖片的三種顏色 */</span></span><br><span class="line">        <span class="keyword">for</span> (k = <span class="number">0</span>; k &lt; <span class="number">3</span>; k++) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">/* 計算濾波器覆蓋圖片區域的值（參考公式） */</span></span><br><span class="line">            sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (p = -<span class="number">1</span>; p &lt; fw - <span class="number">1</span>; p++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (q = -<span class="number">1</span>; q &lt; fh - <span class="number">1</span>; q++) &#123;</span><br><span class="line">                    index = ((j + q) * w + (i + p)) * <span class="number">4</span> + k;</span><br><span class="line">                    sum += filter[p + <span class="number">1</span>][q + <span class="number">1</span>] * imgData.<span class="property">data</span>[index];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* 將該值賦值給像素（需要限制值域，計算後可能會超出範圍） */</span></span><br><span class="line">            index = (j * w + i) * <span class="number">4</span> + k;</span><br><span class="line">            newData.<span class="property">data</span>[index] = <span class="title class_">Math</span>.<span class="title function_">max</span>(<span class="title class_">Math</span>.<span class="title function_">min</span>(sum, <span class="number">255</span>), <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 顯示新圖片 */</span></span><br><span class="line">imageContext.<span class="title function_">putImageData</span>(newData, <span class="number">0</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
 
 <h1 id="邊界處理"><a href="#邊界處理" class="headerlink" title="邊界處理"></a>邊界處理</h1><p>由於濾波器不會完全覆蓋，所以圖像邊界要特殊處理，常見的方式有 3 種：</p>
@@ -370,9 +375,9 @@
 <li>延伸原圖的邊界</li>
 </ul>
 <p>跳過不處理的話，濾波器可以從圖像的 $(1, 1)$ 開始，移動至 $(\text{width} - 2, \text{height} - 2)$ 停止。<br/><br>而邊界補零是非常常見的做法，意思是當濾波器跑出範圍，則預設給 $0$ 值，參考圖 8，<br/><br>不過缺點是輸出的邊界很容易黑黑的，但是可以省去很多例外條件的判斷。</p>
-<p><img src="https://i.imgur.com/a5fvkC7.png" alt="圖 8、邊界處理：補零"></p>
+<p><img src="https://i.imgur.com/3CBMICm.png" alt="圖 8、邊界處理：補零"></p>
 <p>至於為了獲得更好的效果，我們可以像圖 9 那樣，<br>把圖片的邊界「延伸」到圖片外一圈，如此一來，就會得到更好的效果。</p>
-<p><img src="https://i.imgur.com/08jwiew.png" alt="圖 9、邊界處理：延伸"></p>
+<p><img src="https://i.imgur.com/DgqiZSQ.png" alt="圖 9、邊界處理：延伸"></p>
 <h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><iframe scrolling="no" width="100%" height="530px" src="https://jsfiddle.net/40unwrc5/embedded/result,js,html,css/dark" frameborder="0" loading="lazy" allowfullscreen></iframe>
 
 <div class="note info">
@@ -483,14 +488,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
   </nav>
@@ -661,6 +666,26 @@
     
 
   
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: '32px',
+  left: 'unset',
+  time: '1s',
+  mixColor: '#111',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#333',
+  buttonColorLight: '#eee',
+  saveInCookies: true,
+  label: '',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
@@ -680,6 +705,36 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
     gitalk.render('gitalk-container');
   }, window.Gitalk);
 });
+</script>
+<script>
+(function() {
+
+  const callback = function() {
+    let html = document.getElementsByTagName('html')[0];
+    if (window.darkmode.isActivated()) {  
+      html.setAttribute("class", "darkmode--activated");
+    }
+    else {
+      html.removeAttribute("class");
+    }
+  };
+
+  const config = { attributes: true, childList: false, subtree: false};
+
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for(const mutation of mutationsList) {
+      if (mutation.type === 'attributes') {
+        if (mutation.attributeName === 'class') {
+          callback();
+        }
+      }
+    }
+  });
+
+  observer.observe(document.body, config);
+
+  callback();
+})();
 </script>
 
 </body>

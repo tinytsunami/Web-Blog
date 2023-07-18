@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>RMMZ 插件說明</title>
+      <link href="//rmmz-plugin-common/"/>
+      <url>//rmmz-plugin-common/</url>
+      
+        <content type="html"><![CDATA[<p>這篇是介紹我的 RPG Maker MZ 插件，基本上是提供給獨立遊戲製作者自由使用。</p><span id="more"></span><h1 id="插件下載"><a href="#插件下載" class="headerlink" title="插件下載"></a>插件下載</h1><p>所有的插件將發布於 <a href="https://github.com/tinytsunami/RM-Plugins">GitHub</a> 頁面。</p><p>請進入該頁面，點擊想要下載的插件名稱，然後找到右上角下載按鈕：</p><p><img src="https://i.imgur.com/HWhwJZa.png" alt="Imgur"></p><h1 id="舊版插件下載"><a href="#舊版插件下載" class="headerlink" title="舊版插件下載"></a>舊版插件下載</h1><p>舊版插件（RMMV）將不再提供於 GitHub 上，<br>如有需要，請直接來信索取：<code>z27619273@gmail.com</code></p><h1 id="BUG-回報方法"><a href="#BUG-回報方法" class="headerlink" title="BUG 回報方法"></a>BUG 回報方法</h1><p>基本上所有插件正式發布前，我會針對所有功能做一次複查，但有時插件指令太多（或是參數定義域太廣）沒辦法檢查很全面，如果有發現任何 BUG 可以回報給我，雖然畢業後有點忙，不過筆者還是會排時間修復。</p><p>為了加速檢查過程，請參考 BUG 回報流程：</p><ol><li><p>請到 <a href="https://github.com/tinytsunami/RM-Plugins/issues">GitHub Issue</a> 頁面。</p></li><li><p>點擊「New Issue」並提供以下資訊：</p></li></ol><div class="note info">            <p>可以複製貼上下列文字，並取代 <code>...</code> 的部分，但請不要複製行號；<br>同時請參考 <a href="https://github.com/tinytsunami/RM-Plugins/issues/1">範例回報</a> 頁面。</p>          </div><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">### 插件名稱（提供可識別的插件名稱）</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">### 錯誤訊息（請直接截圖遊戲畫面）</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">### 控制台訊息（請按下 F12 點選 Console 頁籤截圖）</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">### 相關操作說明（請描述如何觸發 BUG 的）</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">### 其他內容（如有請填寫，比方說要趕上架很急，我會優先處理）</span><br><span class="line">...</span><br></pre></td></tr></table></figure><p>螢幕截圖的部分，使用 Windows 10 的使用者，可以透過 <code>Shift + Windows + S</code> 來截圖，截圖後，可以直接在 GitHub Issue 內使用「貼上」功能，就會得到類似 <code>![image](...)</code> 的文字（該字串發布後將會轉換成圖片）。</p><h1 id="關於授權"><a href="#關於授權" class="headerlink" title="關於授權"></a>關於授權</h1><p>所有插件都透過「Timi」名義發布，若使用本插件，相當於您同意下列授權：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 由 Timi 授權條款發布</span><br><span class="line">  - 基於 MIT 授權</span><br><span class="line">  - 且您同意您的遊戲或作品不能使用非法素材</span><br><span class="line">    （偷竊、未授權使用、侵害授權條款或其他侵害素材作者權益的行為）</span><br></pre></td></tr></table></figure><p>授權釋義：</p><ul><li>若您的遊戲或作品 <strong>沒有</strong> 使用任何非法素材，則本授權相當於 <a href="https://zh.wikipedia.org/zh-hant/MIT%E8%A8%B1%E5%8F%AF%E8%AD%89">MIT 授權</a></li><li>若您的遊戲或作品 <strong>有</strong> 使用任何非法素材，則 <strong>請勿使用本插件</strong></li><li>使用本插件 <strong>不必要</strong> 向筆者通知或將筆者放入結束字幕（Closing Credit）中，但如果有，我會很高興</li><li>授權的更新不溯及既往。若未來條款更新，舊版插件仍使用舊版授權條款</li></ul><h1 id="其他問題"><a href="#其他問題" class="headerlink" title="其他問題"></a>其他問題</h1><p>有其他問題，您可以透過下列 4 種方式聯絡我：</p><ul><li>透過 Email 來信 <code>z27619273@gmail.com</code></li><li>加入 <a href="https://discord.gg/TTw74Np">RPG Maker Discord 群組</a></li><li>透過 GitHub Issue 留言</li><li>直接在本站留言</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> RMMZ 插件 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>圖 Graph</title>
       <link href="//graph/"/>
       <url>//graph/</url>
